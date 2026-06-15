@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
-import Link from "next/link";
+import Sidebar from "@/components/Sidebar";
 import {
   TrendingUp,
   TrendingDown,
@@ -61,82 +61,82 @@ type Agent = {
 const AGENTS: Record<string, Agent> = {
   "pedro-godinho": {
     name: "Pedro Godinho",
-    role: "Customer Expert · 4+ años de antigüedad",
+    role: "Customer Expert · 4+ years of tenure",
     status: "critical",
     overall: 73.2,
     kpis: [
-      { key: "aht_phone", label: "AHT teléfono", target: "630", actual: "863.9", unit: "s", teamAvg: "760.9", rank: "#9/9", trend: "down", status: "critical", weight: 15 },
-      { key: "gross_absence", label: "Ausencia bruta", target: "6", actual: "0", unit: "%", teamAvg: "0", rank: "—", trend: "up", status: "ok", weight: 10 },
-      { key: "fcr_phone", label: "FCR teléfono", target: "75", actual: "70", unit: "%", teamAvg: "91.7", rank: "#6/6", trend: "down", status: "critical", weight: 20 },
-      { key: "nps_phone", label: "NPS teléfono", target: "55", actual: "60", unit: "%", teamAvg: "100", rank: "#3/4", trend: "up", status: "ok", weight: 10 },
-      { key: "professionalism", label: "Profesionalismo", target: "95", actual: "92.9", unit: "%", teamAvg: "92.9", rank: "#4/7", trend: "up", status: "warning", weight: 5 },
+      { key: "aht_phone", label: "AHT phone", target: "630", actual: "863.9", unit: "s", teamAvg: "760.9", rank: "#9/9", trend: "down", status: "critical", weight: 15 },
+      { key: "gross_absence", label: "Gross absence", target: "6", actual: "0", unit: "%", teamAvg: "0", rank: "—", trend: "up", status: "ok", weight: 10 },
+      { key: "fcr_phone", label: "FCR phone", target: "75", actual: "70", unit: "%", teamAvg: "91.7", rank: "#6/6", trend: "down", status: "critical", weight: 20 },
+      { key: "nps_phone", label: "NPS phone", target: "55", actual: "60", unit: "%", teamAvg: "100", rank: "#3/4", trend: "up", status: "ok", weight: 10 },
+      { key: "professionalism", label: "Professionalism", target: "95", actual: "92.9", unit: "%", teamAvg: "92.9", rank: "#4/7", trend: "up", status: "warning", weight: 5 },
       { key: "qa_score", label: "QA score", target: "85", actual: "78", unit: "%", teamAvg: "99", rank: "#3/3", trend: "down", status: "warning", weight: 13 },
-      { key: "rr_phone", label: "RR teléfono", target: "85", actual: "92.9", unit: "%", teamAvg: "92.9", rank: "#2/7", trend: "up", status: "ok", weight: 5 },
+      { key: "rr_phone", label: "RR phone", target: "85", actual: "92.9", unit: "%", teamAvg: "92.9", rank: "#2/7", trend: "up", status: "ok", weight: 5 },
     ],
     chart: [718.92, 845.47, 890.78, 863.9],
     chartTarget: 691.19,
     insight: {
-      title: "Manejo de llamadas ineficiente, con tendencia al alza",
-      body: "El AHT está 25% por encima del promedio del equipo (863.9s vs 691.19s objetivo de equipo). Las últimas semanas muestran fluctuación: subió hasta 890.78s antes de bajar levemente a 835.58s. Pese a 4+ años de experiencia, no muestra la eficiencia esperada de un agente senior.",
+      title: "Inefficient call handling, trending upward",
+      body: "AHT is 25% above the team average (863.9s vs 691.19s team target). The last few weeks show fluctuation: it rose to 890.78s before slightly easing to 835.58s. Despite 4+ years of experience, it doesn't show the efficiency expected of a senior agent.",
     },
     coaching: {
       hasAction: false,
       suggestion:
-        "Crear una sesión de Coach Call enfocada en gestión del tiempo en llamada, dada la fluctuación semanal y la antigüedad del agente (apto para mentoría entre pares).",
+        "Create a Coach Call session focused on call time management, given the weekly fluctuation and the agent's tenure (a good fit for peer mentoring).",
     },
   },
   "alexandre-pereira": {
     name: "Alexandre Manuel Pereira",
-    role: "Customer Expert · 119 días de antigüedad",
+    role: "Customer Expert · 119 days of tenure",
     status: "ok",
     overall: 73.2,
     kpis: [
-      { key: "aht_phone", label: "AHT teléfono", target: "630", actual: "670.5", unit: "s", teamAvg: "760.9", rank: "#3/9", trend: "down", status: "ok", weight: 15 },
-      { key: "gross_absence", label: "Ausencia bruta", target: "6", actual: "0.25", unit: "%", teamAvg: "11.55", rank: "#1/14", trend: "up", status: "ok", weight: 10 },
-      { key: "fcr_phone", label: "FCR teléfono", target: "75", actual: "100", unit: "%", teamAvg: "91.7", rank: "#1/6", trend: "up", status: "ok", weight: 20 },
-      { key: "nps_phone", label: "NPS teléfono", target: "55", actual: "100", unit: "%", teamAvg: "100", rank: "#1/4", trend: "up", status: "ok", weight: 10 },
-      { key: "professionalism", label: "Profesionalismo", target: "95", actual: "100", unit: "%", teamAvg: "92.9", rank: "#1/7", trend: "up", status: "ok", weight: 5 },
+      { key: "aht_phone", label: "AHT phone", target: "630", actual: "670.5", unit: "s", teamAvg: "760.9", rank: "#3/9", trend: "down", status: "ok", weight: 15 },
+      { key: "gross_absence", label: "Gross absence", target: "6", actual: "0.25", unit: "%", teamAvg: "11.55", rank: "#1/14", trend: "up", status: "ok", weight: 10 },
+      { key: "fcr_phone", label: "FCR phone", target: "75", actual: "100", unit: "%", teamAvg: "91.7", rank: "#1/6", trend: "up", status: "ok", weight: 20 },
+      { key: "nps_phone", label: "NPS phone", target: "55", actual: "100", unit: "%", teamAvg: "100", rank: "#1/4", trend: "up", status: "ok", weight: 10 },
+      { key: "professionalism", label: "Professionalism", target: "95", actual: "100", unit: "%", teamAvg: "92.9", rank: "#1/7", trend: "up", status: "ok", weight: 5 },
       { key: "qa_score", label: "QA score", target: "85", actual: "91.5", unit: "%", teamAvg: "99", rank: "#2/3", trend: "up", status: "ok", weight: 13 },
-      { key: "rr_phone", label: "RR teléfono", target: "85", actual: "100", unit: "%", teamAvg: "92.9", rank: "#1/7", trend: "up", status: "ok", weight: 5 },
+      { key: "rr_phone", label: "RR phone", target: "85", actual: "100", unit: "%", teamAvg: "92.9", rank: "#1/7", trend: "up", status: "ok", weight: 5 },
     ],
     chart: [65, 60, 50, 80],
     chartTarget: 75,
     insight: {
-      title: "Top performer — oportunidad de compartir buenas prácticas",
-      body: "Las técnicas eficientes de manejo de llamadas han llevado el AHT muy por debajo del promedio del equipo (603.98s vs 691.19s), con una mejora reciente notable (35% de reducción a 474.56s en la última semana). Excelente candidato para mentoría de pares.",
+      title: "Top performer — opportunity to share best practices",
+      body: "Efficient call handling techniques have driven AHT well below the team average (603.98s vs 691.19s), with a notable recent improvement (35% reduction to 474.56s in the latest week). Excellent candidate for peer mentoring.",
     },
     coaching: {
       hasAction: true,
       actions: [
-        { type: "Human Coaching", tag: "CC – Coach Call", text: "Agendar sesiones de coaching en vivo (Coach Call) para practicar interacciones sociales y recibir feedback en tiempo real.", due: "2026-05-20", status: "pending" },
-        { type: "Human Coaching", tag: "MC – Model Call", text: "Asignar a un colega de alto desempeño como mentor para modelar comportamientos sociales positivos.", due: "2026-05-22", status: "pending" },
+        { type: "Human Coaching", tag: "CC – Coach Call", text: "Schedule live coaching sessions (Coach Call) to practice social interactions and receive real-time feedback.", due: "2026-05-20", status: "pending" },
+        { type: "Human Coaching", tag: "MC – Model Call", text: "Assign a high-performing peer as a mentor to model positive social behaviors.", due: "2026-05-22", status: "pending" },
       ],
     },
   },
   "denzel-melo": {
     name: "Denzel Melo",
-    role: "Customer Expert · 119 días de antigüedad",
+    role: "Customer Expert · 119 days of tenure",
     status: "critical",
     overall: 68.4,
     kpis: [
-      { key: "aht_phone", label: "AHT teléfono", target: "630", actual: "601.2", unit: "s", teamAvg: "760.9", rank: "#2/9", trend: "up", status: "ok", weight: 15 },
-      { key: "gross_absence", label: "Ausencia bruta", target: "6", actual: "33.47", unit: "%", teamAvg: "11.55", rank: "#13/14", trend: "down", status: "critical", weight: 10 },
-      { key: "fcr_phone", label: "FCR teléfono", target: "75", actual: "85", unit: "%", teamAvg: "91.7", rank: "#4/6", trend: "up", status: "ok", weight: 20 },
-      { key: "nps_phone", label: "NPS teléfono", target: "55", actual: "70", unit: "%", teamAvg: "100", rank: "#2/4", trend: "up", status: "ok", weight: 10 },
-      { key: "professionalism", label: "Profesionalismo", target: "95", actual: "88", unit: "%", teamAvg: "92.9", rank: "#5/7", trend: "down", status: "warning", weight: 5 },
+      { key: "aht_phone", label: "AHT phone", target: "630", actual: "601.2", unit: "s", teamAvg: "760.9", rank: "#2/9", trend: "up", status: "ok", weight: 15 },
+      { key: "gross_absence", label: "Gross absence", target: "6", actual: "33.47", unit: "%", teamAvg: "11.55", rank: "#13/14", trend: "down", status: "critical", weight: 10 },
+      { key: "fcr_phone", label: "FCR phone", target: "75", actual: "85", unit: "%", teamAvg: "91.7", rank: "#4/6", trend: "up", status: "ok", weight: 20 },
+      { key: "nps_phone", label: "NPS phone", target: "55", actual: "70", unit: "%", teamAvg: "100", rank: "#2/4", trend: "up", status: "ok", weight: 10 },
+      { key: "professionalism", label: "Professionalism", target: "95", actual: "88", unit: "%", teamAvg: "92.9", rank: "#5/7", trend: "down", status: "warning", weight: 5 },
       { key: "qa_score", label: "QA score", target: "85", actual: "90", unit: "%", teamAvg: "99", rank: "#1/3", trend: "up", status: "ok", weight: 13 },
-      { key: "rr_phone", label: "RR teléfono", target: "85", actual: "88", unit: "%", teamAvg: "92.9", rank: "#5/7", trend: "down", status: "ok", weight: 5 },
+      { key: "rr_phone", label: "RR phone", target: "85", actual: "88", unit: "%", teamAvg: "92.9", rank: "#5/7", trend: "down", status: "ok", weight: 5 },
     ],
     chart: [0, 40, 20.25, 50],
     chartTarget: 6,
     insight: {
-      title: "Patrón de ausencias en escalada, con alta volatilidad",
-      body: "Patrón de ausencias injustificadas con volatilidad semanal creciente (0% → 40% → 20.25% → 50%). La tendencia mensual empeora de 25.26% a 33.47% (+8.21pp), pese a tratarse de una incorporación reciente (119 días). Sin ausencias justificadas registradas.",
+      title: "Escalating absence pattern, with high volatility",
+      body: "Unexcused absence pattern with growing weekly volatility (0% → 40% → 20.25% → 50%). The monthly trend worsens from 25.26% to 33.47% (+8.21pp), despite being a recent hire (119 days). No excused absences recorded.",
     },
     coaching: {
       hasAction: false,
       suggestion:
-        "Agendar una conversación 1:1 para entender causas de las ausencias (conflictos de horario, compromiso) antes de que el patrón se consolide.",
+        "Schedule a 1:1 conversation to understand the causes of the absences (scheduling conflicts, commitment) before the pattern becomes entrenched.",
     },
   },
 };
@@ -168,23 +168,23 @@ function genericAgent(slug: string): Agent {
     status: "warning",
     overall: 70,
     kpis: [
-      { key: "aht_phone", label: "AHT teléfono", target: "630", actual: "—", unit: "s", teamAvg: "760.9", rank: "—", trend: "up", status: "warning", weight: 15 },
-      { key: "gross_absence", label: "Ausencia bruta", target: "6", actual: "—", unit: "%", teamAvg: "11.55", rank: "—", trend: "up", status: "warning", weight: 10 },
-      { key: "fcr_phone", label: "FCR teléfono", target: "75", actual: "—", unit: "%", teamAvg: "91.7", rank: "—", trend: "up", status: "warning", weight: 20 },
-      { key: "nps_phone", label: "NPS teléfono", target: "55", actual: "—", unit: "%", teamAvg: "100", rank: "—", trend: "up", status: "warning", weight: 10 },
-      { key: "professionalism", label: "Profesionalismo", target: "95", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
+      { key: "aht_phone", label: "AHT phone", target: "630", actual: "—", unit: "s", teamAvg: "760.9", rank: "—", trend: "up", status: "warning", weight: 15 },
+      { key: "gross_absence", label: "Gross absence", target: "6", actual: "—", unit: "%", teamAvg: "11.55", rank: "—", trend: "up", status: "warning", weight: 10 },
+      { key: "fcr_phone", label: "FCR phone", target: "75", actual: "—", unit: "%", teamAvg: "91.7", rank: "—", trend: "up", status: "warning", weight: 20 },
+      { key: "nps_phone", label: "NPS phone", target: "55", actual: "—", unit: "%", teamAvg: "100", rank: "—", trend: "up", status: "warning", weight: 10 },
+      { key: "professionalism", label: "Professionalism", target: "95", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
       { key: "qa_score", label: "QA score", target: "85", actual: "—", unit: "%", teamAvg: "99", rank: "—", trend: "up", status: "warning", weight: 13 },
-      { key: "rr_phone", label: "RR teléfono", target: "85", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
+      { key: "rr_phone", label: "RR phone", target: "85", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
     ],
     chart: [50, 55, 60, 58],
     chartTarget: 75,
     insight: {
-      title: "Perfil pendiente de detalle",
-      body: "Este agente fue referenciado desde el resumen del equipo. En la siguiente iteración del prototipo se completará su análisis individual y plan de coaching con datos reales.",
+      title: "Profile pending detail",
+      body: "This agent was referenced from the team overview. The next iteration of the prototype will complete their individual analysis and coaching plan with real data.",
     },
     coaching: {
       hasAction: false,
-      suggestion: "Revisar el resumen del equipo para identificar el KPI específico que requiere seguimiento antes de proponer una acción de coaching.",
+      suggestion: "Review the team overview to identify the specific KPI that needs follow-up before proposing a coaching action.",
     },
   };
 }
@@ -202,11 +202,11 @@ function getAgent(slug: string): { id: string; agent: Agent } {
 function statusClasses(status: Status) {
   switch (status) {
     case "critical":
-      return { bg: "bg-danger-light", text: "text-danger", label: "Crítico" };
+      return { bg: "bg-danger-light", text: "text-danger", label: "Critical" };
     case "warning":
-      return { bg: "bg-warning-light", text: "text-warning", label: "Atención" };
+      return { bg: "bg-warning-light", text: "text-warning", label: "Needs attention" };
     default:
-      return { bg: "bg-success-light", text: "text-success", label: "En meta" };
+      return { bg: "bg-success-light", text: "text-success", label: "On target" };
   }
 }
 
@@ -253,7 +253,7 @@ function MiniChart({ data, target, danger }: { data: number[]; target: number; d
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-40 block">
       <line x1={pad} y1={targetY} x2={w - pad} y2={targetY} stroke="#A6A398" strokeWidth="1" strokeDasharray="4 4" />
       <text x={w - pad} y={targetY - 6} textAnchor="end" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#A6A398">
-        objetivo
+        target
       </text>
       <path d={areaPath} fill={fillColor} stroke="none" />
       <path d={path} fill="none" stroke={lineColor} strokeWidth="2" />
@@ -293,17 +293,15 @@ function AgentViewContent() {
   const statusBadge = useMemo(() => statusClasses(agent.status), [agent]);
 
   return (
-    <main className="min-h-screen bg-bg text-text-primary font-sans px-6 py-8">
+    <div className="flex bg-bg min-h-screen">
+      <Sidebar />
+      <main className="flex-1 text-text-primary font-sans px-6 py-8 overflow-x-hidden">
       <div className="max-w-4xl mx-auto">
-        <Link href="/" className="text-sm text-text-secondary hover:text-brand mb-4 inline-block">
-          ← OPS.Supervisor
-        </Link>
-
         {/* Header */}
         <div className="flex justify-between items-start mb-6 flex-wrap gap-3">
           <div>
-            <p className="text-sm text-text-secondary mb-1">Vista de agente · Mostrando datos de ayer (D-1) · 19 mayo</p>
-            <h1 className="text-2xl font-medium m-0">Rendimiento individual</h1>
+            <p className="text-sm text-text-secondary mb-1">Agent view · Showing yesterday's data (D-1) · May 19</p>
+            <h1 className="text-2xl font-medium m-0">Individual performance</h1>
           </div>
           <div className="flex gap-1.5">
             {["D-1", "WTD", "MTD", "QTD"].map((t, i) => (
@@ -365,15 +363,15 @@ function AgentViewContent() {
         </div>
 
         {/* KPI table */}
-        <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">Mi rendimiento</p>
+        <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">My performance</p>
         <div className="border border-border rounded-lg overflow-hidden mb-6 bg-surface overflow-x-auto">
           <table className="w-full text-sm border-collapse min-w-[640px]">
             <thead>
               <tr className="bg-surface-muted">
                 <th className="text-left px-4 py-2.5 font-medium text-text-secondary">KPI</th>
-                <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Objetivo</th>
+                <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Target</th>
                 <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Actual (D-1)</th>
-                <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Promedio equipo</th>
+                <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Team avg</th>
                 <th className="text-right px-4 py-2.5 font-medium text-text-secondary">Ranking</th>
                 <th className="text-center px-4 py-2.5 font-medium text-text-secondary">30d</th>
               </tr>
@@ -415,7 +413,7 @@ function AgentViewContent() {
 
         {/* Chart */}
         <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">
-          Evolución — {agent.kpis[0].label} (últimas 4 semanas)
+          Trend — {agent.kpis[0].label} (last 4 weeks)
         </p>
         <div className="bg-surface border border-border rounded-lg px-5 py-4 mb-6">
           <MiniChart data={agent.chart} target={agent.chartTarget} danger={agent.status === "critical"} />
@@ -441,7 +439,7 @@ function AgentViewContent() {
         </div>
 
         {/* Coaching plan */}
-        <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">Plan de coaching</p>
+        <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">Coaching plan</p>
         <div className="flex flex-col gap-2 mb-6">
           {agent.coaching.hasAction ? (
             agent.coaching.actions.map((a, i) => (
@@ -450,8 +448,8 @@ function AgentViewContent() {
                 <div className="flex-1">
                   <div className="flex gap-2 mb-1 flex-wrap items-center">
                     <span className="text-xs px-2 py-0.5 rounded-md bg-brand-light text-brand font-medium">{a.tag}</span>
-                    <span className="text-xs text-text-tertiary font-mono">vence {a.due}</span>
-                    <span className="text-xs px-2 py-0.5 rounded-md bg-warning-light text-warning font-medium">pendiente</span>
+                    <span className="text-xs text-text-tertiary font-mono">due {a.due}</span>
+                    <span className="text-xs px-2 py-0.5 rounded-md bg-warning-light text-warning font-medium">pending</span>
                   </div>
                   <p className="text-sm m-0 text-text-primary">{a.text}</p>
                 </div>
@@ -462,20 +460,20 @@ function AgentViewContent() {
               <div className="border border-border rounded-lg px-5 py-3.5 bg-surface flex gap-3 items-start">
                 <Clock size={18} className="text-text-tertiary mt-0.5 flex-shrink-0" />
                 <div>
-                  <p className="text-sm mb-1 m-0">Sin acciones de coaching activas para {agent.kpis[0].label}</p>
+                  <p className="text-sm mb-1 m-0">No active coaching actions for {agent.kpis[0].label}</p>
                   <p className="text-sm text-text-secondary m-0">
-                    No hay sesiones programadas, entrenamiento asignado ni acciones de IA pendientes para este KPI — pese a estar en estado{" "}
-                    {agent.status === "critical" ? "crítico" : "de atención"}.
+                    There are no scheduled sessions, assigned training, or pending AI coaching actions for this KPI — despite being in{" "}
+                    {agent.status === "critical" ? "critical" : "needs attention"} status.
                   </p>
                 </div>
               </div>
               <div className="border border-border rounded-lg px-5 py-3.5 bg-surface flex gap-3 items-start">
                 <Lightbulb size={18} className="text-warning mt-0.5 flex-shrink-0" />
                 <div className="flex-1">
-                  <p className="text-sm font-medium mb-1 m-0">Sugerencia</p>
+                  <p className="text-sm font-medium mb-1 m-0">Suggestion</p>
                   <p className="text-sm text-text-secondary mb-3 mt-1">{agent.coaching.suggestion}</p>
                   <button className="text-sm px-3.5 py-1.5 rounded-md border border-brand bg-brand-light text-brand font-medium inline-flex items-center gap-1.5">
-                    Crear sesión de coaching <ArrowRight size={14} />
+                    Create coaching session <ArrowRight size={14} />
                   </button>
                 </div>
               </div>
@@ -486,19 +484,20 @@ function AgentViewContent() {
         {/* Quick actions footer */}
         <div className="flex gap-2 flex-wrap">
           <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Mail size={15} /> Comunicaciones
+            <Mail size={15} /> Communications
           </button>
           <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
             <FileText size={15} /> CEDP
           </button>
           <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Calendar size={15} /> Horario
+            <Calendar size={15} /> Schedule
           </button>
           <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Users size={15} /> Backups del equipo
+            <Users size={15} /> Team backups
           </button>
         </div>
       </div>
-    </main>
+      </main>
+    </div>
   );
 }
