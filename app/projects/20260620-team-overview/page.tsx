@@ -14,7 +14,7 @@ import {
 // ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
-type Status = "critical" | "warning" | "ok";
+type Status = "critical" | "warning" | "ok" | "at_risk";
 type Period = "D-1" | "WTD" | "MTD" | "QTD";
 
 type Kpi = {
@@ -58,57 +58,38 @@ type Topic = {
 // ---------------------------------------------------------------------------
 // Mock data by period
 // ---------------------------------------------------------------------------
-const EFFICIENCY: Record<Period, Kpi[]> = {
+const MAIN_KPIS: Record<Period, Kpi[]> = {
   "D-1": [
-    { key: "aht_phone", label: "AHT phone", value: "758.97", unit: "s", target: "630s", delta: "+20%", status: "critical", trend: "up" },
-    { key: "aht_messaging", label: "AHT messaging", value: "—", unit: "", target: "1000s", delta: "no data today", status: "ok", trend: "up" },
-    { key: "fcr_phone", label: "FCR phone", value: "77.8", unit: "%", target: "75%", delta: "+2.8pp", status: "ok", trend: "up" },
-    { key: "rr_phone", label: "Resolution phone", value: "88.9", unit: "%", target: "85%", delta: "+3.9pp", status: "ok", trend: "up" },
+    { key: "csat", label: "CSAT", value: "83.1", unit: "%", target: "85.0%", delta: "0%", status: "at_risk", trend: "up" },
+    { key: "fcr", label: "FCR", value: "75.5", unit: "%", target: "78.0%", delta: "-1%", status: "at_risk", trend: "down" },
+    { key: "aht", label: "AHT", value: "378", unit: "s", target: "420", delta: "+4%", status: "ok", trend: "up" },
+    { key: "nps", label: "NPS", value: "87", unit: "", target: "45", delta: "0%", status: "ok", trend: "up" },
+    { key: "sales", label: "Sales", value: "10.9", unit: "%", target: "12.0%", delta: "+4%", status: "at_risk", trend: "up" },
+    { key: "adh", label: "ADH", value: "87.5", unit: "%", target: "95.0%", delta: "-3%", status: "at_risk", trend: "down" },
   ],
   WTD: [
-    { key: "aht_phone", label: "AHT phone", value: "742.10", unit: "s", target: "630s", delta: "+17.8%", status: "critical", trend: "up" },
-    { key: "aht_messaging", label: "AHT messaging", value: "980.4", unit: "s", target: "1000s", delta: "-2%", status: "ok", trend: "down" },
-    { key: "fcr_phone", label: "FCR phone", value: "79.1", unit: "%", target: "75%", delta: "+4.1pp", status: "ok", trend: "up" },
-    { key: "rr_phone", label: "Resolution phone", value: "87.3", unit: "%", target: "85%", delta: "+2.3pp", status: "ok", trend: "up" },
+    { key: "csat", label: "CSAT", value: "84.0", unit: "%", target: "85.0%", delta: "+0.9pp", status: "at_risk", trend: "up" },
+    { key: "fcr", label: "FCR", value: "76.8", unit: "%", target: "78.0%", delta: "-1.2pp", status: "at_risk", trend: "up" },
+    { key: "aht", label: "AHT", value: "365", unit: "s", target: "420", delta: "+13s", status: "ok", trend: "down" },
+    { key: "nps", label: "NPS", value: "84", unit: "", target: "45", delta: "-3", status: "ok", trend: "down" },
+    { key: "sales", label: "Sales", value: "11.4", unit: "%", target: "12.0%", delta: "+0.5pp", status: "at_risk", trend: "up" },
+    { key: "adh", label: "ADH", value: "89.0", unit: "%", target: "95.0%", delta: "+1.5pp", status: "at_risk", trend: "up" },
   ],
   MTD: [
-    { key: "aht_phone", label: "AHT phone", value: "729.55", unit: "s", target: "630s", delta: "+15.8%", status: "critical", trend: "up" },
-    { key: "aht_messaging", label: "AHT messaging", value: "955.2", unit: "s", target: "1000s", delta: "-4.5%", status: "ok", trend: "down" },
-    { key: "fcr_phone", label: "FCR phone", value: "80.6", unit: "%", target: "75%", delta: "+5.6pp", status: "ok", trend: "up" },
-    { key: "rr_phone", label: "Resolution phone", value: "86.7", unit: "%", target: "85%", delta: "+1.7pp", status: "ok", trend: "up" },
+    { key: "csat", label: "CSAT", value: "84.6", unit: "%", target: "85.0%", delta: "+1.5pp", status: "at_risk", trend: "up" },
+    { key: "fcr", label: "FCR", value: "78.2", unit: "%", target: "78.0%", delta: "+0.2pp", status: "ok", trend: "up" },
+    { key: "aht", label: "AHT", value: "358", unit: "s", target: "420", delta: "+20s", status: "ok", trend: "down" },
+    { key: "nps", label: "NPS", value: "81", unit: "", target: "45", delta: "-6", status: "ok", trend: "down" },
+    { key: "sales", label: "Sales", value: "11.7", unit: "%", target: "12.0%", delta: "+0.8pp", status: "at_risk", trend: "up" },
+    { key: "adh", label: "ADH", value: "90.2", unit: "%", target: "95.0%", delta: "+2.7pp", status: "at_risk", trend: "up" },
   ],
   QTD: [
-    { key: "aht_phone", label: "AHT phone", value: "711.20", unit: "s", target: "630s", delta: "+12.9%", status: "critical", trend: "down" },
-    { key: "aht_messaging", label: "AHT messaging", value: "930.8", unit: "s", target: "1000s", delta: "-6.9%", status: "ok", trend: "down" },
-    { key: "fcr_phone", label: "FCR phone", value: "82.4", unit: "%", target: "75%", delta: "+7.4pp", status: "ok", trend: "up" },
-    { key: "rr_phone", label: "Resolution phone", value: "85.9", unit: "%", target: "85%", delta: "+0.9pp", status: "ok", trend: "up" },
-  ],
-};
-
-const QUALITY: Record<Period, Kpi[]> = {
-  "D-1": [
-    { key: "qa_score", label: "QA score", value: "99", unit: "%", target: "85%", delta: "+14pp", status: "ok", trend: "up" },
-    { key: "professionalism", label: "Professionalism", value: "88.9", unit: "%", target: "95%", delta: "-6.1pp", status: "warning", trend: "down" },
-    { key: "gross_absence", label: "Gross absence", value: "0", unit: "%", target: "6%", delta: "within target", status: "ok", trend: "up" },
-    { key: "nps_phone", label: "NPS phone", value: "33.3", unit: "%", target: "55%", delta: "-21.7pp", status: "critical", trend: "down" },
-  ],
-  WTD: [
-    { key: "qa_score", label: "QA score", value: "92.1", unit: "%", target: "85%", delta: "+7.1pp", status: "ok", trend: "up" },
-    { key: "professionalism", label: "Professionalism", value: "90.2", unit: "%", target: "95%", delta: "-4.8pp", status: "warning", trend: "up" },
-    { key: "gross_absence", label: "Gross absence", value: "8.4", unit: "%", target: "6%", delta: "+2.4pp", status: "warning", trend: "down" },
-    { key: "nps_phone", label: "NPS phone", value: "41.6", unit: "%", target: "55%", delta: "-13.4pp", status: "critical", trend: "up" },
-  ],
-  MTD: [
-    { key: "qa_score", label: "QA score", value: "90.6", unit: "%", target: "85%", delta: "+5.6pp", status: "ok", trend: "up" },
-    { key: "professionalism", label: "Professionalism", value: "91.0", unit: "%", target: "95%", delta: "-4.0pp", status: "warning", trend: "up" },
-    { key: "gross_absence", label: "Gross absence", value: "11.55", unit: "%", target: "6%", delta: "+5.55pp", status: "critical", trend: "down" },
-    { key: "nps_phone", label: "NPS phone", value: "47.2", unit: "%", target: "55%", delta: "-7.8pp", status: "warning", trend: "up" },
-  ],
-  QTD: [
-    { key: "qa_score", label: "QA score", value: "91.4", unit: "%", target: "85%", delta: "+6.4pp", status: "ok", trend: "up" },
-    { key: "professionalism", label: "Professionalism", value: "91.8", unit: "%", target: "95%", delta: "-3.2pp", status: "warning", trend: "up" },
-    { key: "gross_absence", label: "Gross absence", value: "10.2", unit: "%", target: "6%", delta: "+4.2pp", status: "critical", trend: "down" },
-    { key: "nps_phone", label: "NPS phone", value: "52.0", unit: "%", target: "55%", delta: "-3.0pp", status: "warning", trend: "up" },
+    { key: "csat", label: "CSAT", value: "85.1", unit: "%", target: "85.0%", delta: "+2.0pp", status: "ok", trend: "up" },
+    { key: "fcr", label: "FCR", value: "79.0", unit: "%", target: "78.0%", delta: "+1.0pp", status: "ok", trend: "up" },
+    { key: "aht", label: "AHT", value: "350", unit: "s", target: "420", delta: "+28s", status: "ok", trend: "down" },
+    { key: "nps", label: "NPS", value: "78", unit: "", target: "45", delta: "-9", status: "ok", trend: "down" },
+    { key: "sales", label: "Sales", value: "11.9", unit: "%", target: "12.0%", delta: "+1.0pp", status: "at_risk", trend: "up" },
+    { key: "adh", label: "ADH", value: "91.4", unit: "%", target: "95.0%", delta: "+3.9pp", status: "at_risk", trend: "up" },
   ],
 };
 
@@ -211,30 +192,44 @@ function statusClasses(status: Status) {
       return { bg: "bg-danger-light", text: "text-danger", label: "Critical" };
     case "warning":
       return { bg: "bg-warning-light", text: "text-warning", label: "Needs attention" };
+    case "at_risk":
+      return { bg: "bg-warning-light", text: "text-warning", label: "At risk" };
     default:
       return { bg: "bg-success-light", text: "text-success", label: "On target" };
   }
 }
 
 function TrendIcon({ trend, status }: { trend: "up" | "down"; status: Status }) {
-  const color = status === "critical" ? "#C2462E" : status === "warning" ? "#B8860B" : "#3D7A5C";
+  const color = status === "critical" ? "#C2462E" : status === "warning" || status === "at_risk" ? "#B8860B" : "#3D7A5C";
   const Icon = trend === "up" ? TrendingUp : TrendingDown;
   return <Icon size={16} color={color} strokeWidth={2} />;
 }
 
-function KpiCard({ kpi }: { kpi: Kpi }) {
-  const valueColor =
-    kpi.status === "critical" ? "text-danger" : kpi.status === "ok" && kpi.delta !== "no data today" ? "text-success" : "text-text-primary";
+function KpiCard({ kpi, highlighted }: { kpi: Kpi; highlighted?: boolean }) {
+  const valueColor = kpi.status === "at_risk" || kpi.status === "critical" || kpi.status === "warning" ? "text-warning" : "text-success";
+  const deltaColor = kpi.delta.startsWith("+")
+    ? "text-success"
+    : kpi.delta.startsWith("-")
+      ? "text-danger"
+      : "text-text-tertiary";
   return (
-    <div className="bg-surface-muted rounded-md p-3">
-      <p className="text-xs text-text-secondary mb-1 leading-tight">{kpi.label}</p>
-      <p className={`text-lg font-medium m-0 leading-tight ${valueColor}`}>
+    <div className={`bg-surface rounded-lg p-3 border ${highlighted ? "border-success ring-1 ring-success/30" : "border-border"}`}>
+      <div className="flex items-center justify-between mb-1.5 gap-1">
+        <p className="text-xs font-medium text-text-primary m-0 leading-tight uppercase tracking-wide">{kpi.label}</p>
+        {kpi.status === "at_risk" && (
+          <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-warning-light text-warning whitespace-nowrap">AT RISK</span>
+        )}
+      </div>
+      <p className={`text-2xl font-semibold m-0 leading-tight ${valueColor}`}>
         {kpi.value}
-        {kpi.unit && <span className="text-xs font-mono text-text-secondary"> {kpi.unit}</span>}
+        {kpi.unit && <span className="text-sm font-mono"> {kpi.unit}</span>}
       </p>
-      <p className="text-[11px] text-text-tertiary font-mono mt-0.5 mb-0 leading-tight">
-        target {kpi.target} · {kpi.delta}
-      </p>
+      <div className="flex items-center justify-between mt-1.5">
+        <p className="text-xs text-text-tertiary m-0 leading-tight flex items-center gap-1">
+          <span className="inline-block w-3 h-3 rounded-full border border-text-tertiary" /> Target {kpi.target}
+        </p>
+        <span className={`text-xs font-medium font-mono ${deltaColor}`}>{kpi.delta}</span>
+      </div>
     </div>
   );
 }
@@ -292,8 +287,7 @@ export default function TeamOverviewPage() {
   const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
   const [selectedAgentSlug, setSelectedAgentSlug] = useState<string | null>(null);
 
-  const efficiency = EFFICIENCY[period];
-  const quality = QUALITY[period];
+  const mainKpis = MAIN_KPIS[period];
   const alerts = ALERTS[period];
   const team = TEAM[period];
   const topics = TOPICS[period];
@@ -390,9 +384,9 @@ export default function TeamOverviewPage() {
         )}
 
         {/* KPI strip — single row */}
-        <div className="grid grid-cols-4 sm:grid-cols-8 gap-2 mb-4">
-          {[...efficiency, ...quality].map((k) => (
-            <KpiCard key={k.key} kpi={k} />
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3 mb-4">
+          {mainKpis.map((k) => (
+            <KpiCard key={k.key} kpi={k} highlighted={k.status === "ok" && k.key === "csat"} />
           ))}
         </div>
 
