@@ -2,6 +2,11 @@ import Link from "next/link";
 
 const PROJECTS = [
   {
+    slug: "20260620-team-overview",
+    title: "Team Overview — dashboard de rendimiento del equipo",
+    description: "Alertas críticas priorizadas, KPIs agrupados por categoría, filtros de periodo y temas clave del equipo.",
+  },
+  {
     slug: "20260620-agent-view",
     title: "Agent View — vista de rendimiento individual",
     description: "Rediseño de la vista de agente con selector, KPIs agrupados y plan de coaching contextual.",

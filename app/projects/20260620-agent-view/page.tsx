@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
+import Link from "next/link";
 import {
   TrendingUp,
   TrendingDown,
@@ -141,6 +143,59 @@ const AGENTS: Record<string, Agent> = {
 
 const AGENT_LIST = Object.keys(AGENTS);
 
+// Other agents linked from Team Overview that don't yet have a full
+// hand-authored profile — we generate a lightweight generic profile so the
+// link never 404s, while keeping the three "showcase" agents above detailed.
+const AGENT_NAMES: Record<string, string> = {
+  "raymond-akpelu": "Raymond Akpelu",
+  "francisco-esperanca": "Francisco Esperança",
+  "camila-robledo": "Camila Robledo",
+  "cristina-ji": "Cristina Ji",
+  "david-reis-carvalho": "David Reis Carvalho",
+  "lucas-dias": "Lucas Dias",
+  "marco-nunes-sousa": "Marco Nunes Sousa",
+  "martinho-wambembe": "Martinho Wambembe",
+  "phillip-ellis": "Phillip Ellis",
+  "toufiq-hossain": "Toufiq Hossain",
+  "vasile-bunduche": "Vasile Bunduche",
+};
+
+function genericAgent(slug: string): Agent {
+  const name = AGENT_NAMES[slug] ?? slug;
+  return {
+    name,
+    role: "Customer Expert",
+    status: "warning",
+    overall: 70,
+    kpis: [
+      { key: "aht_phone", label: "AHT teléfono", target: "630", actual: "—", unit: "s", teamAvg: "760.9", rank: "—", trend: "up", status: "warning", weight: 15 },
+      { key: "gross_absence", label: "Ausencia bruta", target: "6", actual: "—", unit: "%", teamAvg: "11.55", rank: "—", trend: "up", status: "warning", weight: 10 },
+      { key: "fcr_phone", label: "FCR teléfono", target: "75", actual: "—", unit: "%", teamAvg: "91.7", rank: "—", trend: "up", status: "warning", weight: 20 },
+      { key: "nps_phone", label: "NPS teléfono", target: "55", actual: "—", unit: "%", teamAvg: "100", rank: "—", trend: "up", status: "warning", weight: 10 },
+      { key: "professionalism", label: "Profesionalismo", target: "95", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
+      { key: "qa_score", label: "QA score", target: "85", actual: "—", unit: "%", teamAvg: "99", rank: "—", trend: "up", status: "warning", weight: 13 },
+      { key: "rr_phone", label: "RR teléfono", target: "85", actual: "—", unit: "%", teamAvg: "92.9", rank: "—", trend: "up", status: "warning", weight: 5 },
+    ],
+    chart: [50, 55, 60, 58],
+    chartTarget: 75,
+    insight: {
+      title: "Perfil pendiente de detalle",
+      body: "Este agente fue referenciado desde el resumen del equipo. En la siguiente iteración del prototipo se completará su análisis individual y plan de coaching con datos reales.",
+    },
+    coaching: {
+      hasAction: false,
+      suggestion: "Revisar el resumen del equipo para identificar el KPI específico que requiere seguimiento antes de proponer una acción de coaching.",
+    },
+  };
+}
+
+function getAgent(slug: string): { id: string; agent: Agent } {
+  if (AGENTS[slug]) return { id: slug, agent: AGENTS[slug] };
+  if (AGENT_NAMES[slug]) return { id: slug, agent: genericAgent(slug) };
+  return { id: "pedro-godinho", agent: AGENTS["pedro-godinho"] };
+}
+
+
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -213,15 +268,37 @@ function MiniChart({ data, target, danger }: { data: number[]; target: number; d
 // Page
 // ---------------------------------------------------------------------------
 export default function AgentViewPage() {
-  const [agentId, setAgentId] = useState("pedro-godinho");
+  return (
+    <Suspense fallback={null}>
+      <AgentViewContent />
+    </Suspense>
+  );
+}
+
+function AgentViewContent() {
+  const searchParams = useSearchParams();
+  const requestedSlug = searchParams.get("agent") ?? "pedro-godinho";
+  const initial = getAgent(requestedSlug);
+
+  const [agentId, setAgentId] = useState(initial.id);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const agent = AGENTS[agentId];
+
+  useEffect(() => {
+    setAgentId(getAgent(requestedSlug).id);
+  }, [requestedSlug]);
+
+  const agent = AGENTS[agentId] ?? genericAgent(agentId);
+  const displayList = Array.from(new Set([...AGENT_LIST, agentId]));
 
   const statusBadge = useMemo(() => statusClasses(agent.status), [agent]);
 
   return (
     <main className="min-h-screen bg-bg text-text-primary font-sans px-6 py-8">
       <div className="max-w-4xl mx-auto">
+        <Link href="/" className="text-sm text-text-secondary hover:text-brand mb-4 inline-block">
+          ← OPS.Supervisor
+        </Link>
+
         {/* Header */}
         <div className="flex justify-between items-start mb-6 flex-wrap gap-3">
           <div>
@@ -261,8 +338,8 @@ export default function AgentViewPage() {
 
           {dropdownOpen && (
             <div className="absolute top-[calc(100%+6px)] left-0 right-0 bg-surface border border-border rounded-lg overflow-hidden z-10 shadow-lg">
-              {AGENT_LIST.map((id) => {
-                const a = AGENTS[id];
+              {displayList.map((id) => {
+                const a = AGENTS[id] ?? genericAgent(id);
                 const b = statusClasses(a.status);
                 return (
                   <button
