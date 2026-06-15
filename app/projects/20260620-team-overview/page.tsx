@@ -43,6 +43,7 @@ type TeamMember = {
   kpiValue: string;
   trend: "up" | "down";
   trendStatus: Status;
+  fcrTrend: number[];
 };
 
 type Topic = {
@@ -132,38 +133,38 @@ const ALERTS: Record<Period, Alert[]> = {
 
 const TEAM: Record<Period, TeamMember[]> = {
   "D-1": [
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Crítico", kpiLabel: "AHT", kpiValue: "863.9s", trend: "up", trendStatus: "critical" },
-    { name: "Denzel Melo", slug: "denzel-melo", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "33.5%", trend: "up", trendStatus: "critical" },
-    { name: "Raymond Akpelu", slug: "raymond-akpelu", status: "warning", statusLabel: "Atención", kpiLabel: "QA", kpiValue: "34.0%", trend: "down", trendStatus: "critical" },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "670.5s", trend: "up", trendStatus: "ok" },
-    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "691.4s", trend: "up", trendStatus: "ok" },
-    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "821.1s", trend: "down", trendStatus: "warning" },
-    { name: "Cristina Ji", slug: "cristina-ji", status: "warning", statusLabel: "Atención", kpiLabel: "FCR", kpiValue: "0%", trend: "down", trendStatus: "critical" },
-    { name: "David Reis Carvalho", slug: "david-reis-carvalho", status: "ok", statusLabel: "En meta", kpiLabel: "FCR", kpiValue: "85%", trend: "up", trendStatus: "ok" },
-    { name: "Lucas Dias", slug: "lucas-dias", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "823.9s", trend: "up", trendStatus: "warning" },
-    { name: "Marco Nunes Sousa", slug: "marco-nunes-sousa", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "744.9s", trend: "up", trendStatus: "warning" },
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "32.5%", trend: "up", trendStatus: "critical" },
-    { name: "Phillip Ellis", slug: "phillip-ellis", status: "warning", statusLabel: "Atención", kpiLabel: "FCR", kpiValue: "50%", trend: "down", trendStatus: "warning" },
-    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "55.6%", trend: "up", trendStatus: "critical" },
-    { name: "Vasile Bunduche", slug: "vasile-bunduche", status: "ok", statusLabel: "En meta", kpiLabel: "FCR", kpiValue: "78%", trend: "up", trendStatus: "ok" },
+    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Crítico", kpiLabel: "AHT", kpiValue: "863.9s", trend: "up", trendStatus: "critical" , fcrTrend: [42, 42, 44, 40] },
+    { name: "Denzel Melo", slug: "denzel-melo", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "33.5%", trend: "up", trendStatus: "critical" , fcrTrend: [43, 45, 43, 41] },
+    { name: "Raymond Akpelu", slug: "raymond-akpelu", status: "warning", statusLabel: "Atención", kpiLabel: "QA", kpiValue: "34.0%", trend: "down", trendStatus: "critical" , fcrTrend: [47, 47, 42, 44] },
+    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "670.5s", trend: "up", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
+    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "691.4s", trend: "up", trendStatus: "ok" , fcrTrend: [85, 85, 85, 83] },
+    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "821.1s", trend: "down", trendStatus: "warning" , fcrTrend: [65, 66, 71, 74] },
+    { name: "Cristina Ji", slug: "cristina-ji", status: "warning", statusLabel: "Atención", kpiLabel: "FCR", kpiValue: "0%", trend: "down", trendStatus: "critical" , fcrTrend: [42, 39, 43, 43] },
+    { name: "David Reis Carvalho", slug: "david-reis-carvalho", status: "ok", statusLabel: "En meta", kpiLabel: "FCR", kpiValue: "85%", trend: "up", trendStatus: "ok" , fcrTrend: [86, 88, 86, 82] },
+    { name: "Lucas Dias", slug: "lucas-dias", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "823.9s", trend: "up", trendStatus: "warning" , fcrTrend: [68, 72, 77, 80] },
+    { name: "Marco Nunes Sousa", slug: "marco-nunes-sousa", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "744.9s", trend: "up", trendStatus: "warning" , fcrTrend: [60, 56, 54, 51] },
+    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "32.5%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
+    { name: "Phillip Ellis", slug: "phillip-ellis", status: "warning", statusLabel: "Atención", kpiLabel: "FCR", kpiValue: "50%", trend: "down", trendStatus: "warning" , fcrTrend: [65, 61, 62, 65] },
+    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "55.6%", trend: "up", trendStatus: "critical" , fcrTrend: [42, 41, 43, 42] },
+    { name: "Vasile Bunduche", slug: "vasile-bunduche", status: "ok", statusLabel: "En meta", kpiLabel: "FCR", kpiValue: "78%", trend: "up", trendStatus: "ok" , fcrTrend: [84, 82, 86, 84] },
   ],
   WTD: [
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Crítico", kpiLabel: "AHT", kpiValue: "835.2s", trend: "up", trendStatus: "critical" },
-    { name: "Denzel Melo", slug: "denzel-melo", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "28.1%", trend: "up", trendStatus: "critical" },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "655.2s", trend: "down", trendStatus: "ok" },
-    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "688.0s", trend: "down", trendStatus: "ok" },
-    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "810.4s", trend: "down", trendStatus: "warning" },
+    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Crítico", kpiLabel: "AHT", kpiValue: "835.2s", trend: "up", trendStatus: "critical" , fcrTrend: [42, 42, 44, 40] },
+    { name: "Denzel Melo", slug: "denzel-melo", status: "warning", statusLabel: "Atención", kpiLabel: "Ausencia", kpiValue: "28.1%", trend: "up", trendStatus: "critical" , fcrTrend: [43, 45, 43, 41] },
+    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "655.2s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
+    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "688.0s", trend: "down", trendStatus: "ok" , fcrTrend: [85, 85, 85, 83] },
+    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "810.4s", trend: "down", trendStatus: "warning" , fcrTrend: [65, 66, 71, 74] },
   ],
   MTD: [
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "32.5%", trend: "up", trendStatus: "critical" },
-    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "55.6%", trend: "up", trendStatus: "critical" },
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "729.6s", trend: "down", trendStatus: "warning" },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "661.0s", trend: "down", trendStatus: "ok" },
+    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "32.5%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
+    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "55.6%", trend: "up", trendStatus: "critical" , fcrTrend: [42, 41, 43, 42] },
+    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "729.6s", trend: "down", trendStatus: "warning" , fcrTrend: [62, 62, 64, 60] },
+    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "661.0s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
   ],
   QTD: [
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "30.8%", trend: "up", trendStatus: "critical" },
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "711.2s", trend: "down", trendStatus: "warning" },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "670.0s", trend: "down", trendStatus: "ok" },
+    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Crítico", kpiLabel: "Ausencia", kpiValue: "30.8%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
+    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Atención", kpiLabel: "AHT", kpiValue: "711.2s", trend: "down", trendStatus: "warning" , fcrTrend: [62, 62, 64, 60] },
+    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "En meta", kpiLabel: "AHT", kpiValue: "670.0s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
   ],
 };
 
@@ -186,6 +187,19 @@ const TOPICS: Record<Period, Topic[]> = {
   QTD: [
     { rank: 1, agent: "Martinho Wambembe", agentSlug: "martinho-wambembe", tag: "Ausencia bruta", tagStatus: "critical", body: "Tendencia trimestral de ausencias en deterioro constante, situándose en 30.8% vs 11.55% del equipo." },
   ],
+};
+
+const TEAMS = [
+  { id: "team-a", name: "Equipo A — Soporte Retail" },
+  { id: "team-b", name: "Equipo B — Soporte Premium" },
+  { id: "team-c", name: "Equipo C — Backoffice" },
+];
+
+const TEAM_FCR_TREND: Record<Period, number[]> = {
+  "D-1": [70, 72, 75, 77.8],
+  WTD: [74, 76, 78, 79.1],
+  MTD: [76, 78, 79, 80.6],
+  QTD: [78, 80, 81, 82.4],
 };
 
 // ---------------------------------------------------------------------------
@@ -214,7 +228,7 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
   return (
     <div className="bg-surface-muted rounded-md p-4">
       <p className="text-sm text-text-secondary mb-1.5">{kpi.label}</p>
-      <p className={`font-serif text-2xl font-medium m-0 ${valueColor}`}>
+      <p className={`text-2xl font-medium m-0 ${valueColor}`}>
         {kpi.value}
         {kpi.unit && <span className="text-sm font-mono text-text-secondary"> {kpi.unit}</span>}
       </p>
@@ -225,9 +239,44 @@ function KpiCard({ kpi }: { kpi: Kpi }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// Page
-// ---------------------------------------------------------------------------
+function TrendChart({ data, label }: { data: number[]; label: string }) {
+  const w = 600;
+  const h = 180;
+  const pad = 28;
+  const max = Math.max(...data) * 1.1;
+  const min = Math.min(...data) * 0.85;
+  const range = max - min || 1;
+  const weeks = ["W-3", "W-2", "W-1", "Actual"];
+
+  const points = data.map((v, i) => {
+    const x = pad + (i * (w - pad * 2)) / (data.length - 1);
+    const y = h - pad - ((v - min) / range) * (h - pad * 2);
+    return [x, y];
+  });
+
+  const path = points.map((p, i) => (i === 0 ? `M ${p[0]} ${p[1]}` : `L ${p[0]} ${p[1]}`)).join(" ");
+  const areaPath = `${path} L ${points[points.length - 1][0]} ${h - pad} L ${points[0][0]} ${h - pad} Z`;
+
+  return (
+    <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-44 block">
+      <path d={areaPath} fill="rgba(45,90,74,0.06)" stroke="none" />
+      <path d={path} fill="none" stroke="#2D5A4A" strokeWidth="2" />
+      {points.map((p, i) => (
+        <g key={i}>
+          <circle cx={p[0]} cy={p[1]} r="3.5" fill="#2D5A4A" />
+          <text x={p[0]} y={h - 6} textAnchor="middle" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#A6A398">
+            {weeks[i]}
+          </text>
+          <text x={p[0]} y={p[1] - 10} textAnchor="middle" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#6B6A63">
+            {data[i]}%
+          </text>
+        </g>
+      ))}
+    </svg>
+  );
+}
+
+
 const PERIOD_LABELS: Record<Period, string> = {
   "D-1": "datos de ayer (D-1)",
   WTD: "semana en curso (WTD)",
@@ -239,6 +288,9 @@ export default function TeamOverviewPage() {
   const [period, setPeriod] = useState<Period>("D-1");
   const [showAllAgents, setShowAllAgents] = useState(false);
   const [topicTab, setTopicTab] = useState<"top" | "overdue" | "upcoming">("top");
+  const [teamId, setTeamId] = useState("team-a");
+  const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
+  const [selectedAgentSlug, setSelectedAgentSlug] = useState<string | null>(null);
 
   const efficiency = EFFICIENCY[period];
   const quality = QUALITY[period];
@@ -250,6 +302,10 @@ export default function TeamOverviewPage() {
   const hiddenCount = team.length - visibleTeam.length;
 
   const periodOptions: Period[] = ["D-1", "WTD", "MTD", "QTD"];
+
+  const selectedAgent = team.find((m) => m.slug === selectedAgentSlug) ?? null;
+  const chartData = selectedAgent ? selectedAgent.fcrTrend : TEAM_FCR_TREND[period];
+  const chartLabel = selectedAgent ? selectedAgent.name : "todo el equipo";
 
   return (
     <main className="min-h-screen bg-bg text-text-primary font-sans px-6 py-8">
@@ -263,20 +319,53 @@ export default function TeamOverviewPage() {
         <div className="flex justify-between items-start mb-6 flex-wrap gap-3">
           <div>
             <p className="text-sm text-text-secondary mb-1">Equipo · Miércoles 20 mayo · {PERIOD_LABELS[period]}</p>
-            <h1 className="font-serif text-2xl font-medium m-0">Resumen del equipo</h1>
+            <h1 className="text-2xl font-medium m-0">Resumen del equipo</h1>
           </div>
-          <div className="flex gap-1.5">
-            {periodOptions.map((p) => (
+          <div className="flex items-start gap-2 flex-wrap">
+            <div className="relative">
               <button
-                key={p}
-                onClick={() => setPeriod(p)}
-                className={`px-3.5 py-1.5 text-sm rounded-md font-medium border transition-colors ${
-                  period === p ? "bg-brand-light text-brand border-transparent" : "bg-surface text-text-secondary border-border hover:border-brand/40"
-                }`}
+                onClick={() => setTeamDropdownOpen((v) => !v)}
+                className="px-3.5 py-1.5 text-sm rounded-md font-medium border border-border bg-surface text-text-secondary flex items-center gap-1.5 hover:border-brand/40 transition-colors"
               >
-                {p}
+                {TEAMS.find((t) => t.id === teamId)?.name}
+                <ChevronDown size={14} className={`transition-transform ${teamDropdownOpen ? "rotate-180" : ""}`} />
               </button>
-            ))}
+              {teamDropdownOpen && (
+                <div className="absolute top-[calc(100%+6px)] right-0 bg-surface border border-border rounded-lg overflow-hidden z-10 shadow-lg min-w-[200px]">
+                  {TEAMS.map((t) => (
+                    <button
+                      key={t.id}
+                      onClick={() => {
+                        setTeamId(t.id);
+                        setTeamDropdownOpen(false);
+                        setSelectedAgentSlug(null);
+                      }}
+                      className={`w-full text-left px-4 py-2.5 text-sm border-t border-border first:border-t-0 ${
+                        t.id === teamId ? "bg-surface-muted font-medium" : "bg-transparent text-text-secondary"
+                      }`}
+                    >
+                      {t.name}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+            <div className="flex gap-1.5">
+              {periodOptions.map((p) => (
+                <button
+                  key={p}
+                  onClick={() => {
+                    setPeriod(p);
+                    setSelectedAgentSlug(null);
+                  }}
+                  className={`px-3.5 py-1.5 text-sm rounded-md font-medium border transition-colors ${
+                    period === p ? "bg-brand-light text-brand border-transparent" : "bg-surface text-text-secondary border-border hover:border-brand/40"
+                  }`}
+                >
+                  {p}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -299,6 +388,25 @@ export default function TeamOverviewPage() {
             </div>
           </div>
         )}
+
+        {/* KPI Trends chart — master-detail panel */}
+        <div className="border border-border rounded-lg bg-surface px-5 py-4 mb-6">
+          <div className="flex items-center justify-between mb-2 flex-wrap gap-2">
+            <p className="text-sm text-text-secondary uppercase tracking-wide m-0">KPI Trends — {chartLabel}</p>
+            {selectedAgent && (
+              <button
+                onClick={() => setSelectedAgentSlug(null)}
+                className="text-xs px-2.5 py-1 rounded-md border border-border text-text-secondary font-medium hover:border-brand/40 transition-colors"
+              >
+                Ver tendencia del equipo
+              </button>
+            )}
+          </div>
+          <TrendChart data={chartData} label={chartLabel} />
+          {!selectedAgent && (
+            <p className="text-xs text-text-tertiary m-0 mt-1">Selecciona un agente en la tabla de abajo para ver su tendencia individual.</p>
+          )}
+        </div>
 
         {/* Efficiency KPIs */}
         <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">Eficiencia</p>
@@ -331,10 +439,19 @@ export default function TeamOverviewPage() {
             <tbody>
               {visibleTeam.map((m) => {
                 const b = statusClasses(m.status);
+                const isSelected = m.slug === selectedAgentSlug;
                 return (
-                  <tr key={m.slug} className="border-t border-border">
+                  <tr
+                    key={m.slug}
+                    onClick={() => setSelectedAgentSlug(m.slug)}
+                    className={`border-t border-border cursor-pointer transition-colors ${isSelected ? "bg-brand-light" : "hover:bg-surface-muted"}`}
+                  >
                     <td className="px-4 py-2.5">
-                      <Link href={`/projects/20260620-agent-view?agent=${m.slug}`} className="hover:text-brand transition-colors">
+                      <Link
+                        href={`/projects/20260620-agent-view?agent=${m.slug}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="hover:text-brand hover:underline transition-colors"
+                      >
                         {m.name}
                       </Link>
                     </td>
