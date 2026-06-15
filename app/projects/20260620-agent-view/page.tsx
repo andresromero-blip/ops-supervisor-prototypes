@@ -303,7 +303,7 @@ function AgentViewContent() {
         <div className="flex justify-between items-start mb-6 flex-wrap gap-3">
           <div>
             <p className="text-sm text-text-secondary mb-1">Vista de agente · Mostrando datos de ayer (D-1) · 19 mayo</p>
-            <h1 className="font-serif text-2xl font-medium m-0">Rendimiento individual</h1>
+            <h1 className="text-2xl font-medium m-0">Rendimiento individual</h1>
           </div>
           <div className="flex gap-1.5">
             {["D-1", "WTD", "MTD", "QTD"].map((t, i) => (
