@@ -31,9 +31,16 @@ const config: Config = {
           DEFAULT: "#3D7A5C",
           light: "#E5F1EB",
         },
+        sidebar: {
+          bg: "#16191A",
+          text: "#A0A6A8",
+          "text-muted": "#6B7173",
+          active: "#34D399",
+          "active-bg": "#1F2E29",
+          border: "#272B2C",
+        },
       },
       fontFamily: {
-        serif: ["Fraunces", "Georgia", "serif"],
         sans: ["Inter", "system-ui", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
       },
