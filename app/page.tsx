@@ -3,14 +3,9 @@ import Sidebar from "@/components/Sidebar";
 
 const PROJECTS = [
   {
-    slug: "20260620-team-overview",
-    title: "Team Overview — team performance dashboard",
-    description: "Prioritized critical alerts, KPIs grouped by category, period filters and key team topics.",
-  },
-  {
-    slug: "20260620-agent-view",
-    title: "Agent View — individual performance view",
-    description: "Redesigned agent view with selector, grouped KPIs and contextual coaching plan.",
+    slug: "20260620-game-plan",
+    title: "Game Plan — supervisor weekly planner",
+    description: "Compact weekly calendar with a master-detail daily timeline and team facts grouped by severity.",
   },
 ];
 
