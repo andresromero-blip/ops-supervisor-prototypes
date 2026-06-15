@@ -18,7 +18,7 @@ export default function Home() {
     <main className="min-h-screen bg-bg text-text-primary font-sans px-6 py-12">
       <div className="max-w-2xl mx-auto">
         <p className="text-sm text-text-secondary mb-1">OPS.Supervisor</p>
-        <h1 className="font-serif text-3xl font-medium mb-8">Prototipos UX</h1>
+        <h1 className="text-3xl font-medium mb-8">Prototipos UX</h1>
 
         <div className="flex flex-col gap-3">
           {PROJECTS.map((p) => (
