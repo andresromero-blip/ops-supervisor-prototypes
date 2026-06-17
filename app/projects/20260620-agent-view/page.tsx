@@ -463,16 +463,21 @@ function AgentViewContent() {
               {agent.kpis.map((k) => {
                 const b = statusClasses(k.status);
                 const isActive = k.key === activeKpiKey;
+                const dotColor =
+                  k.status === "critical" ? "bg-danger" :
+                  k.status === "warning" ? "bg-warning" :
+                  "bg-success";
                 return (
                   <button
                     key={k.key}
                     onClick={() => setSelectedKpiKey(k.key)}
-                    className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors ${
+                    className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors inline-flex items-center gap-1.5 ${
                       isActive
                         ? `${b.bg} ${b.text} border-transparent`
                         : "bg-surface text-text-secondary border-border hover:border-brand/40"
                     }`}
                   >
+                    <span className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${dotColor}`} />
                     {k.label}
                   </button>
                 );
