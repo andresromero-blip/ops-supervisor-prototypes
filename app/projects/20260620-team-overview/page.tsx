@@ -225,13 +225,16 @@ function statusClasses(status: Status) {
 }
 
 function TrendIcon({ trend, status }: { trend: "up" | "down"; status: Status }) {
-  const color = status === "critical" ? "#C2462E" : status === "warning" || status === "at_risk" ? "#B8860B" : "#3D7A5C";
+  const color = status === "critical" ? "#EF4444" : status === "warning" || status === "at_risk" ? "#F59E0B" : "#10B981";
   const Icon = trend === "up" ? TrendingUp : TrendingDown;
   return <Icon size={16} color={color} strokeWidth={2} />;
 }
 
 function KpiCard({ kpi, highlighted }: { kpi: Kpi; highlighted?: boolean }) {
-  const valueColor = kpi.status === "at_risk" || kpi.status === "critical" || kpi.status === "warning" ? "text-warning" : "text-success";
+  const valueColor =
+    kpi.status === "critical" ? "text-danger" :
+    kpi.status === "at_risk" || kpi.status === "warning" ? "text-warning" :
+    "text-success";
   const deltaColor = kpi.delta.startsWith("+")
     ? "text-success"
     : kpi.delta.startsWith("-")
@@ -240,20 +243,20 @@ function KpiCard({ kpi, highlighted }: { kpi: Kpi; highlighted?: boolean }) {
   return (
     <div className={`bg-surface rounded-lg p-3 border ${highlighted ? "border-success ring-1 ring-success/30" : "border-border"}`}>
       <div className="flex items-center justify-between mb-1.5 gap-1">
-        <p className="text-xs font-medium text-text-primary m-0 leading-tight uppercase tracking-wide">{kpi.label}</p>
+        <p className="text-[11px] font-medium text-text-secondary m-0 leading-tight uppercase tracking-wide">{kpi.label}</p>
         {kpi.status === "at_risk" && (
           <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-warning-light text-warning whitespace-nowrap">AT RISK</span>
         )}
       </div>
-      <p className={`text-2xl font-semibold m-0 leading-tight ${valueColor}`}>
+      <p className={`text-2xl font-bold m-0 leading-tight ${valueColor}`}>
         {kpi.value}
-        {kpi.unit && <span className="text-sm font-mono"> {kpi.unit}</span>}
+        {kpi.unit && <span className="text-sm font-normal text-text-secondary"> {kpi.unit}</span>}
       </p>
       <div className="flex items-center justify-between mt-1.5">
         <p className="text-xs text-text-tertiary m-0 leading-tight flex items-center gap-1">
-          <span className="inline-block w-3 h-3 rounded-full border border-text-tertiary" /> Target {kpi.target}
+          <span className="inline-block w-2.5 h-2.5 rounded-full border border-text-tertiary flex-shrink-0" /> Target {kpi.target}
         </p>
-        <span className={`text-xs font-medium font-mono ${deltaColor}`}>{kpi.delta}</span>
+        <span className={`text-xs font-medium ${deltaColor}`}>{kpi.delta}</span>
       </div>
     </div>
   );
@@ -279,15 +282,15 @@ function TrendChart({ data, label }: { data: number[]; label: string }) {
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-36 block">
-      <path d={areaPath} fill="rgba(45,90,74,0.06)" stroke="none" />
-      <path d={path} fill="none" stroke="#2D5A4A" strokeWidth="2" />
+      <path d={areaPath} fill="rgba(16,185,129,0.06)" stroke="none" />
+      <path d={path} fill="none" stroke="#10B981" strokeWidth="2" />
       {points.map((p, i) => (
         <g key={i}>
-          <circle cx={p[0]} cy={p[1]} r="3.5" fill="#2D5A4A" />
-          <text x={p[0]} y={h - 6} textAnchor="middle" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#A6A398">
+          <circle cx={p[0]} cy={p[1]} r="3.5" fill="#10B981" />
+          <text x={p[0]} y={h - 6} textAnchor="middle" fontSize="11" fontFamily="Inter, system-ui, sans-serif" fill="#9CA3AF">
             {weeks[i]}
           </text>
-          <text x={p[0]} y={p[1] - 10} textAnchor="middle" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#6B6A63">
+          <text x={p[0]} y={p[1] - 10} textAnchor="middle" fontSize="11" fontFamily="Inter, system-ui, sans-serif" fill="#6B7280">
             {data[i]}%
           </text>
         </g>
