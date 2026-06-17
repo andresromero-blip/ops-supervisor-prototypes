@@ -12,10 +12,6 @@ import {
   Lightbulb,
   AlertTriangle,
   Award,
-  Calendar,
-  Users,
-  Mail,
-  FileText,
 } from "lucide-react";
 
 // ---------------------------------------------------------------------------
@@ -52,6 +48,7 @@ type Agent = {
   kpis: Kpi[];
   chart: number[];
   chartTarget: number;
+  kpiTrends: Record<string, { data: number[]; target: number }>;
   insight: { title: string; body: string };
   coaching:
     | { hasAction: true; actions: CoachingAction[] }
@@ -75,6 +72,15 @@ const AGENTS: Record<string, Agent> = {
     ],
     chart: [718.92, 845.47, 890.78, 863.9],
     chartTarget: 691.19,
+    kpiTrends: {
+      aht_phone:      { data: [718.92, 845.47, 890.78, 863.9],  target: 630 },
+      gross_absence:  { data: [0, 0, 0, 0],                     target: 6 },
+      fcr_phone:      { data: [60, 65, 68, 70],                 target: 75 },
+      nps_phone:      { data: [55, 58, 60, 60],                 target: 55 },
+      professionalism:{ data: [90, 91, 92, 92.9],               target: 95 },
+      qa_score:       { data: [82, 80, 79, 78],                 target: 85 },
+      rr_phone:       { data: [88, 90, 91, 92.9],               target: 85 },
+    },
     insight: {
       title: "Inefficient call handling, trending upward",
       body: "AHT is 25% above the team average (863.9s vs 691.19s team target). The last few weeks show fluctuation: it rose to 890.78s before slightly easing to 835.58s. Despite 4+ years of experience, it doesn't show the efficiency expected of a senior agent.",
@@ -101,6 +107,15 @@ const AGENTS: Record<string, Agent> = {
     ],
     chart: [65, 60, 50, 80],
     chartTarget: 75,
+    kpiTrends: {
+      aht_phone:      { data: [640, 620, 603, 670.5], target: 630 },
+      gross_absence:  { data: [0, 0.1, 0.2, 0.25],   target: 6 },
+      fcr_phone:      { data: [80, 90, 95, 100],      target: 75 },
+      nps_phone:      { data: [85, 90, 95, 100],      target: 55 },
+      professionalism:{ data: [96, 98, 99, 100],      target: 95 },
+      qa_score:       { data: [88, 90, 91, 91.5],     target: 85 },
+      rr_phone:       { data: [90, 95, 98, 100],      target: 85 },
+    },
     insight: {
       title: "Top performer — opportunity to share best practices",
       body: "Efficient call handling techniques have driven AHT well below the team average (603.98s vs 691.19s), with a notable recent improvement (35% reduction to 474.56s in the latest week). Excellent candidate for peer mentoring.",
@@ -129,6 +144,15 @@ const AGENTS: Record<string, Agent> = {
     ],
     chart: [0, 40, 20.25, 50],
     chartTarget: 6,
+    kpiTrends: {
+      aht_phone:      { data: [610, 605, 600, 601.2],  target: 630 },
+      gross_absence:  { data: [0, 40, 20.25, 33.47],  target: 6 },
+      fcr_phone:      { data: [78, 80, 82, 85],        target: 75 },
+      nps_phone:      { data: [60, 62, 66, 70],        target: 55 },
+      professionalism:{ data: [92, 90, 89, 88],        target: 95 },
+      qa_score:       { data: [88, 89, 90, 90],        target: 85 },
+      rr_phone:       { data: [85, 86, 87, 88],        target: 85 },
+    },
     insight: {
       title: "Escalating absence pattern, with high volatility",
       body: "Unexcused absence pattern with growing weekly volatility (0% → 40% → 20.25% → 50%). The monthly trend worsens from 25.26% to 33.47% (+8.21pp), despite being a recent hire (119 days). No excused absences recorded.",
@@ -178,6 +202,7 @@ function genericAgent(slug: string): Agent {
     ],
     chart: [50, 55, 60, 58],
     chartTarget: 75,
+    kpiTrends: {},
     insight: {
       title: "Profile pending detail",
       body: "This agent was referenced from the team overview. The next iteration of the prototype will complete their individual analysis and coaching plan with real data.",
@@ -269,9 +294,12 @@ function MiniChart({ data, target, danger }: { data: number[]; target: number; d
 // ---------------------------------------------------------------------------
 export default function AgentViewPage() {
   return (
-    <Suspense fallback={null}>
-      <AgentViewContent />
-    </Suspense>
+    <div className="flex bg-bg min-h-screen">
+      <Sidebar />
+      <Suspense fallback={null}>
+        <AgentViewContent />
+      </Suspense>
+    </div>
   );
 }
 
@@ -282,9 +310,11 @@ function AgentViewContent() {
 
   const [agentId, setAgentId] = useState(initial.id);
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedKpiKey, setSelectedKpiKey] = useState<string | null>(null);
 
   useEffect(() => {
     setAgentId(getAgent(requestedSlug).id);
+    setSelectedKpiKey(null); // reset KPI selector on agent change
   }, [requestedSlug]);
 
   const agent = AGENTS[agentId] ?? genericAgent(agentId);
@@ -292,9 +322,21 @@ function AgentViewContent() {
 
   const statusBadge = useMemo(() => statusClasses(agent.status), [agent]);
 
+  // Resolve active KPI for the chart: user selection or highest-priority KPI
+  const priorityKpi = useMemo(() => {
+    const severityW = (s: Status) => s === "critical" ? 3 : s === "warning" ? 2 : 1;
+    return [...agent.kpis].sort((a, b) => {
+      const scoreA = severityW(a.status) * a.weight;
+      const scoreB = severityW(b.status) * b.weight;
+      return scoreB - scoreA;
+    })[0];
+  }, [agent]);
+
+  const activeKpiKey = selectedKpiKey ?? priorityKpi?.key ?? agent.kpis[0]?.key;
+  const activeKpi = agent.kpis.find((k) => k.key === activeKpiKey) ?? agent.kpis[0];
+  const activeTrend = agent.kpiTrends[activeKpiKey] ?? { data: agent.chart, target: agent.chartTarget };
+
   return (
-    <div className="flex bg-bg min-h-screen">
-      <Sidebar />
       <main className="flex-1 text-text-primary font-sans px-6 py-8 overflow-x-hidden">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
@@ -411,12 +453,42 @@ function AgentViewContent() {
           </table>
         </div>
 
-        {/* Chart */}
-        <p className="text-sm text-text-secondary mb-2.5 uppercase tracking-wide">
-          Trend — {agent.kpis[0].label} (last 4 weeks)
-        </p>
+        {/* Chart — KPI selector + dynamic trend */}
         <div className="bg-surface border border-border rounded-lg px-5 py-4 mb-6">
-          <MiniChart data={agent.chart} target={agent.chartTarget} danger={agent.status === "critical"} />
+          <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
+            <p className="text-sm text-text-secondary uppercase tracking-wide m-0">
+              Trend — {activeKpi.label} (last 4 weeks)
+            </p>
+            <div className="flex gap-1 flex-wrap">
+              {agent.kpis.map((k) => {
+                const b = statusClasses(k.status);
+                const isActive = k.key === activeKpiKey;
+                return (
+                  <button
+                    key={k.key}
+                    onClick={() => setSelectedKpiKey(k.key)}
+                    className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors ${
+                      isActive
+                        ? `${b.bg} ${b.text} border-transparent`
+                        : "bg-surface text-text-secondary border-border hover:border-brand/40"
+                    }`}
+                  >
+                    {k.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+          <MiniChart
+            data={activeTrend.data}
+            target={activeTrend.target}
+            danger={activeKpi.status === "critical"}
+          />
+          {!selectedKpiKey && (
+            <p className="text-xs text-text-tertiary mt-1 m-0">
+              Showing highest-priority KPI by severity and operational weight.
+            </p>
+          )}
         </div>
 
         {/* Insight card */}
@@ -480,24 +552,7 @@ function AgentViewContent() {
             </>
           )}
         </div>
-
-        {/* Quick actions footer */}
-        <div className="flex gap-2 flex-wrap">
-          <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Mail size={15} /> Communications
-          </button>
-          <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <FileText size={15} /> CEDP
-          </button>
-          <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Calendar size={15} /> Schedule
-          </button>
-          <button className="text-sm px-4 py-2 rounded-md border border-border bg-surface text-text-secondary font-medium inline-flex items-center gap-1.5">
-            <Users size={15} /> Team backups
-          </button>
-        </div>
       </div>
       </main>
-    </div>
   );
 }
