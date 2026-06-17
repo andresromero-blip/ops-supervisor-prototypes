@@ -93,6 +93,38 @@ const MAIN_KPIS: Record<Period, Kpi[]> = {
   ],
 };
 
+// ---------------------------------------------------------------------------
+// KPI priority scoring data
+// severity_weight × deviation_pct × (critical_count + warning_count × 0.5)
+// ---------------------------------------------------------------------------
+type KpiStat = {
+  key: string;
+  label: string;
+  severityWeight: number; // 3=critical 2=warning 1=ok
+  deviationPct: number;   // absolute % deviation vs target
+  criticalCount: number;
+  warningCount: number;
+  trendData: Record<Period, number[]>;
+  trendTarget: number;
+};
+
+const KPI_STATS: KpiStat[] = [
+  { key: "aht",   label: "AHT",          severityWeight: 3, deviationPct: 0.20, criticalCount: 2, warningCount: 4, trendData: { "D-1": [690, 720, 745, 759], WTD: [685, 710, 730, 742], MTD: [670, 695, 715, 730], QTD: [650, 670, 695, 711] }, trendTarget: 630 },
+  { key: "adh",   label: "ADH",          severityWeight: 2, deviationPct: 0.08, criticalCount: 0, warningCount: 5, trendData: { "D-1": [90, 89, 88, 87.5], WTD: [90, 89.5, 89, 89], MTD: [91, 90.5, 90, 90.2], QTD: [92, 91.8, 91.5, 91.4] }, trendTarget: 95 },
+  { key: "sales", label: "Sales",        severityWeight: 2, deviationPct: 0.09, criticalCount: 0, warningCount: 3, trendData: { "D-1": [10.2, 10.5, 10.7, 10.9], WTD: [10.8, 11.0, 11.2, 11.4], MTD: [11.0, 11.2, 11.5, 11.7], QTD: [11.2, 11.5, 11.7, 11.9] }, trendTarget: 12 },
+  { key: "csat",  label: "CSAT",         severityWeight: 2, deviationPct: 0.02, criticalCount: 0, warningCount: 2, trendData: { "D-1": [82, 82.5, 83, 83.1], WTD: [83, 83.2, 83.8, 84], MTD: [83.5, 84, 84.2, 84.6], QTD: [84, 84.5, 84.8, 85.1] }, trendTarget: 85 },
+  { key: "fcr",   label: "FCR",          severityWeight: 2, deviationPct: 0.03, criticalCount: 0, warningCount: 2, trendData: { "D-1": [73, 74, 75, 75.5], WTD: [74, 75, 76, 76.8], MTD: [75, 76, 77, 78.2], QTD: [76, 77, 78, 79] }, trendTarget: 78 },
+  { key: "nps",   label: "NPS",          severityWeight: 1, deviationPct: 0,    criticalCount: 0, warningCount: 0, trendData: { "D-1": [85, 86, 87, 87], WTD: [83, 84, 84, 84], MTD: [80, 81, 81, 81], QTD: [77, 78, 78, 78] }, trendTarget: 45 },
+];
+
+function getPriorityKpi(period: Period): KpiStat {
+  return [...KPI_STATS].sort((a, b) => {
+    const scoreA = a.severityWeight * a.deviationPct * (a.criticalCount + a.warningCount * 0.5);
+    const scoreB = b.severityWeight * b.deviationPct * (b.criticalCount + b.warningCount * 0.5);
+    return scoreB - scoreA;
+  })[0];
+}
+
 const ALERTS: Record<Period, Alert[]> = {
   "D-1": [
     { agent: "Pedro Godinho", agentSlug: "pedro-godinho", reason: "AHT 25% above target, trending up for 3 weeks" },
@@ -175,13 +207,6 @@ const TEAMS = [
   { id: "team-b", name: "Team B — Premium Support" },
   { id: "team-c", name: "Team C — Backoffice" },
 ];
-
-const TEAM_FCR_TREND: Record<Period, number[]> = {
-  "D-1": [70, 72, 75, 77.8],
-  WTD: [74, 76, 78, 79.1],
-  MTD: [76, 78, 79, 80.6],
-  QTD: [78, 80, 81, 82.4],
-};
 
 // ---------------------------------------------------------------------------
 // Helpers
@@ -281,7 +306,6 @@ const PERIOD_LABELS: Record<Period, string> = {
 
 export default function TeamOverviewPage() {
   const [period, setPeriod] = useState<Period>("D-1");
-  const [alertsOpen, setAlertsOpen] = useState(false);
   const [topicTab, setTopicTab] = useState<"top" | "overdue" | "upcoming">("top");
   const [teamId, setTeamId] = useState("team-a");
   const [teamDropdownOpen, setTeamDropdownOpen] = useState(false);
@@ -294,9 +318,16 @@ export default function TeamOverviewPage() {
 
   const periodOptions: Period[] = ["D-1", "WTD", "MTD", "QTD"];
 
+  const priorityKpi = getPriorityKpi(period);
   const selectedAgent = team.find((m) => m.slug === selectedAgentSlug) ?? null;
-  const chartData = selectedAgent ? selectedAgent.fcrTrend : TEAM_FCR_TREND[period];
-  const chartLabel = selectedAgent ? selectedAgent.name : "whole team";
+  const chartData = selectedAgent ? selectedAgent.fcrTrend : priorityKpi.trendData[period];
+  const chartLabel = selectedAgent ? selectedAgent.name : `${priorityKpi.label} — whole team`;
+
+  // Alert block: top 3 visible, rest behind "See all"
+  const TOP_ALERT_COUNT = 3;
+  const [alertsExpanded, setAlertsExpanded] = useState(false);
+  const visibleAlerts = alertsExpanded ? alerts : alerts.slice(0, TOP_ALERT_COUNT);
+  const hiddenAlertCount = alerts.length - TOP_ALERT_COUNT;
 
   return (
     <div className="flex bg-bg min-h-screen">
@@ -357,28 +388,44 @@ export default function TeamOverviewPage() {
           </div>
         </div>
 
-        {/* Alert banner — collapsible */}
+        {/* Alert block — compact, top 3 always visible */}
         {alerts.length > 0 && (
-          <div className="border border-danger/20 bg-danger-light rounded-lg mb-4 overflow-hidden">
-            <button
-              onClick={() => setAlertsOpen((v) => !v)}
-              className="w-full flex items-center gap-2.5 px-4 py-2 text-left"
-            >
-              <AlertTriangle size={16} className="text-danger flex-shrink-0" />
-              <p className="text-sm font-medium text-danger m-0 flex-1">
+          <div className="border border-danger/20 bg-danger-light rounded-lg mb-4 px-4 py-3">
+            <div className="flex items-center gap-2 mb-2">
+              <AlertTriangle size={15} className="text-danger flex-shrink-0" />
+              <p className="text-sm font-medium text-danger m-0">
                 {alerts.length} {alerts.length === 1 ? "agent needs" : "agents need"} attention
                 {period === "D-1" ? " today" : period === "WTD" ? " this week" : period === "MTD" ? " this month" : " this quarter"}
               </p>
-              <ChevronDown size={16} className={`text-danger transition-transform flex-shrink-0 ${alertsOpen ? "rotate-180" : ""}`} />
-            </button>
-            {alertsOpen && (
-              <div className="flex flex-col gap-1 px-4 pb-3 pt-0.5">
-                {alerts.map((a) => (
-                  <Link key={a.agentSlug} href={`/projects/20260620-agent-view?agent=${a.agentSlug}`} className="text-sm text-text-primary hover:text-danger transition-colors">
-                    <span className="font-medium">{a.agent}</span> — {a.reason}
-                  </Link>
-                ))}
-              </div>
+            </div>
+            <div className="flex flex-col gap-1">
+              {visibleAlerts.map((a) => (
+                <Link
+                  key={a.agentSlug}
+                  href={`/projects/20260620-agent-view?agent=${a.agentSlug}`}
+                  className="text-sm text-text-primary hover:text-danger transition-colors flex items-baseline gap-1.5"
+                >
+                  <span className="font-medium whitespace-nowrap">{a.agent}</span>
+                  <span className="text-text-secondary">·</span>
+                  <span className="text-text-secondary">{a.reason}</span>
+                </Link>
+              ))}
+            </div>
+            {hiddenAlertCount > 0 && !alertsExpanded && (
+              <button
+                onClick={() => setAlertsExpanded(true)}
+                className="mt-2 text-xs text-danger font-medium flex items-center gap-1 hover:underline"
+              >
+                <ChevronDown size={13} /> See all {alerts.length} alerts
+              </button>
+            )}
+            {alertsExpanded && hiddenAlertCount > 0 && (
+              <button
+                onClick={() => setAlertsExpanded(false)}
+                className="mt-2 text-xs text-danger font-medium flex items-center gap-1 hover:underline"
+              >
+                <ChevronDown size={13} className="rotate-180" /> Show less
+              </button>
             )}
           </div>
         )}
@@ -408,8 +455,12 @@ export default function TeamOverviewPage() {
             <div className="flex-1 flex items-center">
               <TrendChart data={chartData} label={chartLabel} />
             </div>
-            {!selectedAgent && (
-              <p className="text-xs text-text-tertiary m-0">Select an agent in the table to see their individual trend.</p>
+            {!selectedAgent ? (
+              <p className="text-xs text-text-tertiary m-0">
+                Default chart shows the KPI with the highest operational priority based on severity, deviation vs target, and number of affected agents. Select an agent in the table to see their individual trend.
+              </p>
+            ) : (
+              <p className="text-xs text-text-tertiary m-0">Showing FCR_Phone trend for selected agent. Click <strong>Team</strong> to return to team view.</p>
             )}
           </div>
 
