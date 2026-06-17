@@ -32,6 +32,7 @@ type Alert = {
   agent: string;
   agentSlug: string;
   reason: string;
+  actionCount: number;     // T1: 0 = no plan, >0 = pending actions
 };
 
 type TeamMember = {
@@ -43,6 +44,8 @@ type TeamMember = {
   kpiValue: string;
   trend: "up" | "down";
   trendStatus: Status;
+  trendWeeks: number;      // T3: consecutive weeks in this trend direction
+  actionCount: number;     // T2: active coaching actions
   fcrTrend: number[];
 };
 
@@ -127,57 +130,57 @@ function getPriorityKpi(period: Period): KpiStat {
 
 const ALERTS: Record<Period, Alert[]> = {
   "D-1": [
-    { agent: "Pedro Godinho", agentSlug: "pedro-godinho", reason: "AHT 25% above target, trending up for 3 weeks" },
-    { agent: "Denzel Melo", agentSlug: "denzel-melo", reason: "Absences rising, 33% vs 6% target" },
-    { agent: "Raymond Akpelu", agentSlug: "raymond-akpelu", reason: "QA dropped from 84.5 to 34.0, miscategorized cases" },
+    { agent: "Pedro Godinho", agentSlug: "pedro-godinho", reason: "AHT 25% above target, trending up for 3 weeks", actionCount: 0 },
+    { agent: "Denzel Melo", agentSlug: "denzel-melo", reason: "Absences rising, 33% vs 6% target", actionCount: 0 },
+    { agent: "Raymond Akpelu", agentSlug: "raymond-akpelu", reason: "QA dropped from 84.5 to 34.0, miscategorized cases", actionCount: 1 },
   ],
   WTD: [
-    { agent: "Pedro Godinho", agentSlug: "pedro-godinho", reason: "AHT 17.8% above target throughout the week" },
-    { agent: "Denzel Melo", agentSlug: "denzel-melo", reason: "Cumulative absences rise to 28% this week" },
+    { agent: "Pedro Godinho", agentSlug: "pedro-godinho", reason: "AHT 17.8% above target throughout the week", actionCount: 0 },
+    { agent: "Denzel Melo", agentSlug: "denzel-melo", reason: "Cumulative absences rise to 28% this week", actionCount: 0 },
   ],
   MTD: [
-    { agent: "Martinho Wambembe", agentSlug: "martinho-wambembe", reason: "Monthly gross absence at 32.5% vs 11.55% team average" },
-    { agent: "Toufiq Hossain", agentSlug: "toufiq-hossain", reason: "Alternating absence pattern raises the monthly average to 55.56%" },
+    { agent: "Martinho Wambembe", agentSlug: "martinho-wambembe", reason: "Monthly gross absence at 32.5% vs 11.55% team average", actionCount: 2 },
+    { agent: "Toufiq Hossain", agentSlug: "toufiq-hossain", reason: "Alternating absence pattern raises the monthly average to 55.56%", actionCount: 0 },
   ],
   QTD: [
-    { agent: "Martinho Wambembe", agentSlug: "martinho-wambembe", reason: "Steadily worsening absence trend throughout the quarter" },
+    { agent: "Martinho Wambembe", agentSlug: "martinho-wambembe", reason: "Steadily worsening absence trend throughout the quarter", actionCount: 2 },
   ],
 };
 
 const TEAM: Record<Period, TeamMember[]> = {
   "D-1": [
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Critical", kpiLabel: "AHT", kpiValue: "863.9s", trend: "up", trendStatus: "critical" , fcrTrend: [42, 42, 44, 40] },
-    { name: "Denzel Melo", slug: "denzel-melo", status: "critical", statusLabel: "Critical", kpiLabel: "Absence", kpiValue: "33.5%", trend: "up", trendStatus: "critical" , fcrTrend: [43, 45, 43, 41] },
-    { name: "Raymond Akpelu", slug: "raymond-akpelu", status: "warning", statusLabel: "Needs attention", kpiLabel: "QA", kpiValue: "34.0%", trend: "down", trendStatus: "critical" , fcrTrend: [47, 47, 42, 44] },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "670.5s", trend: "up", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
-    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "691.4s", trend: "up", trendStatus: "ok" , fcrTrend: [85, 85, 85, 83] },
-    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "821.1s", trend: "down", trendStatus: "warning" , fcrTrend: [65, 66, 71, 74] },
-    { name: "Cristina Ji", slug: "cristina-ji", status: "warning", statusLabel: "Needs attention", kpiLabel: "FCR", kpiValue: "0%", trend: "down", trendStatus: "critical" , fcrTrend: [42, 39, 43, 43] },
-    { name: "David Reis Carvalho", slug: "david-reis-carvalho", status: "ok", statusLabel: "On target", kpiLabel: "FCR", kpiValue: "85%", trend: "up", trendStatus: "ok" , fcrTrend: [86, 88, 86, 82] },
-    { name: "Lucas Dias", slug: "lucas-dias", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "823.9s", trend: "up", trendStatus: "warning" , fcrTrend: [68, 72, 77, 80] },
-    { name: "Marco Nunes Sousa", slug: "marco-nunes-sousa", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "744.9s", trend: "up", trendStatus: "warning" , fcrTrend: [60, 56, 54, 51] },
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "warning", statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "32.5%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
-    { name: "Phillip Ellis", slug: "phillip-ellis", status: "warning", statusLabel: "Needs attention", kpiLabel: "FCR", kpiValue: "50%", trend: "down", trendStatus: "warning" , fcrTrend: [65, 61, 62, 65] },
-    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "warning", statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "55.6%", trend: "up", trendStatus: "critical" , fcrTrend: [42, 41, 43, 42] },
-    { name: "Vasile Bunduche", slug: "vasile-bunduche", status: "ok", statusLabel: "On target", kpiLabel: "FCR", kpiValue: "78%", trend: "up", trendStatus: "ok" , fcrTrend: [84, 82, 86, 84] },
+    { name: "Pedro Godinho",           slug: "pedro-godinho",          status: "critical", statusLabel: "Critical",        kpiLabel: "AHT",     kpiValue: "863.9s", trend: "up",   trendStatus: "critical", trendWeeks: 3, actionCount: 0, fcrTrend: [42, 42, 44, 40] },
+    { name: "Denzel Melo",             slug: "denzel-melo",             status: "critical", statusLabel: "Critical",        kpiLabel: "Absence", kpiValue: "33.5%",  trend: "up",   trendStatus: "critical", trendWeeks: 4, actionCount: 0, fcrTrend: [43, 45, 43, 41] },
+    { name: "Raymond Akpelu",          slug: "raymond-akpelu",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "QA",      kpiValue: "34.0%",  trend: "down", trendStatus: "critical", trendWeeks: 2, actionCount: 1, fcrTrend: [47, 47, 42, 44] },
+    { name: "Alexandre Manuel Pereira",slug: "alexandre-pereira",       status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "670.5s", trend: "up",   trendStatus: "ok",       trendWeeks: 2, actionCount: 2, fcrTrend: [88, 93, 92, 87] },
+    { name: "Francisco Esperança",     slug: "francisco-esperanca",     status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "691.4s", trend: "up",   trendStatus: "ok",       trendWeeks: 3, actionCount: 0, fcrTrend: [85, 85, 85, 83] },
+    { name: "Camila Robledo",          slug: "camila-robledo",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "821.1s", trend: "down", trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [65, 66, 71, 74] },
+    { name: "Cristina Ji",             slug: "cristina-ji",             status: "warning",  statusLabel: "Needs attention", kpiLabel: "FCR",     kpiValue: "0%",     trend: "down", trendStatus: "critical", trendWeeks: 2, actionCount: 0, fcrTrend: [42, 39, 43, 43] },
+    { name: "David Reis Carvalho",     slug: "david-reis-carvalho",     status: "ok",       statusLabel: "On target",       kpiLabel: "FCR",     kpiValue: "85%",    trend: "up",   trendStatus: "ok",       trendWeeks: 2, actionCount: 0, fcrTrend: [86, 88, 86, 82] },
+    { name: "Lucas Dias",              slug: "lucas-dias",              status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "823.9s", trend: "up",   trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [68, 72, 77, 80] },
+    { name: "Marco Nunes Sousa",       slug: "marco-nunes-sousa",       status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "744.9s", trend: "up",   trendStatus: "warning",  trendWeeks: 2, actionCount: 0, fcrTrend: [60, 56, 54, 51] },
+    { name: "Martinho Wambembe",       slug: "martinho-wambembe",       status: "warning",  statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "32.5%",  trend: "up",   trendStatus: "critical", trendWeeks: 4, actionCount: 2, fcrTrend: [40, 43, 45, 43] },
+    { name: "Phillip Ellis",           slug: "phillip-ellis",           status: "warning",  statusLabel: "Needs attention", kpiLabel: "FCR",     kpiValue: "50%",    trend: "down", trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [65, 61, 62, 65] },
+    { name: "Toufiq Hossain",          slug: "toufiq-hossain",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "55.6%",  trend: "up",   trendStatus: "critical", trendWeeks: 3, actionCount: 0, fcrTrend: [42, 41, 43, 42] },
+    { name: "Vasile Bunduche",         slug: "vasile-bunduche",         status: "ok",       statusLabel: "On target",       kpiLabel: "FCR",     kpiValue: "78%",    trend: "up",   trendStatus: "ok",       trendWeeks: 2, actionCount: 0, fcrTrend: [84, 82, 86, 84] },
   ],
   WTD: [
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "critical", statusLabel: "Critical", kpiLabel: "AHT", kpiValue: "835.2s", trend: "up", trendStatus: "critical" , fcrTrend: [42, 42, 44, 40] },
-    { name: "Denzel Melo", slug: "denzel-melo", status: "warning", statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "28.1%", trend: "up", trendStatus: "critical" , fcrTrend: [43, 45, 43, 41] },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "655.2s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
-    { name: "Francisco Esperança", slug: "francisco-esperanca", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "688.0s", trend: "down", trendStatus: "ok" , fcrTrend: [85, 85, 85, 83] },
-    { name: "Camila Robledo", slug: "camila-robledo", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "810.4s", trend: "down", trendStatus: "warning" , fcrTrend: [65, 66, 71, 74] },
+    { name: "Pedro Godinho",           slug: "pedro-godinho",          status: "critical", statusLabel: "Critical",        kpiLabel: "AHT",     kpiValue: "835.2s", trend: "up",   trendStatus: "critical", trendWeeks: 3, actionCount: 0, fcrTrend: [42, 42, 44, 40] },
+    { name: "Denzel Melo",             slug: "denzel-melo",             status: "warning",  statusLabel: "Needs attention", kpiLabel: "Absence", kpiValue: "28.1%",  trend: "up",   trendStatus: "critical", trendWeeks: 4, actionCount: 0, fcrTrend: [43, 45, 43, 41] },
+    { name: "Alexandre Manuel Pereira",slug: "alexandre-pereira",       status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "655.2s", trend: "down", trendStatus: "ok",       trendWeeks: 2, actionCount: 2, fcrTrend: [88, 93, 92, 87] },
+    { name: "Francisco Esperança",     slug: "francisco-esperanca",     status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "688.0s", trend: "down", trendStatus: "ok",       trendWeeks: 1, actionCount: 0, fcrTrend: [85, 85, 85, 83] },
+    { name: "Camila Robledo",          slug: "camila-robledo",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "810.4s", trend: "down", trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [65, 66, 71, 74] },
   ],
   MTD: [
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Critical", kpiLabel: "Absence", kpiValue: "32.5%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
-    { name: "Toufiq Hossain", slug: "toufiq-hossain", status: "critical", statusLabel: "Critical", kpiLabel: "Absence", kpiValue: "55.6%", trend: "up", trendStatus: "critical" , fcrTrend: [42, 41, 43, 42] },
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "729.6s", trend: "down", trendStatus: "warning" , fcrTrend: [62, 62, 64, 60] },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "661.0s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
+    { name: "Martinho Wambembe",       slug: "martinho-wambembe",       status: "critical", statusLabel: "Critical",        kpiLabel: "Absence", kpiValue: "32.5%",  trend: "up",   trendStatus: "critical", trendWeeks: 4, actionCount: 2, fcrTrend: [40, 43, 45, 43] },
+    { name: "Toufiq Hossain",          slug: "toufiq-hossain",          status: "critical", statusLabel: "Critical",        kpiLabel: "Absence", kpiValue: "55.6%",  trend: "up",   trendStatus: "critical", trendWeeks: 3, actionCount: 0, fcrTrend: [42, 41, 43, 42] },
+    { name: "Pedro Godinho",           slug: "pedro-godinho",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "729.6s", trend: "down", trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [62, 62, 64, 60] },
+    { name: "Alexandre Manuel Pereira",slug: "alexandre-pereira",       status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "661.0s", trend: "down", trendStatus: "ok",       trendWeeks: 2, actionCount: 2, fcrTrend: [88, 93, 92, 87] },
   ],
   QTD: [
-    { name: "Martinho Wambembe", slug: "martinho-wambembe", status: "critical", statusLabel: "Critical", kpiLabel: "Absence", kpiValue: "30.8%", trend: "up", trendStatus: "critical" , fcrTrend: [40, 43, 45, 43] },
-    { name: "Pedro Godinho", slug: "pedro-godinho", status: "warning", statusLabel: "Needs attention", kpiLabel: "AHT", kpiValue: "711.2s", trend: "down", trendStatus: "warning" , fcrTrend: [62, 62, 64, 60] },
-    { name: "Alexandre Manuel Pereira", slug: "alexandre-pereira", status: "ok", statusLabel: "On target", kpiLabel: "AHT", kpiValue: "670.0s", trend: "down", trendStatus: "ok" , fcrTrend: [88, 93, 92, 87] },
+    { name: "Martinho Wambembe",       slug: "martinho-wambembe",       status: "critical", statusLabel: "Critical",        kpiLabel: "Absence", kpiValue: "30.8%",  trend: "up",   trendStatus: "critical", trendWeeks: 5, actionCount: 2, fcrTrend: [40, 43, 45, 43] },
+    { name: "Pedro Godinho",           slug: "pedro-godinho",          status: "warning",  statusLabel: "Needs attention", kpiLabel: "AHT",     kpiValue: "711.2s", trend: "down", trendStatus: "warning",  trendWeeks: 1, actionCount: 0, fcrTrend: [62, 62, 64, 60] },
+    { name: "Alexandre Manuel Pereira",slug: "alexandre-pereira",       status: "ok",       statusLabel: "On target",       kpiLabel: "AHT",     kpiValue: "670.0s", trend: "down", trendStatus: "ok",       trendWeeks: 2, actionCount: 2, fcrTrend: [88, 93, 92, 87] },
   ],
 };
 
@@ -401,17 +404,30 @@ export default function TeamOverviewPage() {
                 {period === "D-1" ? " today" : period === "WTD" ? " this week" : period === "MTD" ? " this month" : " this quarter"}
               </p>
             </div>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-1.5">
               {visibleAlerts.map((a) => (
-                <Link
-                  key={a.agentSlug}
-                  href={`/projects/20260620-agent-view?agent=${a.agentSlug}`}
-                  className="text-sm text-text-primary hover:text-danger transition-colors flex items-baseline gap-1.5"
-                >
-                  <span className="font-medium whitespace-nowrap">{a.agent}</span>
-                  <span className="text-text-secondary">·</span>
-                  <span className="text-text-secondary">{a.reason}</span>
-                </Link>
+                <div key={a.agentSlug} className="flex items-center gap-2 flex-wrap">
+                  <Link
+                    href={`/projects/20260620-agent-view?agent=${a.agentSlug}`}
+                    className="text-sm text-text-primary hover:text-danger transition-colors flex items-baseline gap-1.5 flex-1 min-w-0"
+                  >
+                    <span className="font-medium whitespace-nowrap">{a.agent}</span>
+                    <span className="text-text-secondary">·</span>
+                    <span className="text-text-secondary truncate">{a.reason}</span>
+                  </Link>
+                  {a.actionCount === 0 ? (
+                    <Link
+                      href={`/projects/20260620-agent-view?agent=${a.agentSlug}`}
+                      className="flex-shrink-0 text-[11px] font-medium px-2 py-0.5 rounded bg-danger text-white hover:bg-danger/90 transition-colors whitespace-nowrap"
+                    >
+                      No plan · Create
+                    </Link>
+                  ) : (
+                    <span className="flex-shrink-0 text-[11px] font-medium px-2 py-0.5 rounded bg-warning-light text-warning whitespace-nowrap">
+                      {a.actionCount} pending
+                    </span>
+                  )}
+                </div>
               ))}
             </div>
             {hiddenAlertCount > 0 && !alertsExpanded && (
@@ -501,10 +517,32 @@ export default function TeamOverviewPage() {
                             {m.kpiLabel}: {m.kpiValue}
                           </span>
                         </td>
-                        <td className="px-3 py-2 text-center">
-                          <div className="flex justify-center">
+                        {/* T3 — trend with duration */}
+                        <td className="px-3 py-2 text-center whitespace-nowrap">
+                          <span className={`text-xs font-medium flex items-center justify-center gap-0.5 ${
+                            m.trendStatus === "critical" ? "text-danger" :
+                            m.trendStatus === "warning" ? "text-warning" :
+                            "text-success"
+                          }`}>
                             <TrendIcon trend={m.trend} status={m.trendStatus} />
-                          </div>
+                            {m.trendWeeks}w
+                          </span>
+                        </td>
+                        {/* T2 — actions badge */}
+                        <td className="px-3 py-2 text-center">
+                          {m.status !== "ok" ? (
+                            m.actionCount === 0 ? (
+                              <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-danger-light text-danger whitespace-nowrap">
+                                0 actions
+                              </span>
+                            ) : (
+                              <span className="text-[11px] font-medium px-1.5 py-0.5 rounded bg-warning-light text-warning whitespace-nowrap">
+                                {m.actionCount} pending
+                              </span>
+                            )
+                          ) : (
+                            <span className="text-[11px] text-text-tertiary">—</span>
+                          )}
                         </td>
                       </tr>
                     );
