@@ -19,7 +19,7 @@ import {
 
 const NAV_ITEMS = [
   { label: "Team Overview", href: "/projects/20260620-team-overview", icon: LayoutDashboard },
-  { label: "Game Plan", href: "#", icon: ClipboardList },
+  { label: "Game Plan", href: "/projects/20260620-game-plan", icon: ClipboardList },
   { label: "Agent View", href: "/projects/20260620-agent-view", icon: Users },
   { label: "One to One", href: "#", icon: BookOpen },
   { label: "DSM", href: "#", icon: FileSpreadsheet },
