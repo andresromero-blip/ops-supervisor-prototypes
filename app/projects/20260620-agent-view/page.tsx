@@ -236,7 +236,7 @@ function statusClasses(status: Status) {
 }
 
 function TrendIcon({ trend, status }: { trend: "up" | "down"; status: Status }) {
-  const color = status === "critical" ? "#C2462E" : status === "warning" ? "#B8860B" : "#3D7A5C";
+  const color = status === "critical" ? "#EF4444" : status === "warning" ? "#F59E0B" : "#10B981";
   const Icon = trend === "up" ? TrendingUp : TrendingDown;
   return <Icon size={16} color={color} strokeWidth={2} />;
 }
@@ -269,15 +269,15 @@ function MiniChart({ data, target, danger }: { data: number[]; target: number; d
 
   const path = points.map((p, i) => (i === 0 ? `M ${p[0]} ${p[1]}` : `L ${p[0]} ${p[1]}`)).join(" ");
   const targetY = h - pad - ((target - min) / range) * (h - pad * 2);
-  const lineColor = danger ? "#C2462E" : "#3D7A5C";
-  const fillColor = danger ? "rgba(194,70,46,0.08)" : "rgba(61,122,92,0.08)";
+  const lineColor = danger ? "#EF4444" : "#10B981";
+  const fillColor = danger ? "rgba(239,68,68,0.08)" : "rgba(16,185,129,0.08)";
 
   const areaPath = `${path} L ${points[points.length - 1][0]} ${h - pad} L ${points[0][0]} ${h - pad} Z`;
 
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className="w-full h-40 block">
-      <line x1={pad} y1={targetY} x2={w - pad} y2={targetY} stroke="#A6A398" strokeWidth="1" strokeDasharray="4 4" />
-      <text x={w - pad} y={targetY - 6} textAnchor="end" fontSize="11" fontFamily="IBM Plex Mono, monospace" fill="#A6A398">
+      <line x1={pad} y1={targetY} x2={w - pad} y2={targetY} stroke="#9CA3AF" strokeWidth="1" strokeDasharray="4 4" />
+      <text x={w - pad} y={targetY - 6} textAnchor="end" fontSize="11" fontFamily="Inter, system-ui, sans-serif" fill="#9CA3AF">
         target
       </text>
       <path d={areaPath} fill={fillColor} stroke="none" />
