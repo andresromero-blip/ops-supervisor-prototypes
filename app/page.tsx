@@ -13,6 +13,11 @@ const PROJECTS = [
     description: "Redesigned agent view with selector, grouped KPIs and contextual coaching plan.",
   },
   {
+    slug: "20260620-one-to-one",
+    title: "One to One — coaching & development dashboard",
+    description: "KPI cards with accionable action badges (type + due date), deep dive with trend chart, facts and storyline.",
+  },
+  {
     slug: "20260620-game-plan",
     title: "Game Plan — supervisor weekly planner",
     description: "Compact weekly calendar with a master-detail daily timeline and team facts grouped by severity.",
