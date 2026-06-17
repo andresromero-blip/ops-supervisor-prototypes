@@ -119,9 +119,19 @@ export default function GamePlanPage() {
               <p className="text-sm text-text-secondary mb-1">Wednesday May 20, 2026</p>
               <h1 className="text-2xl font-medium m-0">Supervisor game plan</h1>
             </div>
-            <button className="px-3.5 py-1.5 text-sm rounded-md font-medium border border-brand bg-brand-light text-brand inline-flex items-center gap-1.5">
-              <Plus size={14} /> Add event
-            </button>
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-mono px-2.5 py-1 rounded-md border border-border bg-surface text-text-secondary inline-flex items-center gap-1.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-warning inline-block" />
+                8 open DSM actions
+              </span>
+              <button
+                disabled
+                title="Coming soon"
+                className="px-3.5 py-1.5 text-sm rounded-md font-medium border border-border bg-surface-muted text-text-tertiary inline-flex items-center gap-1.5 cursor-not-allowed opacity-50"
+              >
+                <Plus size={14} /> Add event
+              </button>
+            </div>
           </div>
 
           {/* Main grid: week calendar | day timeline */}
