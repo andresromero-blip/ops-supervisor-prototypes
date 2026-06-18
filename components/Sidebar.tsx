@@ -22,7 +22,7 @@ const NAV_ITEMS = [
   { label: "Game Plan", href: "/projects/20260620-game-plan", icon: ClipboardList },
   { label: "Agent View", href: "/projects/20260620-agent-view", icon: Users },
   { label: "One to One", href: "/projects/20260620-one-to-one", icon: BookOpen },
-  { label: "DSM", href: "#", icon: FileSpreadsheet },
+  { label: "DSM", href: "/projects/20260620-dsm", icon: FileSpreadsheet },
   { label: "CEDP", href: "#", icon: ClipboardCheck },
   { label: "Schedules", href: "#", icon: CalendarDays },
   { label: "Communications", href: "#", icon: MessageSquare },
