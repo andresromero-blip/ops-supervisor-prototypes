@@ -23,7 +23,7 @@ const NAV_ITEMS = [
   { label: "Agent View", href: "/projects/20260620-agent-view", icon: Users },
   { label: "One to One", href: "/projects/20260620-one-to-one", icon: BookOpen },
   { label: "DSM", href: "/projects/20260620-dsm", icon: FileSpreadsheet },
-  { label: "CEDP", href: "#", icon: ClipboardCheck },
+  { label: "CEDP", href: "/projects/20260620-cedp", icon: ClipboardCheck },
   { label: "Schedules", href: "#", icon: CalendarDays },
   { label: "Communications", href: "#", icon: MessageSquare },
   { label: "Project Config", href: "#", icon: Settings },
