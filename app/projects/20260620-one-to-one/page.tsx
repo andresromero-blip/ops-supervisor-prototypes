@@ -40,8 +40,9 @@ type KpiRow = {
   unit: string;
   target: string;
   delta: string;
-  deltaPositive: boolean;
+  deltaPositive: boolean;   // true = moving in the right direction
   status: KpiStatus;
+  lowerIsBetter: boolean;   // AHT, Absence = lower is better; CSAT, FCR, NPS = higher is better
   pendingActions: PendingAction[];
   recentSessions: number;
   storyline: string | null;
@@ -84,7 +85,7 @@ const AGENTS: Agent[] = [
     kpis: [
       {
         key: "aht", label: "AHT", value: "390", unit: "s", target: "420",
-        delta: "+2%", deltaPositive: true, status: "outlier",
+        delta: "+2%", deltaPositive: true, status: "outlier", lowerIsBetter: true,
         pendingActions: [],
         recentSessions: 3,
         storyline: "AHT consistently below target. No action needed — monitor to maintain.",
@@ -96,7 +97,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "sales", label: "Sales", value: "10.0", unit: "%", target: "12.0%",
-        delta: "-11%", deltaPositive: false, status: "off-target",
+        delta: "-11%", deltaPositive: false, status: "off-target", lowerIsBetter: false,
         pendingActions: [],
         recentSessions: 3,
         storyline: "Sales declining for 3 weeks with no coaching actions in place. Needs a structured conversation to identify root cause.",
@@ -110,7 +111,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "csat", label: "CSAT", value: "81.0", unit: "%", target: "85.0%",
-        delta: "-1%", deltaPositive: false, status: "at-risk",
+        delta: "-1%", deltaPositive: false, status: "at-risk", lowerIsBetter: false,
         pendingActions: [
           { type: "Coach Call", dueDate: "Jun 18", overdue: false },
           { type: "QA Review",  dueDate: "Jun 14", overdue: true, overdueDays: 2 },
@@ -129,7 +130,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "fcr", label: "FCR", value: "73.0", unit: "%", target: "78.0%",
-        delta: "-1%", deltaPositive: false, status: "at-risk",
+        delta: "-1%", deltaPositive: false, status: "at-risk", lowerIsBetter: false,
         pendingActions: [
           { type: "Coach Call", dueDate: "Jun 20", overdue: false },
         ],
@@ -145,7 +146,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "adh", label: "ADH", value: "92.0", unit: "%", target: "95.0%",
-        delta: "0%", deltaPositive: true, status: "at-risk",
+        delta: "0%", deltaPositive: true, status: "at-risk", lowerIsBetter: false,
         pendingActions: [
           { type: "Assessment", dueDate: "Jun 15", overdue: true, overdueDays: 1 },
         ],
@@ -159,7 +160,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "nps", label: "NPS", value: "85", unit: "", target: "45",
-        delta: "-1%", deltaPositive: false, status: "on-target",
+        delta: "-1%", deltaPositive: false, status: "on-target", lowerIsBetter: false,
         pendingActions: [],
         recentSessions: 1,
         storyline: null,
@@ -185,7 +186,7 @@ const AGENTS: Agent[] = [
     kpis: [
       {
         key: "aht", label: "AHT", value: "863", unit: "s", target: "630",
-        delta: "+37%", deltaPositive: false, status: "outlier",
+        delta: "+37%", deltaPositive: false, status: "outlier", lowerIsBetter: true,
         pendingActions: [],
         recentSessions: 0,
         storyline: "AHT above target for 3+ weeks with no coaching intervention. No sessions recorded. This is the first structured conversation on this topic.",
@@ -200,7 +201,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "fcr", label: "FCR", value: "70", unit: "%", target: "75%",
-        delta: "-7%", deltaPositive: false, status: "at-risk",
+        delta: "-7%", deltaPositive: false, status: "at-risk", lowerIsBetter: false,
         pendingActions: [
           { type: "Coach Call", dueDate: "Jun 17", overdue: true, overdueDays: 1 },
         ],
@@ -214,7 +215,7 @@ const AGENTS: Agent[] = [
       },
       {
         key: "nps", label: "NPS", value: "60", unit: "", target: "55",
-        delta: "+9%", deltaPositive: true, status: "on-target",
+        delta: "+9%", deltaPositive: true, status: "on-target", lowerIsBetter: false,
         pendingActions: [],
         recentSessions: 1,
         storyline: null,
@@ -244,6 +245,30 @@ const TONE_OPTIONS: { value: SessionTone; label: string }[] = [
   { value: "defensive",  label: "Defensive"  },
   { value: "disengaged", label: "Disengaged" },
 ];
+
+// ---------------------------------------------------------------------------
+// Semantic color resolution
+// "Outlier" AHT below target = GOOD (green). "Outlier" AHT above target = BAD (red).
+// The color must reflect the direction of the deviation, not just its existence.
+// ---------------------------------------------------------------------------
+function semanticConfig(kpi: KpiRow): { color: string; bg: string; label: string; dot: string } {
+  const base = STATUS_CONFIG[kpi.status];
+
+  // For on-target KPIs, always use success color regardless of lowerIsBetter
+  if (kpi.status === "on-target") return base;
+
+  // For outlier/off-target: check if the deviation is in the favorable direction
+  const favorableDeviation =
+    (kpi.lowerIsBetter && kpi.deltaPositive) ||   // lower is better AND value is below target
+    (!kpi.lowerIsBetter && kpi.deltaPositive);    // higher is better AND value is above target
+
+  if (favorableDeviation && kpi.status === "outlier") {
+    // Outlier in a good direction: green, not red
+    return { color: "text-success", bg: "bg-success-light", label: "Outlier", dot: "#10B981" };
+  }
+
+  return base;
+}
 
 // ---------------------------------------------------------------------------
 // Sub-components
@@ -324,7 +349,7 @@ export default function OneToOnePage() {
 
   const agent  = AGENTS.find((a) => a.id === agentId) ?? AGENTS[0];
   const focused = agent.kpis.find((k) => k.key === focusedKpi) ?? agent.kpis[0];
-  const cfg    = STATUS_CONFIG[focused.status];
+  const cfg    = semanticConfig(focused);
 
   const selectAgent = (id: string) => {
     const a = AGENTS.find((x) => x.id === id);
@@ -457,7 +482,7 @@ export default function OneToOnePage() {
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">KPIs</p>
                 <div className="flex flex-col gap-0.5">
                   {agent.kpis.map((kpi) => {
-                    const k = STATUS_CONFIG[kpi.status];
+                    const k = semanticConfig(kpi);
                     const isActive = kpi.key === focusedKpi;
                     const hasOverdue = kpi.pendingActions.some((a) => a.overdue);
                     const hasPending = kpi.pendingActions.length > 0 && !hasOverdue;
