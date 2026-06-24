@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import { GlobalHeader } from "@/components/Header";
 import {
   ChevronDown,
   ChevronUp,
@@ -387,16 +388,7 @@ export default function OneToOnePage() {
             <span className="text-text-tertiary text-xs">Coaching &amp; Development</span>
           </div>
           <div className="flex items-center gap-3">
-            <div className="flex gap-1">
-              {(["D-1", "WTD", "MTD", "QTD"] as Period[]).map((p) => (
-                <button key={p} onClick={() => setPeriod(p)}
-                  className={`px-2.5 py-1 text-xs rounded font-medium border transition-colors ${
-                    period === p
-                      ? "bg-brand text-white border-transparent"
-                      : "bg-surface text-text-secondary border-border hover:border-brand/40"
-                  }`}>{p}</button>
-              ))}
-            </div>
+            {/* ITERATION D1: period selector removed — lives in global header */}
             <button
               onClick={() => setSessionOpen((v) => !v)}
               className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-md bg-brand text-white hover:bg-brand/90 transition-colors">
@@ -405,7 +397,7 @@ export default function OneToOnePage() {
           </div>
         </div>
 
-        <div className="flex h-[calc(100vh-49px)]">
+        <div className="flex h-[calc(100vh-44px)]">
 
           {/* ── Left column: Person + context ─────────────────────────── */}
           {/* Fixed-width preparation zone. Quiet, contextual, human. */}
@@ -700,6 +692,11 @@ export default function OneToOnePage() {
 
                 {sessionOpen && !sessionSaved && (
                   <div className="pb-8 flex flex-col gap-7">
+                    {/* ITERATION D3: Employee shown as fixed badge - no editable dropdown */}
+                    <div className="flex items-center gap-2 px-3 py-2 bg-brand-light rounded-lg border border-brand/20">
+                      <div className="w-6 h-6 rounded-full bg-brand text-white text-xs font-semibold flex items-center justify-center flex-shrink-0">{agent.initials}</div>
+                      <span className="text-sm font-medium text-brand">Session for {agent.name}</span>
+                    </div>
 
                     <div>
                       <label className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary block mb-3">
@@ -800,6 +797,7 @@ export default function OneToOnePage() {
 
         </div>
       </main>
+      </div>
     </div>
   );
 }
