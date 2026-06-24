@@ -173,9 +173,16 @@ function KpiTrendChart() {
 export default function TeamOverviewPage() {
   const { period } = usePeriod();
   const [topicTab, setTopicTab] = useState<TopicTab>("top5");
+  const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
 
   const kpis   = KPI_CARDS[period];
   const topics = TOPICS[period];
+
+  const selectedRow = TEAM_STATUS.find((r) => r.name === selectedAgent) ?? null;
+
+  const handleAgentClick = (name: string) => {
+    setSelectedAgent((prev) => (prev === name ? null : name));
+  };
 
   return (
     <div className="flex bg-bg min-h-screen">
@@ -200,6 +207,14 @@ export default function TeamOverviewPage() {
           </div>
 
           {/* ── KPI strip ────────────────────────────────────────── */}
+          {/* UX writing: explain that cards update on agent selection */}
+          <div className="flex items-center justify-between mb-2">
+            <span className="text-xs text-text-tertiary">
+              {selectedAgent
+                ? <span>Showing KPIs for <span className="font-semibold text-text-primary">{selectedAgent}</span> · <button onClick={() => setSelectedAgent(null)} className="underline hover:text-text-primary transition-colors">Back to team</button></span>
+                : "Select an agent in Team Status to compare their individual KPIs against the team."}
+            </span>
+          </div>
           <div className="grid grid-cols-6 gap-3 mb-5">
             {kpis.map((k) => {
               const valColor = k.atRisk ? "text-warning" : k.key === "nps" || k.key === "aht" ? "text-success" : "text-success";
@@ -237,12 +252,29 @@ export default function TeamOverviewPage() {
 
             {/* KPI Trends card */}
             <div className="bg-surface border border-border rounded-xl p-5">
-              <div className="flex items-center gap-2 mb-1">
+              <div className="flex items-center gap-2 mb-1 flex-wrap">
                 {/* trend icon */}
                 <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
-                <span className="text-sm font-semibold text-text-primary">KPI Trends — Customer Satisfaction</span>
+                <span className="text-sm font-semibold text-text-primary">
+                  KPI Trends — {selectedAgent ? selectedAgent : "Customer Satisfaction"}
+                </span>
+                {/* Agent chip — shown when an agent is selected */}
+                {selectedAgent && (
+                  <span className="inline-flex items-center gap-1 text-[11px] font-semibold px-2 py-0.5 rounded-full bg-brand-light text-brand border border-brand/20">
+                    {selectedAgent}
+                    <button
+                      onClick={() => setSelectedAgent(null)}
+                      className="ml-0.5 hover:opacity-70 transition-opacity leading-none"
+                      aria-label="Clear selection"
+                    >
+                      ×
+                    </button>
+                  </span>
+                )}
               </div>
-              <p className="text-xs text-text-tertiary mb-3 m-0">Daily trend</p>
+              <p className="text-xs text-text-tertiary mb-3 m-0">
+                {selectedAgent ? `Individual trend for ${selectedAgent}` : "Daily trend · whole team"}
+              </p>
               {/* Legend */}
               <div className="flex items-center gap-4 mb-2 justify-end">
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
@@ -255,6 +287,12 @@ export default function TeamOverviewPage() {
                 </span>
               </div>
               <KpiTrendChart />
+              {/* UX writing: callout explaining the chart interaction */}
+              {!selectedAgent && (
+                <p className="text-[11px] text-text-tertiary mt-3 m-0 leading-relaxed border-t border-border pt-3">
+                  Select an agent from <span className="font-medium text-text-secondary">Team Status</span> to compare their individual performance against the team trend.
+                </p>
+              )}
             </div>
 
             {/* Team Status card */}
@@ -264,16 +302,31 @@ export default function TeamOverviewPage() {
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="4" r="2" stroke="#6B7280" strokeWidth="1.2"/><path d="M1 11c0-2 1.79-3.5 4-3.5s4 1.5 4 3.5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/><circle cx="10.5" cy="4.5" r="1.5" stroke="#6B7280" strokeWidth="1.2"/><path d="M10.5 8c1.38 0 2.5 1.12 2.5 2.5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold text-text-primary">Team Status — CSAT</span>
               </div>
+              {/* UX writing: helper below the section title */}
+              <p className="text-[11px] text-text-tertiary px-4 pt-2.5 pb-1 m-0">
+                Select an agent to update the KPI cards and trend chart.
+              </p>
               <div className="divide-y divide-border">
                 {TEAM_STATUS.map((row) => {
+                  const isSelected = selectedAgent === row.name;
                   const valColor = row.status === "On Target" ? "text-success" : row.status === "Off Target" ? "text-danger" : "text-warning";
                   const badgeCls =
                     row.status === "On Target"  ? "bg-success-light text-success" :
                     row.status === "Off Target" ? "bg-danger-light text-danger"   :
                     "bg-warning-light text-warning";
                   return (
-                    <div key={row.name} className="flex items-center justify-between px-4 py-2.5">
-                      <span className="text-sm text-text-primary">{row.name}</span>
+                    <div
+                      key={row.name}
+                      onClick={() => handleAgentClick(row.name)}
+                      className={`flex items-center justify-between px-4 py-2.5 cursor-pointer transition-colors ${
+                        isSelected
+                          ? "bg-brand-light border-l-2 border-brand"
+                          : "hover:bg-surface-muted border-l-2 border-transparent"
+                      }`}
+                    >
+                      <span className={`text-sm ${isSelected ? "font-semibold text-brand" : "text-text-primary"}`}>
+                        {row.name}
+                      </span>
                       <div className="flex items-center gap-2">
                         <span className={`text-sm font-semibold ${valColor}`}>{row.value}</span>
                         <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full whitespace-nowrap ${badgeCls}`}>
