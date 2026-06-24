@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import { GlobalHeader } from "@/components/Header";
 import {
   ChevronDown,
   ChevronUp,
@@ -348,14 +349,9 @@ function OutcomeCapture({
 // ---------------------------------------------------------------------------
 export default function DSMPage() {
   const [tab, setTab] = useState<Tab>("open");
+  // ITERATION E: all groups expanded by default — supervisor sees all actions immediately
   const [expandedAgents, setExpandedAgents] = useState<Record<string, boolean>>(
-    // expand agents with overdue or due-today commitments by default
-    Object.fromEntries(
-      AGENT_GROUPS.map((a) => [
-        a.agentId,
-        a.commitments.some((c) => c.urgencyState === "overdue" || c.urgencyState === "due-today"),
-      ])
-    )
+    Object.fromEntries(AGENT_GROUPS.map((a) => [a.agentId, true]))
   );
   const [completingId, setCompletingId] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
@@ -377,6 +373,8 @@ export default function DSMPage() {
   return (
     <div className="flex bg-bg min-h-screen">
       <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+      <GlobalHeader />
       <main className="flex-1 font-sans text-text-primary px-6 py-6 overflow-x-hidden">
         <div className="max-w-4xl mx-auto">
 
@@ -426,9 +424,11 @@ export default function DSMPage() {
           {/* ── OPEN COMMITMENTS ──────────────────────────────────── */}
           {tab === "open" && (
             <div>
-              <p className="text-xs text-text-tertiary mb-4 m-0">
-                Ordered by operational priority — severity × urgency × duration of issue.
-              </p>
+              {/* ITERATION E: callout — all groups expanded by default */}
+              <div className="flex items-start gap-2 text-xs text-text-secondary bg-brand-light/50 border border-brand/20 rounded-lg px-3 py-2.5 mb-4">
+                <span className="w-1.5 h-1.5 rounded-full bg-brand flex-shrink-0 mt-0.5" />
+                Actions are expanded by default so you can immediately triage urgent items. Ordered by operational priority — severity × urgency × duration of issue.
+              </div>
               <div className="flex flex-col gap-3">
                 {AGENT_GROUPS.map((agent) => {
                   const sty = SEVERITY_STYLES[agent.severity];
@@ -642,6 +642,7 @@ export default function DSMPage() {
 
         </div>
       </main>
+      </div>
     </div>
   );
 }
