@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import Sidebar from "@/components/Sidebar";
+import { GlobalHeader } from "@/components/Header";
 import {
   AlertTriangle,
   AlertCircle,
@@ -104,6 +105,8 @@ const EVENT_TYPE_STYLES: Record<EventType, { bg: string; text: string; label: st
 // ---------------------------------------------------------------------------
 export default function GamePlanPage() {
   const [selectedDate, setSelectedDate] = useState(20);
+  const [showAddModal, setShowAddModal] = useState(false);
+  const [addForm, setAddForm] = useState({ period: "Afternoon", activity: "", agent: "", context: "" });
 
   const selectedEvents = EVENTS[selectedDate] ?? [];
   const selectedDayLabel = WEEK_DAYS.find((d) => d.date === selectedDate)?.label ?? "";
@@ -111,6 +114,8 @@ export default function GamePlanPage() {
   return (
     <div className="flex bg-bg min-h-screen">
       <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+      <GlobalHeader />
       <main className="flex-1 text-text-primary font-sans px-6 py-8 overflow-x-hidden">
         <div className="max-w-5xl mx-auto">
           {/* Header */}
@@ -125,9 +130,8 @@ export default function GamePlanPage() {
                 8 open DSM actions
               </span>
               <button
-                disabled
-                title="Coming soon"
-                className="px-3.5 py-1.5 text-sm rounded-md font-medium border border-border bg-surface-muted text-text-tertiary inline-flex items-center gap-1.5 cursor-not-allowed opacity-50"
+                onClick={() => setShowAddModal(true)}
+                className="px-3.5 py-1.5 text-sm rounded-md font-medium border border-transparent bg-brand text-white inline-flex items-center gap-1.5 hover:bg-brand/90 transition-colors"
               >
                 <Plus size={14} /> Add event
               </button>
@@ -300,8 +304,70 @@ export default function GamePlanPage() {
               </div>
             </div>
           </div>
+
+          {/* ITERATION C: Add Event modal with Additional Context */}
+          {showAddModal && (
+            <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50" onClick={() => setShowAddModal(false)}>
+              <div className="bg-surface rounded-xl shadow-xl p-6 w-[440px] max-w-[95vw]" onClick={(e) => e.stopPropagation()}>
+                <div className="flex items-center justify-between mb-5">
+                  <h2 className="text-base font-semibold m-0">Add New Event</h2>
+                  <button onClick={() => setShowAddModal(false)} className="text-text-tertiary hover:text-text-primary transition-colors text-lg leading-none">×</button>
+                </div>
+                <div className="flex flex-col gap-4">
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Period</label>
+                    <select
+                      value={addForm.period}
+                      onChange={(e) => setAddForm((f) => ({ ...f, period: e.target.value }))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand"
+                    >
+                      <option>Morning</option>
+                      <option>Afternoon</option>
+                      <option>Evening</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Activity</label>
+                    <input
+                      type="text"
+                      value={addForm.activity}
+                      onChange={(e) => setAddForm((f) => ({ ...f, activity: e.target.value }))}
+                      placeholder="e.g. 1:1 with João"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Agent (optional)</label>
+                    <input
+                      type="text"
+                      value={addForm.agent}
+                      onChange={(e) => setAddForm((f) => ({ ...f, agent: e.target.value }))}
+                      placeholder="e.g. João Silva"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary"
+                    />
+                  </div>
+                  {/* ITERATION C: Additional Context textarea */}
+                  <div>
+                    <label className="text-xs font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Additional Context</label>
+                    <textarea
+                      value={addForm.context}
+                      onChange={(e) => setAddForm((f) => ({ ...f, context: e.target.value }))}
+                      placeholder="Add objectives, preparation notes or relevant context for attendees."
+                      rows={3}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary resize-none"
+                    />
+                  </div>
+                  <div className="flex justify-end gap-2 pt-1">
+                    <button onClick={() => setShowAddModal(false)} className="text-sm px-4 py-2 rounded-lg border border-border text-text-secondary hover:border-brand/40 transition-colors">Cancel</button>
+                    <button onClick={() => setShowAddModal(false)} className="text-sm px-4 py-2 rounded-lg bg-brand text-white font-medium hover:bg-brand/90 transition-colors">Add Event</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </main>
+      </div>
     </div>
   );
 }
