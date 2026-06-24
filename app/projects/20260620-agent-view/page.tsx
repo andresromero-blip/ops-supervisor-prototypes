@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/Sidebar";
+import { GlobalHeader, usePeriod } from "@/components/Header";
 import {
   TrendingUp,
   TrendingDown,
@@ -311,6 +312,8 @@ function AgentViewContent() {
   const [agentId, setAgentId] = useState(initial.id);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedKpiKey, setSelectedKpiKey] = useState<string | null>(null);
+  // ITERATION B: QTD added to trend period toggle
+  const [kpiPeriod, setKpiPeriod] = useState<"weekly" | "monthly" | "qtd">("weekly");
 
   useEffect(() => {
     setAgentId(getAgent(requestedSlug).id);
@@ -456,9 +459,25 @@ function AgentViewContent() {
         {/* Chart — KPI selector + dynamic trend */}
         <div className="bg-surface border border-border rounded-lg px-5 py-4 mb-6">
           <div className="flex items-center justify-between mb-3 flex-wrap gap-2">
-            <p className="text-sm text-text-secondary uppercase tracking-wide m-0">
-              Trend — {activeKpi.label} (last 4 weeks)
-            </p>
+            <div>
+              <p className="text-sm text-text-secondary uppercase tracking-wide m-0">
+                KPI Evolution — {activeKpi.label}
+              </p>
+              {/* ITERATION B: period toggle with QTD */}
+              <div className="flex gap-1 mt-2">
+                {(["weekly","monthly","qtd"] as const).map((p) => (
+                  <button
+                    key={p}
+                    onClick={() => setKpiPeriod(p)}
+                    className={`text-xs px-2.5 py-1 rounded-md font-medium border transition-colors ${
+                      kpiPeriod === p ? "bg-brand-light text-brand border-transparent" : "bg-surface text-text-secondary border-border hover:border-brand/40"
+                    }`}
+                  >
+                    {p === "weekly" ? "Weekly Trend" : p === "monthly" ? "Monthly Trend" : "QTD"}
+                  </button>
+                ))}
+              </div>
+            </div>
             <div className="flex gap-1 flex-wrap">
               {agent.kpis.map((k) => {
                 const b = statusClasses(k.status);
