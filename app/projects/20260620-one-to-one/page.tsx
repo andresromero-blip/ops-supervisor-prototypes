@@ -797,7 +797,6 @@ export default function OneToOnePage() {
 
         </div>
       </main>
-      </div>
     </div>
   );
 }
