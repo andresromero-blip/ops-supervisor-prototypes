@@ -191,37 +191,55 @@ export default function OneToOnePage() {
             <p className="text-sm text-text-secondary m-0">Coaching & Development Dashboard · KPI → Root Causes → Actions</p>
           </div>
 
-          {/* Agent module */}
-          <div className="border border-border rounded-xl px-4 pt-3 pb-3 mb-5 bg-surface">
-            <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-2 flex items-center gap-1.5">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
-              AGENT
-            </p>
-            <div className="flex items-center gap-3">
-              {/* Agent selector */}
-              <div className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors flex-1 min-w-0">
-                <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
-                  {agent.initials}
+          {/* Agent module — collapses when session panel is open */}
+          <div className="border border-border rounded-xl mb-5 bg-surface overflow-hidden transition-all">
+            {!showSession ? (
+              /* Full view: label + selector + buttons */
+              <div className="px-4 pt-3 pb-3">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-2 flex items-center gap-1.5">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  AGENT
+                </p>
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors flex-1 min-w-0">
+                    <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
+                      {agent.initials}
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
+                      <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
+                    </div>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                  </div>
+                  <button className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors flex-shrink-0 whitespace-nowrap">
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                    CEDP
+                  </button>
+                  <button
+                    onClick={() => setShowSession(true)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0 whitespace-nowrap"
+                    style={{ background: "#10B981" }}
+                  >
+                    + New Session
+                  </button>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
-                  <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
-                </div>
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
               </div>
-              {/* CEDP + New Session */}
-              <button className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors flex-shrink-0 whitespace-nowrap">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                CEDP
-              </button>
-              <button
-                onClick={() => setShowSession(true)}
-                className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0 whitespace-nowrap"
-                style={{ background: "#10B981" }}
-              >
-                + New Session
-              </button>
-            </div>
+            ) : (
+              /* Collapsed view when session panel is open: compact single row */
+              <div className="px-4 py-2.5 flex items-center gap-3">
+                <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary flex items-center gap-1.5 flex-shrink-0">
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  AGENT
+                </p>
+                <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-1.5 bg-white flex-1 min-w-0">
+                  <div className="w-6 h-6 rounded-full bg-brand-light flex items-center justify-center text-brand text-[10px] font-bold flex-shrink-0">
+                    {agent.initials}
+                  </div>
+                  <span className="text-sm font-semibold text-text-primary truncate">{agent.name}</span>
+                  <span className="text-xs text-text-tertiary flex-shrink-0">— · {agent.tenure}</span>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* KPI filter bar */}
