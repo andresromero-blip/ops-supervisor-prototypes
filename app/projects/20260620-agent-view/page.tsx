@@ -199,7 +199,7 @@ function AgentViewContent() {
         </div>
         <div className="flex items-center gap-2">
           <button className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 2h12M1 7h8M1 12h5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="9" rx="1.5" stroke="currentColor" strokeWidth="1.2"/><path d="M1 4l6 4.5L13 4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
             Comms <span className="bg-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">2</span>
           </button>
           <button onClick={() => setShowCedpModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
@@ -207,7 +207,7 @@ function AgentViewContent() {
             CEDP
           </button>
           <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium text-white" style={{background:"#10B981"}}>
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" strokeWidth="1.2"/><path d="M7 4.5v3l2 1.5" stroke="white" strokeWidth="1.2" strokeLinecap="round"/></svg>
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" strokeWidth="1.2"/><circle cx="5" cy="6" r="0.7" fill="white"/><circle cx="9" cy="6" r="0.7" fill="white"/><path d="M4.5 8.5c.5 1 4.5 1 5 0" stroke="white" strokeWidth="1.1" strokeLinecap="round"/></svg>
             How are you feeling?
           </button>
         </div>
@@ -360,14 +360,14 @@ function AgentViewContent() {
         {/* ── Personal Insights ──────────────────────────────────── */}
         <div className="bg-surface border border-border rounded-xl p-5 mb-6">
           <div className="flex items-center gap-2 mb-4">
-            <span className="text-sm">⭐</span>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 4,7 7,9 11,4 14,6" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
             <span className="text-sm font-semibold">Personal Insights</span>
           </div>
           <div className="grid grid-cols-3 gap-5">
             {/* Golden Nuggets */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <span className="text-sm">🏅</span>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#F59E0B" strokeWidth="1.2"/><path d="M7 4l.9 2.6H10.5l-2.1 1.5.8 2.6L7 9.2l-2.2 1.5.8-2.6-2.1-1.5H6.1z" stroke="#F59E0B" strokeWidth="0.8" strokeLinejoin="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">Golden Nuggets</span>
                 <span className="text-sm text-text-tertiary">{agent.insights.goldenNuggets}</span>
               </div>
@@ -420,7 +420,7 @@ function AgentViewContent() {
         {/* ── Action Points ──────────────────────────────────────── */}
         <div className="bg-surface border border-border rounded-xl p-5 mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="#6B7280" strokeWidth="1.3"/><path d="M5 7.5l2 2 3-3" stroke="#6B7280" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="#6B7280" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="3.5" stroke="#6B7280" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="1" fill="#6B7280"/></svg>
             <span className="text-sm font-semibold">Action Points</span>
             <span className="w-5 h-5 rounded-full bg-surface-muted border border-border text-[11px] font-bold flex items-center justify-center text-text-secondary">
               {agent.actionPoints.humanDevelopment.length}
@@ -430,7 +430,7 @@ function AgentViewContent() {
             {/* Training */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 7 7 13 1 7z" stroke="#6B7280" strokeWidth="1.2" strokeLinejoin="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 5.5l6-3 6 3-6 3-6-3z" stroke="#6B7280" strokeWidth="1.2" strokeLinejoin="round"/><path d="M4 7v3.5c0 .8 1.3 1.5 3 1.5s3-.7 3-1.5V7" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/><path d="M13 5.5v3" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">Training</span>
                 <span className="text-sm text-text-tertiary">{agent.actionPoints.training}</span>
               </div>
@@ -440,7 +440,7 @@ function AgentViewContent() {
             {/* AI Coach */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1a6 6 0 100 12A6 6 0 007 1z" stroke="#6B7280" strokeWidth="1.2"/><path d="M5 5.5c.5-1.5 3.5-1.5 3.5.5 0 1.5-1.5 2-1.5 3" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/><circle cx="7" cy="10.5" r="0.6" fill="#6B7280"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="2" stroke="#6B7280" strokeWidth="1.2"/><path d="M5 4V3a2 2 0 014 0v1" stroke="#6B7280" strokeWidth="1.2"/><circle cx="5" cy="7.5" r="0.8" fill="#6B7280"/><circle cx="9" cy="7.5" r="0.8" fill="#6B7280"/><path d="M5.5 9.5h3" stroke="#6B7280" strokeWidth="1" strokeLinecap="round"/><path d="M7 1v1M3.5 2.5l.7.7M10.5 2.5l-.7.7" stroke="#6B7280" strokeWidth="1" strokeLinecap="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">AI Coach</span>
                 <span className="text-sm text-text-tertiary">{agent.actionPoints.aiCoach}</span>
               </div>
