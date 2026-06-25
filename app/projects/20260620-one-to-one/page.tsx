@@ -184,7 +184,7 @@ export default function OneToOnePage() {
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <GlobalHeader />
-        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6" style={showSession ? {paddingRight: '540px'} : undefined}>
+        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6">
 
           {/* Page title */}
           <div className="mb-5">
@@ -718,7 +718,6 @@ export default function OneToOnePage() {
                     </button>
                   </div>
                 </div>
-              </div>
             </div>
           )}
         </main>
