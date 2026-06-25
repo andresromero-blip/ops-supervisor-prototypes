@@ -169,6 +169,7 @@ export default function OneToOnePage() {
   const [focusKpi, setFocusKpi] = useState(agent.focusKpi);
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
+  const hasActions = hasActions;
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
 
@@ -183,7 +184,7 @@ export default function OneToOnePage() {
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <GlobalHeader />
-        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6" style={showSession ? {paddingRight: "calc(2rem + 520px)"} : {}}>
+        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6" style={showSession ? {paddingRight: '540px'} : undefined}>
 
           {/* Page title */}
           <div className="mb-5">
@@ -641,23 +642,23 @@ export default function OneToOnePage() {
                       <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs text-text-tertiary">Action {i + 1}</span>
-                          {sessionActions.length > 0 && (
+                          {hasActions && (
                             <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-danger hover:opacity-70 transition-opacity">
                               <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
                             </button>
                           )}
                         </div>
                         <textarea rows={3}
-                          value={sessionActions.length > 0 ? a.text : ""}
-                          onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,text:e.target.value}:x)) : undefined}
+                          value={hasActions ? a.text : ""}
+                          onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,text:e.target.value}:x)) : undefined}
                           className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3"
                           placeholder="Describe the action..."/>
                         <div className="grid grid-cols-2 gap-2 mb-2">
                           <div>
                             <label className="text-[11px] text-text-secondary font-medium block mb-1">Category</label>
                             <select
-                              value={sessionActions.length > 0 ? a.type : "Human Coaching"}
-                              onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
+                              value={hasActions ? a.type : "Human Coaching"}
+                              onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
                               className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
                               <option>Human Coaching</option>
                               <option>Training</option>
@@ -667,8 +668,8 @@ export default function OneToOnePage() {
                           <div>
                             <label className="text-[11px] text-text-secondary font-medium block mb-1">Due Date</label>
                             <input type="date"
-                              value={sessionActions.length > 0 ? a.dueDate : ""}
-                              onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
+                              value={hasActions ? a.dueDate : ""}
+                              onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
                               className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
                           </div>
                         </div>
