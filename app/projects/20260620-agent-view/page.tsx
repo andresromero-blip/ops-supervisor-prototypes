@@ -107,38 +107,172 @@ const PERIOD_LABEL: Record<Period, string> = {
 };
 
 // ---------------------------------------------------------------------------
-// KPI Evolution Chart
+// KPI Evolution Chart — faithful replica with tooltip, Y-axis, red target line
 // ---------------------------------------------------------------------------
 const DATES_WEEKLY  = ["Jun 18","Jun 19","Jun 20","Jun 21","Jun 22","Jun 23","Jun 24"];
-const DATES_MONTHLY = ["W-4","W-3","W-2","W-1"];
-const DATES_QTD     = ["Apr","May W1","May W3","Jun"];
+const DATES_MONTHLY = ["M-3","M-2","M-1"];
+const DATES_QTD     = ["Apr","May","Jun"];
 
 function KpiEvolutionChart({
   vals, dates, target, color,
 }: { vals: number[]; dates: string[]; target: number; color: string }) {
-  const W=620; const H=160; const PL=10; const PR=10; const PT=16; const PB=28;
-  const all = [...vals, target];
-  const minV = Math.min(...all)*0.96; const maxV = Math.max(...all)*1.04;
-  const rangeV = maxV - minV || 1;
-  const toX = (i:number) => PL + (i/(dates.length-1))*(W-PL-PR);
-  const toY = (v:number) => PT + (1-(v-minV)/rangeV)*(H-PT-PB);
-  const linePath = vals.map((v,i) => `${i===0?"M":"L"} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(" ");
-  const areaPath = `${linePath} L ${toX(vals.length-1).toFixed(1)} ${H-PB} L ${toX(0).toFixed(1)} ${H-PB} Z`;
-  const targetY = toY(target);
-  const areaFill = color==="green" ? "rgba(16,185,129,0.08)" : color==="orange" ? "rgba(245,158,11,0.08)" : "rgba(239,68,68,0.08)";
-  const lineStroke = color==="green" ? "#10B981" : color==="orange" ? "#F59E0B" : "#EF4444";
+  const [hoverIdx, setHoverIdx] = useState<number | null>(null);
+
+  const W = 700; const H = 260;
+  const PL = 44; const PR = 70; const PT = 16; const PB = 36;
+
+  const lineStroke = color === "green" ? "#10B981" : color === "orange" ? "#F59E0B" : "#EF4444";
+  const areaFill   = color === "green" ? "rgba(16,185,129,0.08)" : color === "orange" ? "rgba(245,158,11,0.08)" : "rgba(239,68,68,0.08)";
+
+  // Y axis: always start at 0, go to rounded max
+  const dataMax = Math.max(...vals, target);
+  const yMax = Math.ceil(dataMax / 25) * 25 + 25;
+  const yMin = 0;
+  const rangeY = yMax - yMin;
+
+  const toX = (i: number) => PL + (i / (dates.length - 1)) * (W - PL - PR);
+  const toY = (v: number) => PT + (1 - (v - yMin) / rangeY) * (H - PT - PB);
+
+  // Y grid labels: 0, 25, 50, 75, 100 (filtered to range)
+  const yTicks = [0, 25, 50, 75, 100, 125].filter(v => v <= yMax);
+
+  const linePath = vals.map((v, i) => `${i === 0 ? "M" : "L"} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(" ");
+  const areaPath = `${linePath} L ${toX(vals.length - 1).toFixed(1)} ${H - PB} L ${toX(0).toFixed(1)} ${H - PB} Z`;
+  const targetY  = toY(target);
+
+  const colW = (W - PL - PR) / Math.max(dates.length - 1, 1);
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{height:140}}>
-      <line x1={PL} y1={targetY} x2={W-PR} y2={targetY} stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4"/>
-      <text x={W-PR} y={targetY-5} textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">TARGET</text>
-      <path d={areaPath} fill={areaFill}/>
-      <path d={linePath} fill="none" stroke={lineStroke} strokeWidth="2" strokeLinejoin="round"/>
-      {vals.map((v,i) => <circle key={i} cx={toX(i)} cy={toY(v)} r="3" fill={lineStroke}/>)}
-      {dates.map((d,i) => (
-        <text key={d} x={toX(i)} y={H-4} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
-      ))}
-    </svg>
+    <div style={{ position: "relative", userSelect: "none" }}>
+      <svg
+        viewBox={`0 0 ${W} ${H}`}
+        className="w-full block"
+        style={{ height: 260 }}
+        onMouseLeave={() => setHoverIdx(null)}
+      >
+        {/* Y grid lines + labels */}
+        {yTicks.map(v => (
+          <g key={v}>
+            <line
+              x1={PL} y1={toY(v)} x2={W - PR} y2={toY(v)}
+              stroke="#E5E7EB" strokeWidth="1" strokeDasharray="4 3"
+            />
+            <text
+              x={PL - 6} y={toY(v) + 4}
+              textAnchor="end" fontSize="11"
+              fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
+            >{v}</text>
+          </g>
+        ))}
+
+        {/* X axis baseline */}
+        <line x1={PL} y1={H - PB} x2={W - PR} y2={H - PB} stroke="#E5E7EB" strokeWidth="1" />
+
+        {/* Target line — red dashed */}
+        <line
+          x1={PL} y1={targetY} x2={W - PR} y2={targetY}
+          stroke="#EF4444" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.7"
+        />
+        <text
+          x={W - PR + 6} y={targetY + 4}
+          fontSize="11" fill="#9CA3AF"
+          fontFamily="Inter,system-ui,sans-serif"
+        >Target: {target}</text>
+
+        {/* Area fill */}
+        <path d={areaPath} fill={areaFill} />
+
+        {/* Main line */}
+        <path d={linePath} fill="none" stroke={lineStroke} strokeWidth="2.5" strokeLinejoin="round" />
+
+        {/* Data points — filled except last which is outline */}
+        {vals.map((v, i) => {
+          const isLast = i === vals.length - 1;
+          const isHovered = hoverIdx === i;
+          return (
+            <circle
+              key={i}
+              cx={toX(i)} cy={toY(v)}
+              r={isHovered ? 5 : 4}
+              fill={isLast ? "#fff" : lineStroke}
+              stroke={lineStroke}
+              strokeWidth="2"
+            />
+          );
+        })}
+
+        {/* Hover crosshair */}
+        {hoverIdx !== null && (
+          <line
+            x1={toX(hoverIdx)} y1={PT}
+            x2={toX(hoverIdx)} y2={H - PB}
+            stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 2"
+          />
+        )}
+
+        {/* X date labels */}
+        {dates.map((d, i) => (
+          <text
+            key={d} x={toX(i)} y={H - PB + 18}
+            textAnchor="middle" fontSize="11"
+            fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
+          >{d}</text>
+        ))}
+
+        {/* Invisible hover columns */}
+        {dates.map((_, i) => (
+          <rect
+            key={i}
+            x={toX(i) - colW / 2} y={PT}
+            width={colW} height={H - PT - PB}
+            fill="transparent"
+            onMouseEnter={() => setHoverIdx(i)}
+          />
+        ))}
+      </svg>
+
+      {/* Tooltip card */}
+      {hoverIdx !== null && (
+        <div
+          style={{
+            position: "absolute",
+            left: `calc(${((toX(hoverIdx) / W) * 100).toFixed(1)}% + 12px)`,
+            top: `${((toY(vals[hoverIdx]) / H) * 100).toFixed(1)}%`,
+            transform: "translateY(-50%)",
+            background: "#fff",
+            border: "1px solid #E5E7EB",
+            borderRadius: 10,
+            padding: "10px 14px",
+            fontSize: 13,
+            pointerEvents: "none",
+            whiteSpace: "nowrap",
+            zIndex: 20,
+            boxShadow: "0 4px 16px rgba(0,0,0,0.10)",
+            minWidth: 100,
+          }}
+        >
+          <p style={{ margin: 0, fontWeight: 600, color: "#374151", marginBottom: 5, fontSize: 13 }}>
+            {dates[hoverIdx]}
+          </p>
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: lineStroke, display: "inline-block", flexShrink: 0 }} />
+            <span style={{ color: lineStroke, fontWeight: 600, fontSize: 13 }}>: {vals[hoverIdx]}{color !== "green" || vals[hoverIdx] > 100 ? "" : "%"}</span>
+          </div>
+        </div>
+      )}
+
+      {/* Result label */}
+      <div style={{ textAlign: "center", marginTop: 6 }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: lineStroke, fontWeight: 500 }}>
+          <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+            <line x1="0" y1="5" x2="11" y2="5" stroke={lineStroke} strokeWidth="1.5"/>
+            <circle cx="5" cy="5" r="3" fill="#fff" stroke={lineStroke} strokeWidth="1.5"/>
+            <path d="M11 2l4 3-4 3" fill="none" stroke={lineStroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          Result
+        </span>
+      </div>
+    </div>
   );
 }
 
