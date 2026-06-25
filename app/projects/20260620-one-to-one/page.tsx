@@ -183,7 +183,7 @@ export default function OneToOnePage() {
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <GlobalHeader />
-        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6">
+        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6" style={showSession ? {paddingRight: "calc(2rem + 520px)"} : {}}>
 
           {/* Page title */}
           <div className="mb-5">
@@ -487,20 +487,12 @@ export default function OneToOnePage() {
             </div>
           </div>
 
-          {/* ── New Coaching Session panel ─────────────────────────── */}
+          {/* ── New Coaching Session panel — fixed right, no overlay ── */}
           {showSession && (
             <div
-              className="fixed top-[44px] right-0 bottom-0 z-40 flex"
-              style={{ left: 0 }}
+              className="fixed top-[44px] right-0 bottom-0 z-40 bg-white flex flex-col border-l border-border shadow-2xl"
+              style={{ width: 520, overflowY: "hidden" }}
             >
-              {/* Backdrop */}
-              <div className="flex-1 bg-black/20" onClick={() => setShowSession(false)} />
-
-              {/* Panel */}
-              <div
-                className="bg-white flex flex-col border-l border-border shadow-2xl"
-                style={{ width: 520, overflowY: "hidden" }}
-              >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-border flex-shrink-0">
                   <div className="flex items-center gap-2">
