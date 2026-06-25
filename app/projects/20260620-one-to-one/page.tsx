@@ -219,7 +219,6 @@ export default function OneToOnePage() {
                 className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0 whitespace-nowrap"
                 style={{ background: "#10B981" }}
               >
-                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
                 + New Session
               </button>
             </div>
@@ -482,7 +481,7 @@ export default function OneToOnePage() {
               {/* Panel */}
               <div
                 className="bg-white flex flex-col border-l border-border shadow-2xl"
-                style={{ width: 460, overflowY: "hidden" }}
+                style={{ width: 520, overflowY: "hidden" }}
               >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-border flex-shrink-0">
@@ -538,7 +537,7 @@ export default function OneToOnePage() {
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="text-xs font-medium text-text-secondary">Topic / Subject</label>
-                      <button className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                      <button className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-border bg-white text-text-primary hover:border-brand transition-colors">
                         <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                         New Fact
                       </button>
@@ -572,8 +571,8 @@ export default function OneToOnePage() {
                           <option>English</option>
                           <option>Español</option>
                         </select>
-                        <button className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style={{background:"#54B282"}}>
-                          <svg width="8" height="9" viewBox="0 0 8 9" fill="none"><path d="M1 1.5l6 3-6 3V1.5z" fill="white"/></svg>
+                        <button className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full text-white" style={{background:"#54B282"}}>
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="white" strokeWidth="1"/><path d="M4 3.5l3 1.5-3 1.5V3.5z" fill="white"/></svg>
                           Start
                         </button>
                       </div>
