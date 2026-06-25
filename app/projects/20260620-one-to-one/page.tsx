@@ -470,19 +470,25 @@ export default function OneToOnePage() {
             </div>
           </div>
 
-          {/* ── New Coaching Session panel — 1:1 with original ── */}
+          {/* ── New Coaching Session panel ─────────────────────────── */}
           {showSession && (
-            <div className="fixed inset-0 z-40 flex">
-              {/* Backdrop — click to close */}
-              <div className="flex-1" onClick={() => setShowSession(false)} />
-              {/* Panel — right side, full height, scrollable */}
-              <div className="w-[380px] flex-shrink-0 bg-white h-full flex flex-col shadow-2xl border-l border-border overflow-hidden">
+            <div
+              className="fixed top-[44px] right-0 bottom-0 z-40 flex"
+              style={{ left: 0 }}
+            >
+              {/* Backdrop */}
+              <div className="flex-1 bg-black/20" onClick={() => setShowSession(false)} />
 
+              {/* Panel */}
+              <div
+                className="bg-white flex flex-col border-l border-border shadow-2xl"
+                style={{ width: 460, overflowY: "hidden" }}
+              >
                 {/* Header */}
-                <div className="flex items-center justify-between px-5 py-4 border-b border-border flex-shrink-0">
+                <div className="flex items-center justify-between px-5 py-3.5 border-b border-border flex-shrink-0">
                   <div className="flex items-center gap-2">
                     <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="#10B981" strokeWidth="1.3"/><path d="M4.5 7.5l2.5 2.5 3.5-4" stroke="#10B981" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                    <span className="text-sm font-semibold text-text-primary">New Coaching Session</span>
+                    <span className="text-sm font-semibold">New Coaching Session</span>
                   </div>
                   <button onClick={() => setShowSession(false)} className="text-text-tertiary hover:text-text-primary p-1 rounded transition-colors">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
@@ -490,31 +496,29 @@ export default function OneToOnePage() {
                 </div>
 
                 {/* Draft notice */}
-                <div className="mx-5 mt-3 flex items-start gap-2 px-3 py-2.5 rounded-lg border border-border bg-surface-muted flex-shrink-0">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="mt-0.5 flex-shrink-0"><rect x="1" y="1" width="11" height="11" rx="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M3.5 4.5h6M3.5 6.5h4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                <div className="mx-4 mt-3 flex items-start gap-2 px-3 py-2 rounded-lg border border-border bg-surface-muted flex-shrink-0">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="mt-0.5 flex-shrink-0"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="#9CA3AF" strokeWidth="1"/><path d="M3 4h6M3 6h4" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/></svg>
                   <p className="text-[11px] text-text-tertiary m-0 leading-relaxed">
                     Draft in progress. × or Cancel to keep editing later — use <span className="font-semibold">Discard</span> to clear all fields.
                   </p>
                 </div>
 
-                {/* Scrollable body */}
+                {/* Body */}
                 <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
 
-                  {/* Row 1: Employee | Session Type | KPI Focus */}
+                  {/* Row: Employee (no arrows) | Session Type | KPI Focus */}
                   <div className="grid grid-cols-3 gap-3">
-                    {/* C1: Employee — read-only, no dropdown */}
                     <div>
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Employee</label>
-                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 border border-border rounded-lg bg-surface-muted cursor-default">
+                      <div className="flex items-center gap-2 px-2.5 py-2 border border-border rounded-lg bg-surface-muted cursor-default">
                         <div className="w-5 h-5 rounded-full bg-brand-light flex items-center justify-center text-brand text-[9px] font-bold flex-shrink-0">{agent.initials}</div>
                         <span className="text-sm text-text-primary truncate">{agent.name}</span>
-                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none" className="ml-auto flex-shrink-0 opacity-40"><path d="M2 4l3.5 3.5L9 4" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
                       </div>
                     </div>
                     <div>
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Session Type</label>
-                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-1.5 bg-white text-text-primary focus:outline-none focus:border-brand appearance-none">
-                        <option>Select...</option>
+                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                        <option value="">Select...</option>
                         <option>Coaching</option>
                         <option>Performance Review</option>
                         <option>Development</option>
@@ -523,169 +527,172 @@ export default function OneToOnePage() {
                     </div>
                     <div>
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">KPI Focus</label>
-                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-1.5 bg-white text-text-primary focus:outline-none focus:border-brand appearance-none">
+                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:border-brand">
                         <option>None</option>
                         {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
                       </select>
                     </div>
                   </div>
 
-                  {/* Topic / Subject + New Fact */}
+                  {/* Topic / Subject — select with visible arrows + New Fact */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
                       <label className="text-xs font-medium text-text-secondary">Topic / Subject</label>
-                      {/* C2: #54B282 */}
-                      <button className="flex items-center gap-1 text-[11px] font-semibold px-2 py-1 rounded-lg text-white" style={{ background: "#54B282" }}>
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="white" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                      <button className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                         New Fact
                       </button>
                     </div>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-1.5 bg-white text-text-primary focus:outline-none focus:border-brand appearance-none">
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
                       <option>— Select a fact —</option>
-                      {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}…</option>)}
+                      {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
                     </select>
                   </div>
 
-                  {/* Linked Improvement Point */}
+                  {/* Linked Improvement Point — select with arrows */}
                   <div>
                     <label className="text-xs font-medium text-text-secondary block mb-1.5">Linked Improvement Point</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-1.5 bg-white text-text-primary focus:outline-none focus:border-brand appearance-none">
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
                       <option>— Select —</option>
+                      <option>Improve closing technique — only 35% pitch rate</option>
+                      <option>Greeting protocol compliance — failed 3 consecutive evals</option>
                     </select>
                   </div>
 
                   {/* Voice Recording */}
                   <div>
                     <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-medium text-text-secondary flex items-center gap-1">
-                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><rect x="3.5" y="1" width="4" height="6" rx="2" stroke="#6B7280" strokeWidth="1.1"/><path d="M1.5 6.5a4 4 0 008 0" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/><line x1="5.5" y1="10" x2="5.5" y2="8" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <label className="text-xs font-medium text-text-secondary flex items-center gap-1.5">
+                        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="3" y="0.5" width="5" height="7" rx="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 7a4.5 4.5 0 009 0" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/><line x1="5.5" y1="11.5" x2="5.5" y2="13" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
                         Voice Recording
                       </label>
                       <div className="flex items-center gap-1.5">
-                        <select className="text-xs border border-border rounded-md px-2 py-1 bg-white focus:outline-none focus:border-brand appearance-none text-text-secondary">
+                        <select className="text-xs border border-border rounded-md px-2 py-1 bg-surface-muted focus:outline-none text-text-secondary">
                           <option>Português</option>
                           <option>English</option>
                           <option>Español</option>
                         </select>
-                        <button className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style={{ background: "#54B282" }}>
-                          <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><circle cx="4.5" cy="4.5" r="3.5" stroke="white" strokeWidth="1"/><polygon points="3.5,3 7,4.5 3.5,6" fill="white"/></svg>
+                        <button className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white" style={{background:"#54B282"}}>
+                          <svg width="8" height="9" viewBox="0 0 8 9" fill="none"><path d="M1 1.5l6 3-6 3V1.5z" fill="white"/></svg>
                           Start
                         </button>
                       </div>
                     </div>
-                    <textarea
-                      rows={3}
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white text-text-primary placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
-                      placeholder="Transcript will appear here as you speak, or paste text manually..."
-                    />
+                    <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-primary placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Transcript will appear here as you speak, or paste text manually..."/>
                   </div>
 
-                  {/* Goal + Performance Review */}
+                  {/* Goal + Performance Review — perfectly equal 2-col grid */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
+                    <div className="flex flex-col">
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Goal</label>
-                      <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Goal..." />
+                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Goal..."/>
                     </div>
-                    <div>
+                    <div className="flex flex-col">
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Performance Review</label>
-                      <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Performance Review..." />
+                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Performance Review..."/>
                     </div>
                   </div>
 
-                  {/* Improvement Opportunities + Development Plan */}
+                  {/* Improvement Opportunities + Development Plan — equal 2-col */}
                   <div className="grid grid-cols-2 gap-3">
-                    <div>
+                    <div className="flex flex-col">
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Improvement Opportunities Discussion</label>
-                      <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Improvement Opportunities Discussion..." />
+                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Improvement Opportunities Discussion..."/>
                     </div>
-                    <div>
+                    <div className="flex flex-col">
                       <label className="text-xs font-medium text-text-secondary block mb-1.5">Development Plan</label>
-                      <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Development Plan..." />
+                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Development Plan..."/>
                     </div>
                   </div>
 
                   {/* Notes / Summary */}
                   <div>
                     <label className="text-xs font-medium text-text-secondary block mb-1.5">Notes / Summary</label>
-                    <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Session notes..." />
+                    <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Session notes..."/>
                   </div>
 
-                  {/* C3: Actions — always visible, + Add Action adds a card */}
+                  {/* Actions — always one visible by default, + Add Action to add more */}
                   <div>
                     <div className="flex items-center justify-between mb-3">
-                      <label className="text-xs font-medium text-text-secondary">Actions ({sessionActions.length})</label>
+                      <label className="text-xs font-medium text-text-secondary">Actions ({sessionActions.length === 0 ? 1 : sessionActions.length})</label>
                       <button
-                        onClick={() => setSessionActions(prev => [...prev, { type: "Human Coaching", text: "", dueDate: "" }])}
-                        className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border text-text-secondary hover:border-brand hover:text-brand transition-colors"
+                        onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
+                        className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors"
                       >
                         <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
                         Add Action
                       </button>
                     </div>
 
-                    {sessionActions.length === 0 ? (
-                      <p className="text-xs text-text-tertiary text-center py-3">No actions yet. Click &quot;+ Add Action&quot; to add one.</p>
-                    ) : (
-                      <div className="flex flex-col gap-3">
-                        {sessionActions.map((a, i) => (
-                          <div key={i} className="border border-border rounded-lg p-3 bg-surface-muted">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-xs font-semibold text-text-secondary">Action {i + 1}</span>
-                              <button
-                                onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))}
-                                className="text-danger hover:text-danger/70 transition-colors"
-                              >
-                                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                              </button>
-                            </div>
-                            <textarea
-                              rows={2}
-                              value={a.text}
-                              onChange={e => setSessionActions(prev => prev.map((x, j) => j === i ? { ...x, text: e.target.value } : x))}
-                              className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-2"
-                              placeholder="Describe the action..."
-                            />
-                            <div className="grid grid-cols-2 gap-2">
-                              <div>
-                                <label className="text-[11px] text-text-tertiary block mb-1">Category</label>
-                                <select
-                                  value={a.type}
-                                  onChange={e => setSessionActions(prev => prev.map((x, j) => j === i ? { ...x, type: e.target.value } : x))}
-                                  className="w-full text-xs border border-border rounded-md px-2 py-1.5 bg-white focus:outline-none focus:border-brand appearance-none"
-                                >
-                                  <option>Human Coaching</option>
-                                  <option>Coach Call</option>
-                                  <option>GROW</option>
-                                  <option>QA Review</option>
-                                  <option>Model Call</option>
-                                  <option>Training</option>
-                                  <option>Assessment</option>
-                                </select>
-                              </div>
-                              <div>
-                                <label className="text-[11px] text-text-tertiary block mb-1">Due Date</label>
-                                <input
-                                  type="date"
-                                  value={a.dueDate}
-                                  onChange={e => setSessionActions(prev => prev.map((x, j) => j === i ? { ...x, dueDate: e.target.value } : x))}
-                                  className="w-full text-xs border border-border rounded-md px-2 py-1.5 bg-white focus:outline-none focus:border-brand"
-                                />
-                              </div>
-                            </div>
+                    {/* Action cards */}
+                    {(sessionActions.length === 0
+                      ? [{type:"Human Coaching", text:"", dueDate:""}]
+                      : sessionActions
+                    ).map((a, i) => (
+                      <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-text-tertiary">Action {i + 1}</span>
+                          {sessionActions.length > 0 && (
+                            <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-danger hover:opacity-70 transition-opacity">
+                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                            </button>
+                          )}
+                        </div>
+                        <textarea rows={3}
+                          value={sessionActions.length > 0 ? a.text : ""}
+                          onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,text:e.target.value}:x)) : undefined}
+                          className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3"
+                          placeholder="Describe the action..."/>
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                          <div>
+                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Category</label>
+                            <select
+                              value={sessionActions.length > 0 ? a.type : "Human Coaching"}
+                              onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
+                              className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                              <option>Human Coaching</option>
+                              <option>Training</option>
+                              <option>AI Coaching</option>
+                            </select>
                           </div>
-                        ))}
+                          <div>
+                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Due Date</label>
+                            <input type="date"
+                              value={sessionActions.length > 0 ? a.dueDate : ""}
+                              onChange={sessionActions.length > 0 ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
+                              className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                          </div>
+                        </div>
+                        <div className="mb-2">
+                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Coaching Tool</label>
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                            <option value="">Select tool...</option>
+                            <option>GROW Model</option>
+                            <option>Customer Experience Coaching</option>
+                            <option>Feedback Conversation</option>
+                            <option>Side-by-Side Observation</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Subject Category</label>
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                            <option>Call Opening</option>
+                            <option>Active Listening</option>
+                            <option>Needs Discovery</option>
+                            <option>Hold &amp; Transfer</option>
+                            <option>Disclosure Script</option>
+                          </select>
+                        </div>
                       </div>
-                    )}
+                    ))}
                   </div>
 
                 </div>
 
                 {/* Footer */}
                 <div className="flex items-center justify-between px-5 py-3 border-t border-border flex-shrink-0 bg-white">
-                  <button
-                    onClick={() => { setShowSession(false); setSessionActions([]); }}
-                    className="flex items-center gap-1.5 text-sm text-danger border border-danger/30 px-3 py-1.5 rounded-lg hover:bg-danger/5 transition-colors font-medium"
-                  >
+                  <button onClick={() => {setShowSession(false); setSessionActions([]);}}
+                    className="flex items-center gap-1.5 text-sm text-danger border border-danger/30 px-3 py-1.5 rounded-lg hover:bg-danger/5 transition-colors font-medium">
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M4.5 3V2h3v1M9.5 3l-.4 6.5H2.9L2.5 3" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
                     Discard
                   </button>
@@ -693,11 +700,9 @@ export default function OneToOnePage() {
                     <button onClick={() => setShowSession(false)} className="text-sm text-text-secondary border border-border px-3 py-1.5 rounded-lg hover:border-brand/40 transition-colors">
                       Cancel
                     </button>
-                    <button
-                      onClick={() => setShowSession(false)}
-                      className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg transition-colors"
-                      style={{ background: "#10B981" }}
-                    >
+                    <button onClick={() => setShowSession(false)}
+                      className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg"
+                      style={{background:"#10B981"}}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Save Session
                     </button>
@@ -706,7 +711,6 @@ export default function OneToOnePage() {
               </div>
             </div>
           )}
-
         </main>
       </div>
     </div>
