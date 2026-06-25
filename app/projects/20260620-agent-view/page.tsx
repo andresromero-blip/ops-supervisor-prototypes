@@ -169,6 +169,8 @@ function AgentViewContent() {
 
   const [agentSlug, setAgentSlug] = useState(initSlug);
   const [showDropdown, setShowDropdown] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [showCedpModal, setShowCedpModal] = useState(false);
   const [selectedKpi, setSelectedKpi] = useState("csat");
   const [kpiPeriod, setKpiPeriod] = useState<"weekly"|"monthly"|"qtd">("weekly");
 
@@ -200,7 +202,7 @@ function AgentViewContent() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 2h12M1 7h8M1 12h5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
             Comms <span className="bg-danger text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full leading-none">2</span>
           </button>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
+          <button onClick={() => setShowCedpModal(true)} className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" strokeWidth="1.2" rx="1"/><path d="M5 5h4M5 8h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
             CEDP
           </button>
@@ -217,20 +219,53 @@ function AgentViewContent() {
           <span className="text-sm text-text-secondary">Employee:</span>
           <div className="relative">
             <button
-              onClick={() => setShowDropdown(v => !v)}
-              className="flex items-center gap-2 px-3 py-1.5 border border-border rounded-lg bg-surface text-sm min-w-[200px]"
+              onClick={() => { setShowDropdown(v => !v); setSearchQuery(""); }}
+              className="flex items-center gap-2 px-3 py-1.5 border border-border rounded-lg bg-surface text-sm min-w-[220px]"
             >
-              <span className="font-medium">{agent.name}</span>
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="ml-auto"><path d="M3 5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
+              <span className="font-medium flex-1 text-left">{agent.name}</span>
+              {/* up-down chevron like original */}
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5.5l3-3 3 3" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 8.5l3 3 3-3" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
             {showDropdown && (
-              <div className="absolute top-[calc(100%+4px)] left-0 bg-surface border border-border rounded-lg shadow-lg z-20 min-w-[220px] overflow-hidden">
-                {AGENT_LIST.map(a => (
-                  <button key={a.slug} onClick={() => { setAgentSlug(a.slug); setShowDropdown(false); }}
-                    className={`w-full text-left px-4 py-2 text-sm hover:bg-surface-muted transition-colors ${agentSlug===a.slug?"font-semibold text-brand bg-brand-light":""}`}>
-                    {a.label}
-                  </button>
-                ))}
+              <div className="absolute top-[calc(100%+4px)] left-0 bg-surface border border-border rounded-xl shadow-xl z-20 w-[280px] overflow-hidden">
+                {/* Search field */}
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" strokeWidth="1.2"/><path d="M9.5 9.5L13 13" stroke="#9CA3AF" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                  <input
+                    autoFocus
+                    type="text"
+                    placeholder="Search employee..."
+                    value={searchQuery}
+                    onChange={e => setSearchQuery(e.target.value)}
+                    className="flex-1 text-sm outline-none bg-transparent text-text-primary placeholder:text-text-tertiary"
+                  />
+                </div>
+                {/* Unassigned group label */}
+                <div className="px-4 pt-2 pb-1">
+                  <span className="text-[11px] font-medium text-text-tertiary uppercase tracking-wide">Unassigned</span>
+                </div>
+                {/* Agent list */}
+                <div className="pb-2 max-h-64 overflow-y-auto">
+                  {AGENT_LIST
+                    .filter(a => a.label.toLowerCase().includes(searchQuery.toLowerCase()))
+                    .map(a => {
+                      const isSelected = agentSlug === a.slug;
+                      return (
+                        <button
+                          key={a.slug}
+                          onClick={() => { setAgentSlug(a.slug); setShowDropdown(false); setSearchQuery(""); }}
+                          className={`w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${isSelected ? "bg-surface-muted font-medium" : "hover:bg-surface-muted"}`}
+                        >
+                          {isSelected ? (
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M2 7l4 4 6-6" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          ) : (
+                            <span className="w-[14px] flex-shrink-0" />
+                          )}
+                          <span className={isSelected ? "text-text-primary" : "text-text-secondary"}>{a.label}</span>
+                        </button>
+                      );
+                    })}
+                </div>
               </div>
             )}
           </div>
@@ -443,6 +478,53 @@ function AgentViewContent() {
         </div>
 
       </div>
+
+      {/* ── CEDP Modal ─────────────────────────────────────── */}
+      {showCedpModal && (
+        <div
+          className="fixed inset-0 bg-black/40 flex items-center justify-center z-50"
+          onClick={() => setShowCedpModal(false)}
+        >
+          <div
+            className="bg-white rounded-2xl shadow-2xl w-[480px] max-w-[95vw] max-h-[90vh] overflow-y-auto"
+            onClick={e => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 pt-6 pb-4">
+              <div className="flex items-center gap-2">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="16" rx="3" stroke="#10B981" strokeWidth="1.4"/><path d="M5 6h8M5 9h6M5 12h4" stroke="#10B981" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                <span className="text-base font-semibold text-text-primary">CEDP — {agent.name}</span>
+              </div>
+              <button
+                onClick={() => setShowCedpModal(false)}
+                className="w-7 h-7 rounded-full border border-border flex items-center justify-center text-text-tertiary hover:text-text-primary transition-colors"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M1 1l10 10M11 1L1 11" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+              </button>
+            </div>
+            <div className="px-6 pb-3">
+              <span className="text-sm text-text-secondary">Draft</span>
+            </div>
+            <div className="px-6 pb-6 flex flex-col gap-2">
+              {[
+                "A. Ability to cope with the tasks and daily routine",
+                "B. Problem solving and continuous improvement",
+                "C. Commitment and responsibility",
+                "D. Collaboration and teamwork",
+                "E. Knowledge and technical skills",
+                "F. Communication and interpersonal skills",
+                "G. Propensity to Leave",
+              ].map((item) => (
+                <div
+                  key={item}
+                  className="border border-border rounded-lg px-4 py-3 text-sm text-text-primary hover:bg-surface-muted transition-colors cursor-pointer"
+                >
+                  {item}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
