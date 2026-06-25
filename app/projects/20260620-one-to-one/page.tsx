@@ -191,43 +191,32 @@ export default function OneToOnePage() {
             <p className="text-sm text-text-secondary m-0">Coaching & Development Dashboard · KPI → Root Causes → Actions</p>
           </div>
 
-          {/* Agent module */}
-          <div className="border border-border rounded-xl p-4 mb-5 bg-surface">
-            <div className="flex items-start justify-between gap-4">
-              {/* Left: agent selector */}
-              <div className="flex-1">
-                <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-2 flex items-center gap-1">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4.5 5-4.5s5 2 5 4.5" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  AGENT
-                </p>
-                <div className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors">
-                  <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
-                    {agent.initials}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
-                    <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
-                  </div>
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
-                </div>
+          {/* Agent module — compact single row */}
+          <div className="border border-border rounded-xl px-4 py-3 mb-5 bg-surface flex items-center gap-3">
+            {/* Agent selector */}
+            <div className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors flex-1 min-w-0">
+              <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
+                {agent.initials}
               </div>
-
-              {/* Right: CEDP + New Session only — period lives in global header */}
-              <div className="flex items-center gap-2 flex-shrink-0 self-center">
-                <button className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
-                  <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  CEDP
-                </button>
-                <button
-                  onClick={() => setShowSession(true)}
-                  className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white"
-                  style={{ background: "#10B981" }}
-                >
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
-                  New Session
-                </button>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
+                <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
               </div>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
             </div>
+            {/* CEDP + New Session */}
+            <button className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors flex-shrink-0">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+              CEDP
+            </button>
+            <button
+              onClick={() => setShowSession(true)}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0"
+              style={{ background: "#10B981" }}
+            >
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1 6h10" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              + New Session
+            </button>
           </div>
 
           {/* KPI filter bar */}
