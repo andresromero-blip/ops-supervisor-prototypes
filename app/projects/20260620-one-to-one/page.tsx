@@ -169,7 +169,7 @@ export default function OneToOnePage() {
   const [focusKpi, setFocusKpi] = useState(agent.focusKpi);
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
-  const hasActions = hasActions;
+  const hasActions = sessionActions.length !== 0;
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
 
