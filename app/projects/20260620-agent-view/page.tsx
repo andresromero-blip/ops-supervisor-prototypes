@@ -114,23 +114,22 @@ const DATES_MONTHLY = ["M-3","M-2","M-1"];
 const DATES_QTD     = ["Apr","May","Jun"];
 
 function KpiEvolutionChart({
-  vals, dates, target, color,
+  vals, dates, target,
 }: {
   vals: number[]; dates: string[]; target: number; color: string;
 }) {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
-  // SVG canvas
-  const W  = 900;
-  const H  = 320;
-  const PL = 52;   // Y-axis labels
-  const PR = 80;   // "Target: N" text
-  const PT = 24;   // top
-  const PB = 44;   // X-axis labels
+  // Always green — matches original exactly
+  const lineColor = "#10B981";
 
-  const lineColor = color === "green" ? "#10B981"
-                  : color === "orange" ? "#F59E0B"
-                  : "#EF4444";
+  // SVG canvas — compact height matching original card
+  const W  = 900;
+  const H  = 200;
+  const PL = 50;
+  const PR = 82;
+  const PT = 16;
+  const PB = 36;
 
   // Y scale: 0 → rounded max
   const rawMax = Math.max(...vals, target);
@@ -144,8 +143,10 @@ function KpiEvolutionChart({
   const yTicks   = [0, 25, 50, 75, 100].filter(t => t <= yMax + 5);
   const targetY  = toY(target);
   const points   = vals.map((v, i) => [toX(i), toY(v)] as [number, number]);
-  const linePath = points.map(([x, y], i) =>
-    `${i === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+  const linePath = points
+    .map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`)
+    .join(" ");
+
   const segW = (W - PL - PR) / Math.max(dates.length - 1, 1);
 
   return (
@@ -156,32 +157,28 @@ function KpiEvolutionChart({
         style={{ display: "block", aspectRatio: `${W}/${H}` }}
         onMouseLeave={() => setHoverIdx(null)}
       >
-        {/* White background for plot area */}
+        {/* White plot area */}
         <rect x={PL} y={PT} width={W - PL - PR} height={H - PT - PB} fill="#fff" />
 
-        {/* Y grid lines — dashed, matching original */}
+        {/* Y grid lines — dashed */}
         {yTicks.map(tick => {
           const ty = toY(tick);
           return (
             <g key={tick}>
               <line
                 x1={PL} y1={ty} x2={W - PR} y2={ty}
-                stroke="#D1D5DB"
-                strokeWidth="1"
-                strokeDasharray="5 5"
+                stroke="#D1D5DB" strokeWidth="1" strokeDasharray="5 5"
               />
               <text
                 x={PL - 10} y={ty + 4}
-                textAnchor="end"
-                fontSize="13"
-                fill="#9CA3AF"
-                fontFamily="Inter,system-ui,sans-serif"
+                textAnchor="end" fontSize="12"
+                fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
               >{tick}</text>
             </g>
           );
         })}
 
-        {/* X baseline — solid grey */}
+        {/* X baseline */}
         <line
           x1={PL} y1={H - PB} x2={W - PR} y2={H - PB}
           stroke="#D1D5DB" strokeWidth="1"
@@ -190,75 +187,61 @@ function KpiEvolutionChart({
         {/* Target line — red dashed */}
         <line
           x1={PL} y1={targetY} x2={W - PR} y2={targetY}
-          stroke="#EF4444"
-          strokeWidth="1.5"
-          strokeDasharray="6 4"
-          opacity="0.55"
+          stroke="#EF4444" strokeWidth="1.5"
+          strokeDasharray="6 4" opacity="0.55"
         />
         <text
           x={W - PR + 10} y={targetY + 5}
-          fontSize="12"
-          fill="#9CA3AF"
+          fontSize="12" fill="#9CA3AF"
           fontFamily="Inter,system-ui,sans-serif"
         >Target: {target}</text>
 
-        {/* Main data line */}
+        {/* Main line — thin, 1.5px */}
         <path
-          d={linePath}
-          fill="none"
-          stroke={lineColor}
-          strokeWidth="2.5"
-          strokeLinejoin="round"
-          strokeLinecap="round"
+          d={linePath} fill="none"
+          stroke={lineColor} strokeWidth="1.5"
+          strokeLinejoin="round" strokeLinecap="round"
         />
 
-        {/* Hover vertical line */}
+        {/* Hover crosshair */}
         {hoverIdx !== null && (
           <line
             x1={toX(hoverIdx)} y1={PT}
             x2={toX(hoverIdx)} y2={H - PB}
-            stroke="#9CA3AF"
-            strokeWidth="1"
+            stroke="#D1D5DB" strokeWidth="1"
           />
         )}
 
-        {/* Data points:
-            - All points: solid fill, white ring between fill and line (boxed look)
-            - Last point: white fill + colored stroke (hollow)
-         */}
+        {/* Only ONE dot visible — the hovered point (solid small green)
+            Last point always shows as hollow outline */}
         {points.map(([x, y], i) => {
           const isLast    = i === vals.length - 1;
           const isHovered = hoverIdx === i;
-          const r = isHovered ? 8 : 6.5;
-          if (isLast) {
+
+          if (isHovered) {
             return (
-              <g key={i}>
-                {/* white halo */}
-                <circle cx={x} cy={y} r={r + 2.5} fill="#fff" />
-                {/* colored ring */}
-                <circle cx={x} cy={y} r={r} fill="#fff" stroke={lineColor} strokeWidth="2.5" />
-              </g>
+              <circle key={i} cx={x} cy={y} r={5}
+                fill={lineColor} stroke="none"
+              />
             );
           }
-          return (
-            <g key={i}>
-              {/* white halo between line and dot */}
-              <circle cx={x} cy={y} r={r + 2.5} fill="#fff" />
-              {/* solid dot */}
-              <circle cx={x} cy={y} r={r} fill={lineColor} />
-            </g>
-          );
+          if (isLast) {
+            return (
+              <circle key={i} cx={x} cy={y} r={4}
+                fill="#fff" stroke={lineColor} strokeWidth="1.5"
+              />
+            );
+          }
+          // All other points: invisible (line only)
+          return null;
         })}
 
         {/* X date labels */}
         {dates.map((d, i) => (
           <text
-            key={d}
-            x={toX(i)} y={H - PB + 22}
-            textAnchor="middle"
-            fontSize="13"
-            fill="#9CA3AF"
-            fontFamily="Inter,system-ui,sans-serif"
+            key={d} x={toX(i)} y={H - PB + 20}
+            textAnchor="middle" fontSize="12"
+            fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
           >{d}</text>
         ))}
 
@@ -268,11 +251,9 @@ function KpiEvolutionChart({
           const x0 = i === 0 ? PL : cx - segW / 2;
           const x1 = i === dates.length - 1 ? W - PR : cx + segW / 2;
           return (
-            <rect
-              key={i}
+            <rect key={i}
               x={x0} y={PT}
-              width={x1 - x0}
-              height={H - PT - PB}
+              width={x1 - x0} height={H - PT - PB}
               fill="transparent"
               onMouseEnter={() => setHoverIdx(i)}
             />
@@ -286,36 +267,30 @@ function KpiEvolutionChart({
         const pctY  = toY(vals[hoverIdx]) / H * 100;
         const right = pctX > 60;
         return (
-          <div
-            style={{
-              position: "absolute",
-              ...(right
-                ? { right: `calc(${100 - pctX}% + 14px)` }
-                : { left:  `calc(${pctX}% + 14px)` }),
-              top:             `${pctY}%`,
-              transform:       "translateY(-50%)",
-              background:      "#fff",
-              border:          "1px solid #F0F0F0",
-              borderRadius:    10,
-              padding:         "10px 14px",
-              pointerEvents:   "none",
-              whiteSpace:      "nowrap",
-              zIndex:          30,
-              boxShadow:       "0 2px 12px rgba(0,0,0,0.08)",
-              minWidth:        90,
-            }}
-          >
-            <p style={{
-              margin: 0, fontWeight: 600,
-              color: "#111827", fontSize: 13, marginBottom: 6,
-            }}>
+          <div style={{
+            position: "absolute",
+            ...(right
+              ? { right: `calc(${100 - pctX}% + 12px)` }
+              : { left:  `calc(${pctX}% + 12px)` }),
+            top:           `${pctY}%`,
+            transform:     "translateY(-50%)",
+            background:    "#fff",
+            border:        "1px solid #F0F0F0",
+            borderRadius:  10,
+            padding:       "9px 13px",
+            pointerEvents: "none",
+            whiteSpace:    "nowrap",
+            zIndex:        30,
+            boxShadow:     "0 2px 12px rgba(0,0,0,0.08)",
+            minWidth:      86,
+          }}>
+            <p style={{ margin: 0, fontWeight: 600, color: "#111827", fontSize: 13, marginBottom: 5 }}>
               {dates[hoverIdx]}
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{
                 width: 8, height: 8, borderRadius: "50%",
-                background: lineColor,
-                display: "inline-block", flexShrink: 0,
+                background: lineColor, display: "inline-block", flexShrink: 0,
               }} />
               <span style={{ color: lineColor, fontWeight: 600, fontSize: 13 }}>
                 : {vals[hoverIdx]}
@@ -326,14 +301,10 @@ function KpiEvolutionChart({
       })()}
 
       {/* Result label */}
-      <div style={{ textAlign: "center", marginTop: 8 }}>
+      <div style={{ textAlign: "center", marginTop: 6 }}>
         <span style={{
-          display:    "inline-flex",
-          alignItems: "center",
-          gap:        6,
-          fontSize:   12.5,
-          color:      lineColor,
-          fontWeight: 500,
+          display: "inline-flex", alignItems: "center", gap: 6,
+          fontSize: 12, color: lineColor, fontWeight: 500,
         }}>
           <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
             <line x1="0" y1="5" x2="14" y2="5" stroke={lineColor} strokeWidth="1.5" />
