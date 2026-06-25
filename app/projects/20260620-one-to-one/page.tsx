@@ -231,23 +231,26 @@ export default function OneToOnePage() {
           </div>
 
           {/* KPI filter bar */}
-          <div className="flex items-center gap-2 mb-4 flex-wrap">
-            <button className="px-3 py-1 rounded-full text-xs font-semibold bg-text-primary text-white">
-              {agent.kpis.length} All
-            </button>
-            <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-              {outlierCount} Outlier
-            </button>
-            <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-              {offTargetCount} Off target
-            </button>
-            <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-              {atRiskCount} At risk
-            </button>
-            <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-              {onTargetCount} On target
-            </button>
-            <span className="ml-auto text-xs text-text-tertiary">Click a KPI to focus its story below</span>
+          <div className="mb-4">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button className="px-3 py-1 rounded-full text-xs font-semibold bg-text-primary text-white">
+                {agent.kpis.length} All
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {outlierCount} Outlier
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {offTargetCount} Off target
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {atRiskCount} At risk
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {onTargetCount} On target
+              </button>
+            </div>
+            {/* B: helper text below the filter bar, not floated to the right */}
+            <p className="text-xs text-text-tertiary mt-2 m-0">Click a KPI to focus its story below</p>
           </div>
 
           {/* KPI cards grid */}
