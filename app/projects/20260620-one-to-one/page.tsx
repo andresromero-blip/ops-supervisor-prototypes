@@ -166,17 +166,9 @@ function DeepDiveChart({ kpi }: { kpi: KpiCard }) {
 // ---------------------------------------------------------------------------
 export default function OneToOnePage() {
   const agent = AGENTS[0];
-  const [period, setPeriod] = useState<Period>("D-1");
   const [focusKpi, setFocusKpi] = useState(agent.focusKpi);
   const [showSession, setShowSession] = useState(false);
-
-  const periods: Period[] = ["D-1", "WTD", "MTD", "QTD"];
-  const periodLabel: Record<Period, string> = {
-    "D-1": "Yesterday — Tue 23 Jun",
-    WTD:   "Week to date · Jun 17–23",
-    MTD:   "Month to date · Jun 1–23",
-    QTD:   "Quarter to date · Apr 1–Jun 23",
-  };
+  const [sessionActions, setSessionActions] = useState<{type:string;text:string}[]>([]);
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
 
@@ -220,29 +212,8 @@ export default function OneToOnePage() {
                 </div>
               </div>
 
-              {/* Right: period + buttons */}
-              <div className="flex items-center gap-3 flex-shrink-0 pt-6">
-                <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-2 flex items-center gap-1">
-                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#9CA3AF" strokeWidth="1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/></svg>
-                    PERIOD: {periodLabel[period]}
-                  </p>
-                  <div className="flex items-center gap-1">
-                    {periods.map(p => (
-                      <button
-                        key={p}
-                        onClick={() => setPeriod(p)}
-                        className={`px-2.5 py-1 rounded-md text-xs font-semibold transition-colors ${
-                          period === p
-                            ? "bg-brand text-white"
-                            : "text-text-secondary hover:text-text-primary"
-                        }`}
-                      >
-                        {p}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+              {/* Right: CEDP + New Session only — period lives in global header */}
+              <div className="flex items-center gap-2 flex-shrink-0 self-center">
                 <button className="flex items-center gap-1.5 px-3 py-1.5 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors">
                   <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
                   CEDP
@@ -353,12 +324,13 @@ export default function OneToOnePage() {
           {/* KPI Deep Dive */}
           <div className="border border-border rounded-xl bg-surface mb-5 overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-border">
-              <div className="flex items-center gap-2">
+            <div className="px-5 py-3 border-b border-border">
+              <div className="flex items-center gap-2 mb-0.5">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="1,11 4,6 7,8 11,3 13,5" stroke="#10B981" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold">KPI deep dive · {activeKpi.label}</span>
               </div>
-              <span className="text-xs text-text-tertiary">Click any KPI card above to switch focus.</span>
+              {/* B: helper text below title, not to the right */}
+              <p className="text-xs text-text-tertiary m-0 pl-5">Click any KPI card above to switch focus.</p>
             </div>
 
             {/* Stats row */}
@@ -466,12 +438,13 @@ export default function OneToOnePage() {
 
           {/* Other topics */}
           <div className="border border-border rounded-xl bg-surface overflow-hidden mb-8">
-            <div className="flex items-center justify-between px-5 py-4 border-b border-border">
-              <div className="flex items-center gap-2">
+            <div className="px-5 py-4 border-b border-border">
+              <div className="flex items-center gap-2 mb-0.5">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#6B7280" strokeWidth="1.2"/><path d="M1.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold">Other topics</span>
               </div>
-              <span className="text-xs text-text-tertiary">Wellness, career, attendance and other non-KPI conversations.</span>
+              {/* B: helper text below title */}
+              <p className="text-xs text-text-tertiary m-0 pl-5">Wellness, career, attendance and other non-KPI conversations.</p>
             </div>
             <div className="p-5">
               {/* CEDP review card */}
@@ -498,6 +471,192 @@ export default function OneToOnePage() {
               </div>
             </div>
           </div>
+
+          {/* ── C. New Coaching Session panel ────────────────────────────── */}
+          {showSession && (
+            <div
+              className="fixed inset-0 bg-black/30 z-40 flex justify-end"
+              onClick={() => setShowSession(false)}
+            >
+              <div
+                className="relative bg-white h-full w-[420px] flex flex-col shadow-2xl overflow-y-auto"
+                onClick={e => e.stopPropagation()}
+              >
+                {/* Panel header */}
+                <div className="flex items-center justify-between px-5 py-4 border-b border-border flex-shrink-0">
+                  <div className="flex items-center gap-2">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6.5" stroke="#10B981" strokeWidth="1.3"/><path d="M5.5 8.5l2 2 3-3.5" stroke="#10B981" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <span className="text-sm font-semibold">New Coaching Session</span>
+                  </div>
+                  <button onClick={() => setShowSession(false)} className="text-text-tertiary hover:text-text-primary p-1 rounded transition-colors">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 3l10 10M13 3L3 13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  </button>
+                </div>
+
+                <div className="flex-1 px-5 py-5 flex flex-col gap-5 overflow-y-auto">
+
+                  {/* C1: Employee as fixed read-only badge — no dropdown */}
+                  <div>
+                    <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide block mb-2">Employee</label>
+                    <div className="flex items-center gap-2.5 px-3 py-2.5 rounded-lg border border-border bg-surface-muted">
+                      <div className="w-7 h-7 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
+                        {agent.initials}
+                      </div>
+                      <div>
+                        <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
+                        <div className="text-xs text-text-tertiary">{agent.tenure} · Customer Expert</div>
+                      </div>
+                      {/* Lock icon to make read-only nature clear */}
+                      <svg width="13" height="13" viewBox="0 0 13 13" fill="none" className="ml-auto flex-shrink-0"><rect x="2" y="5.5" width="9" height="7" rx="1.5" stroke="#D1D5DB" strokeWidth="1.1"/><path d="M4 5.5V4a2.5 2.5 0 015 0v1.5" stroke="#D1D5DB" strokeWidth="1.1"/></svg>
+                    </div>
+                    {/* B: helper below the field */}
+                    <p className="text-[11px] text-text-tertiary mt-1.5 m-0">Session opened from {agent.name}&apos;s profile.</p>
+                  </div>
+
+                  {/* Session type */}
+                  <div>
+                    <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide block mb-2">Session Type</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white text-text-primary focus:outline-none focus:border-brand">
+                      <option>Select...</option>
+                      <option>Coaching</option>
+                      <option>Performance Review</option>
+                      <option>Development</option>
+                      <option>GROW</option>
+                    </select>
+                  </div>
+
+                  {/* KPI Focus */}
+                  <div>
+                    <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide block mb-2">KPI Focus</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white text-text-primary focus:outline-none focus:border-brand">
+                      <option>None</option>
+                      {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
+                    </select>
+                  </div>
+
+                  {/* Topic + C2: New Fact button with #54B282 */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide">Topic / Subject</label>
+                      {/* C2: primary green action color */}
+                      <button
+                        className="flex items-center gap-1 text-xs font-semibold px-2.5 py-1 rounded-lg text-white transition-colors"
+                        style={{ background: "#54B282" }}
+                      >
+                        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M5 1v8M1 5h8" stroke="white" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                        New Fact
+                      </button>
+                    </div>
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white text-text-primary focus:outline-none focus:border-brand">
+                      <option>— Select a fact —</option>
+                      {activeKpi.facts.map((f, i) => (
+                        <option key={i}>{f.date} · {f.severity} · {f.text.slice(0, 50)}…</option>
+                      ))}
+                    </select>
+                  </div>
+
+                  {/* Voice recording */}
+                  <div>
+                    <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide block mb-2">Voice Recording</label>
+                    <div className="border border-border rounded-lg p-3 bg-surface-muted">
+                      <textarea
+                        rows={3}
+                        className="w-full text-sm bg-transparent outline-none resize-none text-text-primary placeholder:text-text-tertiary"
+                        placeholder="Transcript will appear here as you speak, or paste text manually..."
+                      />
+                      <div className="flex justify-end mt-2">
+                        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold text-white" style={{ background: "#54B282" }}>
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4" stroke="white" strokeWidth="1.2"/><path d="M4 3.5v3l2.5-1.5L4 3.5z" fill="white"/></svg>
+                          Start
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Notes */}
+                  <div>
+                    <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide block mb-2">Notes / Summary</label>
+                    <textarea
+                      rows={3}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white text-text-primary placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+                      placeholder="Session notes..."
+                    />
+                  </div>
+
+                  {/* C3: Actions — visible by default, no button needed to reveal */}
+                  <div>
+                    <div className="flex items-center justify-between mb-3">
+                      <label className="text-xs font-semibold text-text-secondary uppercase tracking-wide">
+                        Actions ({sessionActions.length})
+                      </label>
+                    </div>
+
+                    {/* Existing actions */}
+                    {sessionActions.length > 0 && (
+                      <div className="flex flex-col gap-2 mb-3">
+                        {sessionActions.map((a, i) => (
+                          <div key={i} className="flex items-center justify-between px-3 py-2 border border-border rounded-lg bg-surface-muted">
+                            <div>
+                              <span className="text-[11px] font-semibold px-1.5 py-0.5 rounded mr-2" style={{ background: "#D1FAE5", color: "#065F46" }}>{a.type}</span>
+                              <span className="text-sm text-text-primary">{a.text}</span>
+                            </div>
+                            <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-text-tertiary hover:text-danger ml-2 flex-shrink-0">
+                              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* C3: Action type options always visible */}
+                    <p className="text-[11px] text-text-tertiary mb-2">Add an action agreed during this session:</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {[
+                        { type: "Coach Call",   label: "Coach Call",   icon: "💬" },
+                        { type: "GROW",         label: "GROW",         icon: "🎯" },
+                        { type: "QA Review",    label: "QA Review",    icon: "🔍" },
+                        { type: "Model Call",   label: "Model Call",   icon: "📞" },
+                        { type: "Training",     label: "Training",     icon: "📚" },
+                        { type: "Assessment",   label: "Assessment",   icon: "📋" },
+                      ].map(a => (
+                        <button
+                          key={a.type}
+                          onClick={() => setSessionActions(prev => [...prev, { type: a.type, text: "" }])}
+                          className="flex items-center gap-2 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary hover:border-brand hover:text-text-primary hover:bg-surface-muted transition-all text-left"
+                        >
+                          <span>{a.icon}</span>
+                          <span className="font-medium">{a.label}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-between px-5 py-4 border-t border-border flex-shrink-0">
+                  <button
+                    onClick={() => setShowSession(false)}
+                    className="text-sm text-danger border border-danger/30 px-3 py-1.5 rounded-lg hover:bg-danger/5 transition-colors"
+                  >
+                    Discard
+                  </button>
+                  <div className="flex gap-2">
+                    <button onClick={() => setShowSession(false)} className="text-sm text-text-secondary border border-border px-3 py-1.5 rounded-lg hover:border-brand/40 transition-colors">
+                      Cancel
+                    </button>
+                    <button
+                      onClick={() => setShowSession(false)}
+                      className="text-sm font-semibold text-white px-4 py-1.5 rounded-lg transition-colors"
+                      style={{ background: "#10B981" }}
+                    >
+                      Save Session
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
 
         </main>
       </div>
