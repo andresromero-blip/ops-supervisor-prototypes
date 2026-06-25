@@ -47,12 +47,12 @@ const AGENTS: Record<string, Agent> = {
       { key:"adh",      label:"Adh",           weight:"10% weight", target:"95%",  actual:"92%",    teamAvg:"93.6%",  rank:"#5/8", trend30d:"down",  actualColor:"orange" },
     ],
     kpiTrends: {
-      csat:  { weekly:[81,80,80.5,81,80,80.5,81],  monthly:[82,81,80.5,81], qtd:[83,82,81,81] },
-      fcr:   { weekly:[74,73,72,73,73,72.5,73],    monthly:[75,74,73,73],   qtd:[76,75,74,73] },
-      aht:   { weekly:[395,392,390,388,390,391,390],monthly:[400,395,392,390],qtd:[410,400,395,390] },
-      nps:   { weekly:[83,84,85,85,84,85,85],      monthly:[82,83,84,85],   qtd:[80,82,83,85] },
-      sales: { weekly:[10.2,10.0,9.8,10.0,10.1,10.0,10.0],monthly:[10.5,10.2,10.1,10.0],qtd:[11,10.8,10.5,10.0] },
-      adh:   { weekly:[93,92.5,92,92,91.5,92,92],  monthly:[94,93,92.5,92], qtd:[95,94,93,92] },
+      csat:  { weekly:[81,80,80.5,81,80,80.5,81],  monthly:[82,81,81],    qtd:[83,82,81] },
+      fcr:   { weekly:[74,73,72,73,73,72.5,73],    monthly:[75,74,73],    qtd:[76,75,73] },
+      aht:   { weekly:[395,392,390,388,390,391,390],monthly:[400,395,390], qtd:[410,400,390] },
+      nps:   { weekly:[83,84,85,85,84,85,85],      monthly:[82,83,85],    qtd:[80,82,85] },
+      sales: { weekly:[10.2,10.0,9.8,10.0,10.1,10.0,10.0],monthly:[10.5,10.2,10.0],qtd:[11,10.8,10.0] },
+      adh:   { weekly:[93,92.5,92,92,91.5,92,92],  monthly:[94,93,92],    qtd:[95,94,92] },
     },
     insights: {
       goldenNuggets: 0,
