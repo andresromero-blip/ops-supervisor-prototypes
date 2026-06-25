@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import Sidebar from "@/components/Sidebar";
 import { GlobalHeader } from "@/components/Header";
 
@@ -172,6 +172,9 @@ export default function OneToOnePage() {
   const hasActions = sessionActions.length !== 0;
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
+  const mainStyle: React.CSSProperties = showSession
+    ? { paddingRight: '540px' }
+    : {};
 
   // Summary counts
   const outlierCount   = agent.kpis.filter(k => k.status === "outlier").length;
@@ -184,7 +187,7 @@ export default function OneToOnePage() {
       <Sidebar />
       <div className="flex-1 flex flex-col min-w-0">
         <GlobalHeader />
-        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6">
+        <main className="flex-1 font-sans text-text-primary overflow-x-hidden px-8 py-6" style={mainStyle}>
 
           {/* Page title */}
           <div className="mb-5">
@@ -267,7 +270,7 @@ export default function OneToOnePage() {
           </div>
 
           {/* KPI cards grid */}
-          <div className="grid grid-cols-4 gap-3 mb-5">
+          <div className="grid gap-3 mb-5" style={{gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))"}}>
             {agent.kpis.map(k => {
               const sc = STATUS_COLORS[k.status];
               const vc = VALUE_COLORS[k.status];
