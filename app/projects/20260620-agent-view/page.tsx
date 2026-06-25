@@ -107,7 +107,7 @@ const PERIOD_LABEL: Record<Period, string> = {
 };
 
 // ---------------------------------------------------------------------------
-// KPI Evolution Chart — faithful replica with tooltip, Y-axis, red target line
+// KPI Evolution Chart — 1:1 replica
 // ---------------------------------------------------------------------------
 const DATES_WEEKLY  = ["Jun 18","Jun 19","Jun 20","Jun 21","Jun 22","Jun 23","Jun 24"];
 const DATES_MONTHLY = ["M-3","M-2","M-1"];
@@ -115,159 +115,209 @@ const DATES_QTD     = ["Apr","May","Jun"];
 
 function KpiEvolutionChart({
   vals, dates, target, color,
-}: { vals: number[]; dates: string[]; target: number; color: string }) {
+}: {
+  vals: number[]; dates: string[]; target: number; color: string;
+}) {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
 
-  const W = 700; const H = 260;
-  const PL = 44; const PR = 70; const PT = 16; const PB = 36;
+  // Canvas dimensions — matches original proportions
+  const W   = 800;
+  const H   = 300;
+  const PL  = 48;  // left padding for Y labels
+  const PR  = 80;  // right padding for target label
+  const PT  = 20;  // top padding
+  const PB  = 40;  // bottom padding for X labels
 
-  const lineStroke = color === "green" ? "#10B981" : color === "orange" ? "#F59E0B" : "#EF4444";
-  const areaFill   = color === "green" ? "rgba(16,185,129,0.08)" : color === "orange" ? "rgba(245,158,11,0.08)" : "rgba(239,68,68,0.08)";
+  const lineColor = color === "green" ? "#10B981" : color === "orange" ? "#F59E0B" : "#EF4444";
+  const fillColor = color === "green" ? "rgba(16,185,129,0.07)"
+                  : color === "orange" ? "rgba(245,158,11,0.07)"
+                  : "rgba(239,68,68,0.07)";
 
-  // Y axis: always start at 0, go to rounded max
-  const dataMax = Math.max(...vals, target);
-  const yMax = Math.ceil(dataMax / 25) * 25 + 25;
-  const yMin = 0;
-  const rangeY = yMax - yMin;
+  // Y scale — always from 0, max rounded up to next 25
+  const rawMax = Math.max(...vals, target);
+  const yMax   = Math.ceil(rawMax / 25) * 25 + 10;
+  const yMin   = 0;
 
-  const toX = (i: number) => PL + (i / (dates.length - 1)) * (W - PL - PR);
-  const toY = (v: number) => PT + (1 - (v - yMin) / rangeY) * (H - PT - PB);
+  const toX = (i: number) =>
+    PL + (i / Math.max(dates.length - 1, 1)) * (W - PL - PR);
+  const toY = (v: number) =>
+    PT + (1 - (v - yMin) / (yMax - yMin)) * (H - PT - PB);
 
-  // Y grid labels: 0, 25, 50, 75, 100 (filtered to range)
-  const yTicks = [0, 25, 50, 75, 100, 125].filter(v => v <= yMax);
+  // Y ticks: 0, 25, 50, 75, 100 (only those within range)
+  const yTicks = [0, 25, 50, 75, 100].filter(v => v <= yMax);
 
-  const linePath = vals.map((v, i) => `${i === 0 ? "M" : "L"} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(" ");
-  const areaPath = `${linePath} L ${toX(vals.length - 1).toFixed(1)} ${H - PB} L ${toX(0).toFixed(1)} ${H - PB} Z`;
+  const points  = vals.map((v, i) => [toX(i), toY(v)] as [number, number]);
+  const linePath = points.map(([x, y], i) => `${i === 0 ? "M" : "L"} ${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
+  const areaPath = `${linePath} L ${points[points.length - 1][0].toFixed(1)} ${(H - PB).toFixed(1)} L ${points[0][0].toFixed(1)} ${(H - PB).toFixed(1)} Z`;
   const targetY  = toY(target);
 
-  const colW = (W - PL - PR) / Math.max(dates.length - 1, 1);
+  // Each column width for hover hit area
+  const segW = (W - PL - PR) / Math.max(dates.length - 1, 1);
 
   return (
-    <div style={{ position: "relative", userSelect: "none" }}>
+    <div className="relative select-none">
       <svg
         viewBox={`0 0 ${W} ${H}`}
-        className="w-full block"
-        style={{ height: 260 }}
+        width="100%"
+        style={{ display: "block", height: "auto", aspectRatio: `${W} / ${H}` }}
         onMouseLeave={() => setHoverIdx(null)}
       >
-        {/* Y grid lines + labels */}
-        {yTicks.map(v => (
-          <g key={v}>
-            <line
-              x1={PL} y1={toY(v)} x2={W - PR} y2={toY(v)}
-              stroke="#E5E7EB" strokeWidth="1" strokeDasharray="4 3"
-            />
-            <text
-              x={PL - 6} y={toY(v) + 4}
-              textAnchor="end" fontSize="11"
-              fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
-            >{v}</text>
-          </g>
-        ))}
+        {/* ── Y grid lines + labels ── */}
+        {yTicks.map(tick => {
+          const ty = toY(tick);
+          return (
+            <g key={tick}>
+              <line
+                x1={PL} y1={ty} x2={W - PR} y2={ty}
+                stroke="#E5E7EB" strokeWidth="1"
+                strokeDasharray={tick === 0 ? "0" : "5 4"}
+              />
+              <text
+                x={PL - 8} y={ty + 4}
+                textAnchor="end" fontSize="12"
+                fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
+              >
+                {tick}
+              </text>
+            </g>
+          );
+        })}
 
-        {/* X axis baseline */}
-        <line x1={PL} y1={H - PB} x2={W - PR} y2={H - PB} stroke="#E5E7EB" strokeWidth="1" />
+        {/* ── X baseline ── */}
+        <line
+          x1={PL} y1={H - PB} x2={W - PR} y2={H - PB}
+          stroke="#D1D5DB" strokeWidth="1"
+        />
 
-        {/* Target line — red dashed */}
+        {/* ── Target line — red dashed ── */}
         <line
           x1={PL} y1={targetY} x2={W - PR} y2={targetY}
-          stroke="#EF4444" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.7"
+          stroke="#F87171" strokeWidth="1.5"
+          strokeDasharray="6 5" opacity="0.8"
         />
         <text
-          x={W - PR + 6} y={targetY + 4}
-          fontSize="11" fill="#9CA3AF"
+          x={W - PR + 8} y={targetY + 4}
+          fontSize="12" fill="#9CA3AF"
           fontFamily="Inter,system-ui,sans-serif"
-        >Target: {target}</text>
+        >
+          Target: {target}
+        </text>
 
-        {/* Area fill */}
-        <path d={areaPath} fill={areaFill} />
+        {/* ── Area fill ── */}
+        <path d={areaPath} fill={fillColor} />
 
-        {/* Main line */}
-        <path d={linePath} fill="none" stroke={lineStroke} strokeWidth="2.5" strokeLinejoin="round" />
+        {/* ── Main line ── */}
+        <path
+          d={linePath} fill="none"
+          stroke={lineColor} strokeWidth="2.5"
+          strokeLinejoin="round" strokeLinecap="round"
+        />
 
-        {/* Data points — filled except last which is outline */}
-        {vals.map((v, i) => {
-          const isLast = i === vals.length - 1;
+        {/* ── Data points: filled solid, last one outline ── */}
+        {points.map(([x, y], i) => {
+          const isLast    = i === vals.length - 1;
           const isHovered = hoverIdx === i;
           return (
             <circle
               key={i}
-              cx={toX(i)} cy={toY(v)}
-              r={isHovered ? 5 : 4}
-              fill={isLast ? "#fff" : lineStroke}
-              stroke={lineStroke}
-              strokeWidth="2"
+              cx={x} cy={y}
+              r={isHovered ? 6 : 5}
+              fill={isLast ? "#fff" : lineColor}
+              stroke={lineColor}
+              strokeWidth="2.5"
             />
           );
         })}
 
-        {/* Hover crosshair */}
+        {/* ── Hover crosshair ── */}
         {hoverIdx !== null && (
           <line
             x1={toX(hoverIdx)} y1={PT}
             x2={toX(hoverIdx)} y2={H - PB}
-            stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 2"
+            stroke="#D1D5DB" strokeWidth="1"
+            strokeDasharray="4 3"
           />
         )}
 
-        {/* X date labels */}
+        {/* ── X date labels ── */}
         {dates.map((d, i) => (
           <text
-            key={d} x={toX(i)} y={H - PB + 18}
-            textAnchor="middle" fontSize="11"
+            key={d}
+            x={toX(i)} y={H - PB + 20}
+            textAnchor="middle" fontSize="12"
             fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
-          >{d}</text>
+          >
+            {d}
+          </text>
         ))}
 
-        {/* Invisible hover columns */}
-        {dates.map((_, i) => (
-          <rect
-            key={i}
-            x={toX(i) - colW / 2} y={PT}
-            width={colW} height={H - PT - PB}
-            fill="transparent"
-            onMouseEnter={() => setHoverIdx(i)}
-          />
-        ))}
+        {/* ── Invisible hover hit areas ── */}
+        {dates.map((_, i) => {
+          const cx = toX(i);
+          const x0 = i === 0 ? PL : cx - segW / 2;
+          const x1 = i === dates.length - 1 ? W - PR : cx + segW / 2;
+          return (
+            <rect
+              key={i}
+              x={x0} y={PT}
+              width={x1 - x0} height={H - PT - PB}
+              fill="transparent"
+              onMouseEnter={() => setHoverIdx(i)}
+            />
+          );
+        })}
       </svg>
 
-      {/* Tooltip card */}
-      {hoverIdx !== null && (
-        <div
-          style={{
-            position: "absolute",
-            left: `calc(${((toX(hoverIdx) / W) * 100).toFixed(1)}% + 12px)`,
-            top: `${((toY(vals[hoverIdx]) / H) * 100).toFixed(1)}%`,
-            transform: "translateY(-50%)",
-            background: "#fff",
-            border: "1px solid #E5E7EB",
-            borderRadius: 10,
-            padding: "10px 14px",
-            fontSize: 13,
-            pointerEvents: "none",
-            whiteSpace: "nowrap",
-            zIndex: 20,
-            boxShadow: "0 4px 16px rgba(0,0,0,0.10)",
-            minWidth: 100,
-          }}
-        >
-          <p style={{ margin: 0, fontWeight: 600, color: "#374151", marginBottom: 5, fontSize: 13 }}>
-            {dates[hoverIdx]}
-          </p>
-          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: lineStroke, display: "inline-block", flexShrink: 0 }} />
-            <span style={{ color: lineStroke, fontWeight: 600, fontSize: 13 }}>: {vals[hoverIdx]}{color !== "green" || vals[hoverIdx] > 100 ? "" : "%"}</span>
+      {/* ── Tooltip card — positioned via % of rendered element ── */}
+      {hoverIdx !== null && (() => {
+        const svgX = toX(hoverIdx) / W * 100;
+        const svgY = toY(vals[hoverIdx]) / H * 100;
+        // flip left if near right edge
+        const flipLeft = svgX > 65;
+        return (
+          <div
+            style={{
+              position: "absolute",
+              left: flipLeft ? undefined : `calc(${svgX}% + 14px)`,
+              right: flipLeft ? `calc(${100 - svgX}% + 14px)` : undefined,
+              top:  `${svgY}%`,
+              transform: "translateY(-50%)",
+              background: "#fff",
+              border: "1px solid #E5E7EB",
+              borderRadius: 10,
+              padding: "10px 14px",
+              pointerEvents: "none",
+              whiteSpace: "nowrap",
+              zIndex: 30,
+              boxShadow: "0 4px 20px rgba(0,0,0,0.10)",
+            }}
+          >
+            <p style={{ margin: 0, fontWeight: 700, color: "#374151", marginBottom: 6, fontSize: 13 }}>
+              {dates[hoverIdx]}
+            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
+              <span style={{
+                width: 9, height: 9, borderRadius: "50%",
+                background: lineColor, flexShrink: 0, display: "inline-block"
+              }} />
+              <span style={{ color: lineColor, fontWeight: 600, fontSize: 13 }}>
+                : {vals[hoverIdx]}{vals[hoverIdx] <= 100 && color !== "green" || color === "green" ? "%" : ""}
+              </span>
+            </div>
           </div>
-        </div>
-      )}
+        );
+      })()}
 
-      {/* Result label */}
-      <div style={{ textAlign: "center", marginTop: 6 }}>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 5, fontSize: 12, color: lineStroke, fontWeight: 500 }}>
-          <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
-            <line x1="0" y1="5" x2="11" y2="5" stroke={lineStroke} strokeWidth="1.5"/>
-            <circle cx="5" cy="5" r="3" fill="#fff" stroke={lineStroke} strokeWidth="1.5"/>
-            <path d="M11 2l4 3-4 3" fill="none" stroke={lineStroke} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+      {/* ── "→ Result" label ── */}
+      <div style={{ textAlign: "center", marginTop: 4 }}>
+        <span style={{
+          display: "inline-flex", alignItems: "center", gap: 5,
+          fontSize: 12.5, color: lineColor, fontWeight: 500,
+        }}>
+          <svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+            <line x1="0" y1="5" x2="13" y2="5" stroke={lineColor} strokeWidth="1.5"/>
+            <circle cx="6" cy="5" r="3" fill="#fff" stroke={lineColor} strokeWidth="1.5"/>
+            <path d="M13 2l4 3-4 3" fill="none" stroke={lineColor} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
           Result
         </span>
