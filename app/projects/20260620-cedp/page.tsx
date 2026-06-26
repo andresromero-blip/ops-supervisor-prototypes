@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import { GlobalHeader } from "@/components/Header";
 import {
   ChevronDown,
   ChevronUp,
@@ -341,6 +342,8 @@ export default function CEDPPage() {
   return (
     <div className="flex bg-bg min-h-screen">
       <Sidebar />
+      <div className="flex-1 flex flex-col min-w-0">
+      <GlobalHeader />
       <main className="flex-1 font-sans text-text-primary px-6 py-6 overflow-x-hidden">
         <div className="max-w-4xl mx-auto">
 
@@ -407,572 +410,360 @@ export default function CEDPPage() {
             </button>
           </div>
 
-          {/* ══════════════════════════════════════════════════════════
-              BLOQUE 1 — Identity & direction
-          ══════════════════════════════════════════════════════════ */}
-          <div className="border border-border rounded-lg bg-surface px-5 py-4 mb-4">
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Left — identity */}
-              <div className="flex items-start gap-3">
-                <div className="w-10 h-10 rounded-full bg-brand-light text-brand text-sm font-semibold flex items-center justify-center flex-shrink-0">
-                  {agent.initials}
+          {/* Current / History tabs */}
+          <div className="flex items-center gap-1 mb-4">
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-brand bg-white text-brand">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#10B981" strokeWidth="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+              Current
+            </button>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:border-brand/40 transition-colors">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v3l2 2" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/><circle cx="5.5" cy="5.5" r="4.5" stroke="#9CA3AF" strokeWidth="1.1"/></svg>
+              History
+            </button>
+          </div>
+
+          {/* Draft notice */}
+          <div className="border border-border rounded-xl bg-surface-muted px-4 py-3 mb-5 text-xs text-text-secondary">
+            This CEDP is in draft. Switch to <span className="font-semibold text-text-primary">Agent view</span> to fill and submit the self-assessment.
+          </div>
+
+
+          {/* A — Ability to cope with the tasks and daily routine */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">A</span>
+              <span className="text-sm font-semibold text-text-primary">Ability to cope with the tasks and daily routine</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                 </div>
-                <div>
-                  <p className="text-base font-semibold m-0">{agent.name}</p>
-                  <p className="text-sm text-text-secondary m-0">{agent.tenure} · {agent.role}</p>
-                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-
-              {/* Right — direction */}
-              <div className="flex flex-col gap-2.5">
-                {/* Aspiration */}
-                <div className="flex items-start gap-3">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary w-32 flex-shrink-0 mt-0.5">Career aspiration</p>
-                  {!isExploratory ? (
-                    <div>
-                      <p className="text-sm font-medium text-text-primary m-0">{agent.aspiration}</p>
-                    </div>
-                  ) : (
-                    <div className="flex items-center gap-2">
-                      <p className="text-sm text-text-secondary m-0">Not yet defined</p>
-                      <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-surface-muted text-text-secondary">Exploratory</span>
-                    </div>
-                  )}
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                 </div>
-
-                {/* Critical gaps or Emerging strengths */}
-                {!isExploratory && agent.criticalGaps.length > 0 && (
-                  <div className="flex items-start gap-3">
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary w-32 flex-shrink-0 mt-0.5">Critical gaps</p>
-                    <div className="flex flex-wrap gap-1">
-                      {agent.criticalGaps.map((g) => (
-                        <span key={g} className="text-[11px] font-medium px-2 py-0.5 rounded bg-danger-light text-danger">{g}</span>
-                      ))}
-                      {!agent.hasRoleFramework && (
-                        <p className="text-xs text-warning m-0 mt-0.5 w-full">Role profile not configured in Project Config</p>
-                      )}
-                    </div>
-                  </div>
-                )}
-
-                {isExploratory && agent.emergingStrengths.length > 0 && (
-                  <div className="flex items-start gap-3">
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary w-32 flex-shrink-0 mt-0.5">Emerging strengths</p>
-                    <div className="flex flex-col gap-0.5">
-                      {agent.emergingStrengths.map((s) => (
-                        <p key={s} className="text-xs text-text-secondary m-0 italic">{s}</p>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Reviews */}
-                {agent.lastReview && (
-                  <div className="flex items-start gap-3">
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary w-32 flex-shrink-0 mt-0.5">Last review</p>
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <p className="text-xs text-text-secondary m-0">{agent.lastReview.date} · {agent.lastReview.topic}</p>
-                      <StatusBadge status={agent.lastReview.status} />
-                    </div>
-                  </div>
-                )}
-
-                <div className="flex items-start gap-3">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary w-32 flex-shrink-0 mt-0.5">This review</p>
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <p className="text-xs text-text-secondary m-0">Jun 2026 · D-1</p>
-                    <StatusBadge status={reviewCompleted ? "completed" : "draft"} />
-                  </div>
-                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
             </div>
           </div>
-
-          {/* ══════════════════════════════════════════════════════════
-              BLOQUE 2 — Development focus
-          ══════════════════════════════════════════════════════════ */}
-          <div className="border border-border rounded-lg bg-surface mb-4 overflow-hidden">
-            {/* Block header */}
-            <div className="px-5 py-3 border-b border-border bg-surface-muted flex items-center justify-between">
-              <p className="text-[11px] uppercase tracking-wide text-text-secondary m-0">Development focus</p>
-              <button
-                className="inline-flex items-center gap-1 text-xs font-medium px-3 py-1.5 rounded border border-brand bg-brand-light text-brand hover:bg-brand/10 transition-colors"
-                disabled={!isExploratory && agent.objectives.length >= 3}
-                title={!isExploratory && agent.objectives.length >= 3 ? "Close or pause an existing objective first" : ""}
-              >
-                <Plus size={13} /> {isExploratory ? "Add exploration" : "Add objective"}
-              </button>
+          {/* B — Problem solving and continuous improvement */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">B</span>
+              <span className="text-sm font-semibold text-text-primary">Problem solving and continuous improvement</span>
             </div>
-
-            {/* MODE_DEFINED — Objectives */}
-            {!isExploratory && agent.objectives.map((obj) => (
-              <div key={obj.id} className="border-b border-border last:border-b-0 px-5 py-4">
-                {/* Row 1: status + title */}
-                <div className="flex items-start justify-between gap-3 mb-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-1 flex-wrap">
-                      <ObjectiveBadge status={obj.status} />
-                      {!obj.isCriticalGap && (
-                        <span className="inline-flex items-center gap-1 text-[11px] text-warning">
-                          <AlertCircle size={11} />
-                          Not aligned with critical gaps for {agent.aspiration}
-                        </span>
-                      )}
-                    </div>
-                    <p className="text-sm font-medium text-text-primary m-0">{obj.title}</p>
-                    <p className="text-xs text-text-secondary mt-0.5 m-0">
-                      Gap: <span className={obj.isCriticalGap ? "text-danger font-medium" : "text-text-secondary"}>{obj.gapAddressed}</span>
-                      {obj.isCriticalGap && <span className="text-[11px] text-danger ml-1">[critical for {agent.aspiration}]</span>}
-                    </p>
-                  </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                 </div>
-
-                {/* Row 2: How */}
-                <div className="mb-3">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">How</p>
-                  <p className="text-xs text-text-secondary m-0">{obj.how}</p>
-                </div>
-
-                {/* Row 3: Evidence */}
-                <div className="mb-3">
-                  <div className="flex items-center justify-between mb-1">
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary m-0">Evidence so far</p>
-                    <button
-                      onClick={() => toggleObservations(obj.id)}
-                      className="text-[11px] text-brand underline"
-                    >
-                      {expandedObservations[obj.id] ? "Collapse" : `${obj.evidence.length} observation${obj.evidence.length !== 1 ? "s" : ""}`}
-                    </button>
-                  </div>
-
-                  {obj.noEvidenceWeeks >= 4 && (
-                    <div className="inline-flex items-center gap-1 text-xs font-medium bg-warning-light text-warning px-2 py-0.5 rounded mb-2">
-                      <AlertTriangle size={11} />
-                      No evidence after {obj.noEvidenceWeeks} weeks — has the agent had opportunities?
-                    </div>
-                  )}
-
-                  {(expandedObservations[obj.id] || obj.evidence.length <= 2) && obj.evidence.map((obs, i) => (
-                    <div key={i} className="flex items-start gap-2 py-1 border-t border-border first:border-t-0">
-                      <span className="text-xs text-text-tertiary font-mono whitespace-nowrap w-14 flex-shrink-0">{obs.date}</span>
-                      <span className="text-xs text-text-secondary flex-1">{obs.text}</span>
-                      <span className="text-[11px] text-text-tertiary whitespace-nowrap flex-shrink-0">{obs.source}</span>
-                    </div>
-                  ))}
-
-                  <button className="text-xs text-brand underline mt-1 block">+ Import from One to One session</button>
-                </div>
-
-                {/* Row 4: Success when */}
-                <div className="mb-2">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Success when</p>
-                  <p className="text-xs text-text-secondary m-0">{obj.successWhen}</p>
-                  <p className="text-xs text-text-tertiary m-0">by {obj.successDate}</p>
-                </div>
-
-                {/* Row 5: DSM link */}
-                <div className="mt-2 pt-2 border-t border-border">
-                  {obj.dsmCommitments > 0 ? (
-                    <button className="text-xs text-brand underline">
-                      → {obj.dsmCommitments} commitment{obj.dsmCommitments !== 1 ? "s" : ""} open in DSM
-                    </button>
-                  ) : (
-                    <p className="text-xs text-text-tertiary m-0">No active commitments in DSM</p>
-                  )}
-                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-            ))}
-
-            {/* MODE_EXPLORATORY — Explorations */}
-            {isExploratory && agent.explorations.map((exp) => (
-              <div key={exp.id} className="border-b border-border last:border-b-0">
-                {/* Header — expandible */}
-                <button
-                  onClick={() => toggleExploration(exp.id)}
-                  className="w-full flex items-center justify-between px-5 py-3 text-left hover:bg-surface-muted transition-colors"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="text-[11px] font-medium px-2 py-0.5 rounded bg-brand-light text-brand">Active</span>
-                    <p className="text-sm font-medium text-text-primary m-0">{exp.dimension}</p>
-                  </div>
-                  {expandedExplorations[exp.id]
-                    ? <ChevronUp size={14} className="text-text-tertiary flex-shrink-0" />
-                    : <ChevronDown size={14} className="text-text-tertiary flex-shrink-0" />
-                  }
-                </button>
-
-                {expandedExplorations[exp.id] && (
-                  <div className="px-5 pb-4">
-                    {/* Observed */}
-                    <div className="mb-3">
-                      <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Observed</p>
-                      <p className="text-xs text-text-secondary mb-1.5 m-0">{exp.observations.length} instances:</p>
-                      {exp.observations.map((obs, i) => (
-                        <div key={i} className="flex items-start gap-2 py-1 border-t border-border first:border-t-0">
-                          <span className="text-xs text-text-tertiary font-mono whitespace-nowrap w-14 flex-shrink-0">{obs.date}</span>
-                          <span className="text-xs text-text-secondary flex-1">{obs.text}</span>
-                          <span className="text-[11px] text-text-tertiary whitespace-nowrap flex-shrink-0">{obs.source}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    {/* Contexts tested */}
-                    <div className="mb-3">
-                      <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1.5 m-0">Contexts tested</p>
-                      <div className="flex flex-wrap gap-1.5">
-                        {exp.contextsTested.map((ctx) => (
-                          <span
-                            key={ctx.label}
-                            className={`text-xs font-medium px-2 py-0.5 rounded ${ctx.verified ? "bg-success-light text-success" : "bg-surface-muted text-text-tertiary"}`}
-                          >
-                            {ctx.label}{!ctx.verified && " — not yet"}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-
-                    {/* Next exposure */}
-                    <div className="mb-3">
-                      <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Next exposure</p>
-                      <p className="text-xs text-text-secondary m-0">
-                        {exp.nextExposure}
-                        <span className="text-text-tertiary ml-1">· {exp.nextExposureDate}</span>
-                      </p>
-                    </div>
-
-                    {/* Hypothesis */}
-                    <div className="mb-2">
-                      <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Hypothesis</p>
-                      <p className="text-xs text-text-secondary italic m-0">{exp.hypothesis}</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            ))}
-
-            {/* Empty state */}
-            {!isExploratory && agent.objectives.length === 0 && (
-              <div className="px-5 py-8 text-center">
-                <p className="text-sm text-text-secondary m-0">No development objectives defined yet.</p>
-                <p className="text-xs text-text-tertiary mt-1 m-0">Add an objective aligned with the critical gaps for {agent.aspiration}.</p>
-              </div>
-            )}
-            {isExploratory && agent.explorations.length === 0 && (
-              <div className="px-5 py-8 text-center">
-                <p className="text-sm text-text-secondary m-0">No explorations defined yet.</p>
-                <p className="text-xs text-text-tertiary mt-1 m-0">Start by identifying a dimension to observe and test in different contexts.</p>
-              </div>
-            )}
-
-            {/* Emerging direction footer — exploratory with evidence */}
-            {hasEnoughExploratoryEvidence && (
-              <div className="border-t border-border px-5 py-3 bg-surface-muted flex items-center justify-between flex-wrap gap-2">
-                <div>
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary m-0 mb-0.5">Emerging direction</p>
-                  <p className="text-xs text-text-secondary m-0">
-                    {agent.explorations[0]?.hypothesis ?? "Patterns suggest team-facing communication roles."}
-                  </p>
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                 </div>
-                <button className="text-xs font-medium px-3 py-1.5 rounded border border-brand bg-brand-light text-brand hover:bg-brand/10 transition-colors whitespace-nowrap">
-                  Start aspiration conversation guide →
-                </button>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-            )}
+            </div>
           </div>
-
-          {/* ══════════════════════════════════════════════════════════
-              BLOQUE 3 — Competency evidence (colapsable)
-          ══════════════════════════════════════════════════════════ */}
-          <div className="border border-border rounded-lg bg-surface mb-4 overflow-hidden">
-            <button
-              onClick={() => setCompetenciesOpen((v) => !v)}
-              className="w-full flex items-center justify-between px-5 py-3 text-left hover:bg-surface-muted transition-colors"
-            >
-              <div className="flex items-center gap-2">
-                <AlertTriangle size={13} className="text-text-tertiary" />
-                <p className="text-[11px] uppercase tracking-wide text-text-tertiary m-0">Competency evidence</p>
-                {/* Gap summary badge */}
-                {(() => {
-                  const significantGaps = agent.competencies.filter((c) => {
-                    const g = computeGap(c.supervisorRating, c.agentRating);
-                    return g !== null && g >= 2;
-                  }).length;
-                  return significantGaps > 0 ? (
-                    <span className="text-xs font-medium bg-danger-light text-danger px-2 py-0.5 rounded ml-1">
-                      {significantGaps} gap{significantGaps > 1 ? "s" : ""} of 2+ points
-                    </span>
-                  ) : null;
-                })()}
-              </div>
-              {competenciesOpen
-                ? <ChevronUp size={14} className="text-text-tertiary" />
-                : <ChevronDown size={14} className="text-text-tertiary" />
-              }
-            </button>
-
-            {competenciesOpen && (
-              <div className="px-5 py-3 border-t border-border">
-                {isExploratory && (
-                  <p className="text-xs text-text-secondary mb-3 m-0 italic">
-                    In exploratory mode: look for competencies rated above tenure average — these signal potential direction.
-                  </p>
-                )}
-
-                {/* Table */}
-                <div className="overflow-x-auto">
-                  <table className="w-full text-sm border-collapse min-w-[520px]">
-                    <thead>
-                      <tr className="bg-surface-muted">
-                        <th className="text-left px-3 py-2 text-[11px] font-medium text-text-secondary uppercase tracking-wide">Competency</th>
-                        <th className="text-center px-3 py-2 text-[11px] font-medium text-text-secondary uppercase tracking-wide">Agent</th>
-                        <th className="text-center px-3 py-2 text-[11px] font-medium text-text-secondary uppercase tracking-wide">Supervisor</th>
-                        <th className="text-center px-3 py-2 text-[11px] font-medium text-text-secondary uppercase tracking-wide">Gap</th>
-                        <th className="text-center px-3 py-2 text-[11px] font-medium text-text-secondary uppercase tracking-wide">vs last review</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {agent.competencies.map((comp) => {
-                        const gap = computeGap(comp.supervisorRating, comp.agentRating);
-                        const labels = RATING_LABELS[comp.label] ?? ["1", "2", "3", "4"];
-                        return (
-                          <tr key={comp.key} className="border-t border-border hover:bg-surface-muted transition-colors">
-                            <td className="px-3 py-2.5">
-                              <span className="text-sm text-text-primary">{comp.label}</span>
-                              {comp.isCritical && (
-                                <span className="ml-1.5 text-[11px] text-danger">[critical]</span>
-                              )}
-                            </td>
-                            <td className="px-3 py-2.5 text-center">
-                              <select
-                                className="text-xs border border-border rounded px-1.5 py-1 bg-surface focus:outline-none focus:border-brand"
-                                value={comp.agentRating ?? ""}
-                                onChange={() => {}}
-                              >
-                                <option value="">—</option>
-                                {labels.map((l, i) => (
-                                  <option key={i} value={i + 1}>{i + 1} — {l}</option>
-                                ))}
-                              </select>
-                            </td>
-                            <td className="px-3 py-2.5 text-center">
-                              <select
-                                className="text-xs border border-border rounded px-1.5 py-1 bg-surface focus:outline-none focus:border-brand"
-                                value={comp.supervisorRating ?? ""}
-                                onChange={() => {}}
-                              >
-                                <option value="">—</option>
-                                {labels.map((l, i) => (
-                                  <option key={i} value={i + 1}>{i + 1} — {l}</option>
-                                ))}
-                              </select>
-                            </td>
-                            <td className="px-3 py-2.5 text-center">
-                              <GapIndicator gap={gap} />
-                            </td>
-                            <td className="px-3 py-2.5 text-center">
-                              <VsLastReview
-                                current={comp.supervisorRating}
-                                last={comp.lastReviewSupervisor}
-                                isCritical={comp.isCritical}
-                              />
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
+          {/* C — Commitment and responsibility */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">C</span>
+              <span className="text-sm font-semibold text-text-primary">Commitment and responsibility</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                 </div>
-
-                {/* Retention signal */}
-                <div className="flex items-center justify-between mt-4 pt-3 border-t border-border">
-                  <p className="text-xs text-text-secondary m-0">Retention signal</p>
-                  <div className="flex items-center gap-2">
-                    <select className="text-xs border border-border rounded px-2 py-1 bg-surface focus:outline-none focus:border-brand">
-                      <option value="Low" selected={agent.retentionSignal === "Low"}>Low</option>
-                      <option value="Medium" selected={agent.retentionSignal === "Medium"}>Medium</option>
-                      <option value="High" selected={agent.retentionSignal === "High"}>High</option>
-                    </select>
-                    {agent.retentionSignal === "High" && (
-                      <p className="text-xs text-warning m-0">Consider a retention conversation — create commitment in DSM</p>
-                    )}
-                  </div>
-                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-            )}
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
           </div>
-
-          {/* ══════════════════════════════════════════════════════════
-              BLOQUE 4 — Review & close
-          ══════════════════════════════════════════════════════════ */}
-          <div className="border border-border rounded-lg bg-surface mb-6 overflow-hidden">
-            <button
-              onClick={() => setReviewCloseOpen((v) => !v)}
-              className="w-full flex items-center justify-between px-5 py-3 text-left hover:bg-surface-muted transition-colors"
-            >
-              <div className="flex items-center gap-2">
-                <CheckCircle size={14} className={reviewCompleted ? "text-success" : "text-text-tertiary"} />
-                <p className="text-[11px] uppercase tracking-wide text-text-tertiary m-0">
-                  {reviewCompleted ? "Review completed ✓" : "Review & close"}
-                </p>
+          {/* D — Attitude towards work */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">D</span>
+              <span className="text-sm font-semibold text-text-primary">Attitude towards work</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-              {reviewCloseOpen
-                ? <ChevronUp size={14} className="text-text-tertiary" />
-                : <ChevronDown size={14} className="text-text-tertiary" />
-              }
-            </button>
-
-            {reviewCloseOpen && !reviewCompleted && (
-              <div className="border-t border-border">
-
-                {/* Section 1 — Summary */}
-                <div className="px-5 py-4 border-b border-border">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Review summary</p>
-                  <p className="text-xs text-text-tertiary mb-2 m-0">2 lines max — what would you say if asked "how is {agent.name} doing?"</p>
-                  <textarea
-                    value={reviewSummary}
-                    onChange={(e) => setReviewSummary(e.target.value)}
-                    rows={2}
-                    maxLength={280}
-                    placeholder={`${agent.name} is...`}
-                    className="w-full text-sm px-3 py-2 border border-border rounded-md bg-surface-muted focus:outline-none focus:border-brand resize-none"
-                  />
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                 </div>
-
-                {/* Section 2 — Direction of evolution */}
-                <div className="px-5 py-4 border-b border-border">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-3 m-0">Direction of evolution <span className="text-danger">*</span></p>
-                  <div className="flex flex-col gap-2">
-                    {([
-                      {
-                        value: "converging" as DirectionOfEvolution,
-                        title: "Converging toward aspiration",
-                        desc: "Gaps closing. Objectives on track. Evidence of behavioral change in critical areas.",
-                        note: null,
-                      },
-                      {
-                        value: "progressing-not-relevant" as DirectionOfEvolution,
-                        title: "Progressing but not goal-relevant",
-                        desc: "Genuine improvement, but in non-critical competencies. Plan may need reorientation.",
-                        note: agent.criticalGaps.length > 0 ? `Critical gaps still open: ${agent.criticalGaps.join(", ")}` : null,
-                        noteColor: "text-warning",
-                      },
-                      {
-                        value: "early-stage" as DirectionOfEvolution,
-                        title: "Early stage — insufficient evidence",
-                        desc: "Objectives defined. Not enough time or exposure to assess behavioral change yet.",
-                        note: null,
-                      },
-                      {
-                        value: "needs-reorientation" as DirectionOfEvolution,
-                        title: "Needs reorientation",
-                        desc: "Current plan not aligned with critical gaps or evidence suggests method isn't working.",
-                        note: "Consider updating development objectives before next review.",
-                        noteColor: "text-danger",
-                      },
-                    ] as { value: DirectionOfEvolution; title: string; desc: string; note: string | null; noteColor?: string }[]).map((opt) => (
-                      <button
-                        key={opt.value ?? ""}
-                        onClick={() => setDirection(opt.value)}
-                        className={`text-left border rounded-md p-3 transition-colors ${direction === opt.value ? "border-brand bg-brand-light/20" : "border-border hover:border-brand/40"}`}
-                      >
-                        <p className="text-sm font-medium text-text-primary m-0">{opt.title}</p>
-                        <p className="text-xs text-text-secondary mt-0.5 m-0">{opt.desc}</p>
-                        {direction === opt.value && opt.note && (
-                          <p className={`text-xs mt-1 m-0 ${opt.noteColor ?? "text-text-secondary"}`}>{opt.note}</p>
-                        )}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Section 3 — Commitments → DSM */}
-                <div className="px-5 py-4 border-b border-border">
-                  <div className="flex items-center justify-between mb-2">
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary m-0">Commitments → DSM</p>
-                    {!allCommitmentsSent && (
-                      <button
-                        onClick={() => setCommitments((c) => c.map((item) => ({ ...item, sent: true })))}
-                        className="text-xs text-brand underline"
-                      >
-                        Send all
-                      </button>
-                    )}
-                  </div>
-                  <div className="flex flex-col gap-1.5">
-                    {commitments.map((c) => (
-                      <div key={c.id} className="flex items-center gap-3 py-1.5 border-b border-border last:border-b-0">
-                        <input
-                          type="checkbox"
-                          checked={c.sent}
-                          onChange={() => setCommitments((prev) => prev.map((item) => item.id === c.id ? { ...item, sent: !item.sent } : item))}
-                          className="flex-shrink-0 accent-brand"
-                        />
-                        <span className="text-sm text-text-primary flex-1">{c.text}</span>
-                        <span className="text-xs text-text-tertiary whitespace-nowrap">Due: {c.date}</span>
-                        {c.sent && <CheckCircle size={13} className="text-success flex-shrink-0" />}
-                      </div>
-                    ))}
-                  </div>
-                  {allCommitmentsSent && (
-                    <p className="text-xs text-success mt-2 m-0">✓ All commitments sent to DSM</p>
-                  )}
-                  <button className="text-xs text-brand underline mt-2 block">+ Add commitment</button>
-                </div>
-
-                {/* Section 4 — Synthesis note → One to One */}
-                <div className="px-5 py-4 border-b border-border">
-                  <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-1 m-0">Synthesis note → One to One</p>
-                  <p className="text-xs text-text-tertiary mb-2 m-0">
-                    This note will appear as preparation context in the next One to One session for {agent.name}.
-                  </p>
-                  <textarea
-                    value={synthesisNote}
-                    onChange={(e) => setSynthesisNote(e.target.value)}
-                    rows={3}
-                    className="w-full text-sm px-3 py-2 border border-border rounded-md bg-surface-muted focus:outline-none focus:border-brand resize-none"
-                  />
-                  <p className="text-xs text-text-tertiary mt-1 m-0">Auto-generated from review content. Edit before sending.</p>
-                </div>
-
-                {/* Section 5 — Actions */}
-                <div className="px-5 py-4 flex items-center justify-end gap-2">
-                  <button className="text-sm px-4 py-2 rounded-md border border-border text-text-secondary hover:border-brand/40 transition-colors">
-                    Save draft
-                  </button>
-                  <button
-                    onClick={handleCompleteReview}
-                    disabled={!canCompleteReview}
-                    className="text-sm font-medium px-4 py-2 rounded-md bg-brand text-white hover:bg-brand/90 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-                  >
-                    Complete review
-                  </button>
-                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-            )}
-
-            {/* Completed state */}
-            {reviewCloseOpen && reviewCompleted && (
-              <div className="border-t border-border px-5 py-4">
-                <div className="grid md:grid-cols-3 gap-4 text-sm">
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-0.5 m-0">Summary</p>
-                    <p className="m-0 text-sm">{reviewSummary || "—"}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-0.5 m-0">Direction</p>
-                    <p className="m-0 text-sm capitalize">{direction?.replace(/-/g, " ") ?? "—"}</p>
-                  </div>
-                  <div>
-                    <p className="text-[11px] uppercase tracking-wide text-text-tertiary mb-0.5 m-0">Sent to</p>
-                    <p className="m-0 text-sm text-success">DSM + One to One ✓</p>
-                  </div>
+            </div>
+          </div>
+          {/* E — Project knowledge */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">E</span>
+              <span className="text-sm font-semibold text-text-primary">Project knowledge</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                 </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
               </div>
-            )}
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
+          </div>
+          {/* F — Absenteeism and delays */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">F</span>
+              <span className="text-sm font-semibold text-text-primary">Absenteeism and delays</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-surface-muted focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
+          </div>
+          {/* G — Propensity to leave in the next 30 days */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">G</span>
+              <span className="text-sm font-semibold text-text-primary">Propensity to leave in the next 30 days</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option>Low</option><option>Medium</option><option>High</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <select className="w-full text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                    <option>Low</option><option>Medium</option><option>High</option>
+                  </select>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
+          </div>
+          {/* H — Personal Aspirations */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">H</span>
+              <span className="text-sm font-semibold text-text-primary">Personal Aspirations</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                </div>
+                  <textarea rows={3} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-0" placeholder="Describe personal aspirations..."/>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <textarea rows={3} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-0" placeholder="Supervisor comments on personal aspirations..."/>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
+          </div>
+          {/* I — Professional Aspirations */}
+          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
+            <div className="px-5 py-3 border-b border-border flex items-center gap-2.5">
+              <span className="w-6 h-6 rounded-full bg-surface-muted border border-border flex items-center justify-center text-[11px] font-bold text-text-secondary flex-shrink-0">I</span>
+              <span className="text-sm font-semibold text-text-primary">Professional Aspirations</span>
+            </div>
+            <div className="grid grid-cols-2 divide-x divide-border">
+              {/* EXPERT column */}
+              <div className="px-4 py-4">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                </div>
+                  <textarea rows={3} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-0" placeholder="Describe professional aspirations..."/>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+              {/* SUPERVISOR column */}
+              <div className="px-4 py-4 bg-[#F6FEF9]">
+                <div className="flex items-center gap-1.5 mb-3">
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                </div>
+                  <textarea rows={3} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-0" placeholder="Supervisor comments on professional aspirations..."/>
+                <textarea rows={2} className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+              </div>
+            </div>
           </div>
 
         </div>
       </main>
+      </div>
     </div>
   );
 }
+
