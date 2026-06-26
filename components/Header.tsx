@@ -48,6 +48,9 @@ export function GlobalHeader() {
         paddingRight: 20,
         borderColor: "#E5E7EB",
         flexShrink: 0,
+        position: "sticky",
+        top: 0,
+        zIndex: 30,
       }}
     >
       {/* Left: page identity */}
