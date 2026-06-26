@@ -624,6 +624,16 @@ export default function OneToOnePage() {
                     </select>
                   </div>
 
+                  {/* Linked Improvement Point — connects to Agent View Personal Insights */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Linked Improvement Point</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                      <option>— Select —</option>
+                      <option>Improve closing technique — only 35% pitch rate</option>
+                      <option>Greeting protocol compliance — failed 3 consecutive evals</option>
+                    </select>
+                  </div>
+
                   {/* Goal + Performance Review — perfectly equal 2-col grid */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col">
