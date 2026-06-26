@@ -210,6 +210,44 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
   );
 }
 
+
+// ── Accordion content field ────────────────────────────────────────────────
+function ContentField({ label }: { label: string; key?: number | string }) {
+  const [open, setOpen] = React.useState(false);
+  const placeholders: Record<string, string> = {
+    "Goal": "What outcome are we working toward?",
+    "Performance Review": "How is the agent performing against expectations?",
+    "Improvement Opportunities Discussion": "What specific areas need development?",
+    "Development Plan": "What steps and resources will support growth?",
+    "Notes / Summary": "Session notes and key takeaways...",
+  };
+  return (
+    <div className="border border-border rounded-lg overflow-hidden">
+      <button
+        onClick={() => setOpen(v => !v)}
+        className="w-full flex items-center justify-between px-3 py-2.5 bg-white hover:bg-surface-muted transition-colors text-left"
+      >
+        <span className="text-xs font-medium text-text-secondary">{label}</span>
+        <svg
+          width="12" height="12" viewBox="0 0 12 12" fill="none"
+          className={"transition-transform duration-150 " + (open ? "rotate-180" : "")}
+        >
+          <path d="M2 4l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+        </svg>
+      </button>
+      {open && (
+        <div className="px-3 pb-3 bg-white border-t border-border">
+          <textarea
+            rows={4}
+            className="w-full mt-2 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+            placeholder={placeholders[label] ?? label + "..."}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // ---------------------------------------------------------------------------
 // Page
 // ---------------------------------------------------------------------------
@@ -588,183 +626,150 @@ export default function OneToOnePage() {
                 {/* Body */}
                 <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
 
-                  {/* Row: Employee (no arrows) | Session Type | KPI Focus */}
-                  <div className="grid grid-cols-3 gap-3">
-                    <div>
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Employee</label>
-                      <div className="flex items-center gap-2 px-2.5 py-2 border border-border rounded-lg bg-surface-muted cursor-default">
-                        <div className="w-5 h-5 rounded-full bg-brand-light flex items-center justify-center text-brand text-[9px] font-bold flex-shrink-0">{agent.initials}</div>
-                        <span className="text-sm text-text-primary truncate">{agent.name}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Session Type</label>
-                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
-                        <option value="">Select...</option>
-                        <option>Coaching</option>
-                        <option>Performance Review</option>
-                        <option>Development</option>
-                        <option>GROW</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">KPI Focus</label>
-                      <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:border-brand">
-                        <option>None</option>
-                        {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
-                      </select>
+                  {/* ════ ZONA 1 — CONTEXTO ════════════════════════════ */}
+                {/* Row: Employee | Session Type | KPI Focus */}
+                <div className="grid grid-cols-3 gap-3">
+                  <div>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Employee</label>
+                    <div className="flex items-center gap-2 px-2.5 py-2 border border-border rounded-lg bg-surface-muted cursor-default">
+                      <div className="w-5 h-5 rounded-full bg-brand-light flex items-center justify-center text-brand text-[9px] font-bold flex-shrink-0">{agent.initials}</div>
+                      <span className="text-sm text-text-primary truncate">{agent.name}</span>
                     </div>
                   </div>
-
-                  {/* Topic / Subject */}
                   <div>
-                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Topic / Subject</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand mb-2">
-                      <option>— Select a fact —</option>
-                      {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
-                    </select>
-                    <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
-                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                      + New Fact
-                    </button>
-                  </div>
-
-                  {/* Linked Improvement Point — connects to Agent View Personal Insights */}
-                  <div>
-                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Linked Improvement Point</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
-                      <option>— Select —</option>
-                      <option>Improve closing technique — only 35% pitch rate</option>
-                      <option>Greeting protocol compliance — failed 3 consecutive evals</option>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Session Type</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                      <option value="">Select...</option>
+                      <option>Coaching</option>
+                      <option>Performance Review</option>
+                      <option>Development</option>
+                      <option>GROW</option>
                     </select>
                   </div>
-
-                  {/* Goal + Performance Review — perfectly equal 2-col grid */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col">
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Goal</label>
-                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Goal..."/>
-                    </div>
-                    <div className="flex flex-col">
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Performance Review</label>
-                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Performance Review..."/>
-                    </div>
-                  </div>
-
-                  {/* Improvement Opportunities + Development Plan — equal 2-col */}
-                  <div className="grid grid-cols-2 gap-3">
-                    <div className="flex flex-col">
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Improvement Opportunities Discussion</label>
-                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Improvement Opportunities Discussion..."/>
-                    </div>
-                    <div className="flex flex-col">
-                      <label className="text-xs font-medium text-text-secondary block mb-1.5">Development Plan</label>
-                      <textarea className="flex-1 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" rows={4} placeholder="Development Plan..."/>
-                    </div>
-                  </div>
-
-                  {/* Notes / Summary */}
                   <div>
-                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Notes / Summary</label>
-                    <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Session notes..."/>
+                    <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">KPI Focus</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:border-brand">
+                      <option>None</option>
+                      {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
+                    </select>
                   </div>
+                </div>
 
-                  {/* Actions — always one visible by default, + Add Action to add more */}
-                  <div>
-                    <div className="mb-3">
-                      <label className="text-xs font-medium text-text-secondary block mb-2">Actions ({sessionActions.length === 0 ? 1 : sessionActions.length})</label>
-                      <button
-                        onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
-                        className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors"
-                      >
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                        + Add Action
-                      </button>
-                    </div>
+                {/* Topic / Subject */}
+                <div>
+                  <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Topic / Subject</label>
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand mb-2">
+                    <option>— Select a fact —</option>
+                    {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
+                  </select>
+                  <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    + New Fact
+                  </button>
+                </div>
 
-                    {/* Default empty state */}
-                    {sessionActions.length === 0 && (
-                      <div className="border border-border rounded-xl p-3 bg-white">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-text-tertiary">Action 1</span>
-                        </div>
-                        <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3" placeholder="Describe the action..."/>
-                        <div className="grid grid-cols-2 gap-2 mb-2">
-                          <div>
-                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Category</label>
-                            <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
-                              <option>Human Coaching</option>
-                              <option>Training</option>
-                              <option>AI Coaching</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Due Date</label>
-                            <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
-                          </div>
+                {/* Linked Improvement Point */}
+                <div>
+                  <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Linked Improvement Point</label>
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                    <option>— Select —</option>
+                    <option>Improve closing technique — only 35% pitch rate</option>
+                    <option>Greeting protocol compliance — failed 3 consecutive evals</option>
+                  </select>
+                </div>
+
+                {/* ── Divider ─────────────────────────────────────────── */}
+                <div className="border-t border-border" />
+
+                {/* ════ ZONA 2 — CONTENIDO ════════════════════════════ */}
+                {/* Accordion: each content field collapses independently */}
+                {["Goal", "Performance Review", "Improvement Opportunities Discussion", "Development Plan", "Notes / Summary"].map((fieldName, fi) => (
+                  <ContentField label={fieldName} key={fi} />
+                ))}
+
+                {/* ── Divider ─────────────────────────────────────────── */}
+                <div className="border-t border-border" />
+
+                {/* ════ ZONA 3 — COMPROMISOS ══════════════════════════ */}
+                <div>
+                  <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-2">
+                    Actions ({sessionActions.length === 0 ? 1 : sessionActions.length})
+                  </label>
+                  <button
+                    onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
+                    className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors mb-3"
+                  >
+                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                    + Add Action
+                  </button>
+
+                  {/* Default empty action */}
+                  {sessionActions.length === 0 && (
+                    <div className="border border-border rounded-xl p-3 bg-white">
+                      <span className="text-xs text-text-tertiary block mb-2">Action 1</span>
+                      <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3" placeholder="Describe the action..."/>
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        <div>
+                          <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                            <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
+                          </select>
                         </div>
                         <div>
-                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Coaching Tool</label>
-                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
-                            <option value="">Select tool...</option>
-                            <option>GROW Model</option>
-                            <option>Customer Experience Coaching</option>
-                            <option>Feedback Conversation</option>
-                            <option>Side-by-Side Observation</option>
-                          </select>
+                          <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
+                          <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
                         </div>
                       </div>
-                    )}
+                      <div>
+                        <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                          <option value="">Select tool...</option>
+                          <option>GROW Model</option><option>Customer Experience Coaching</option>
+                          <option>Feedback Conversation</option><option>Side-by-Side Observation</option>
+                        </select>
+                      </div>
+                    </div>
+                  )}
 
-                    {/* Additional actions added by user */}
-                    {sessionActions.map((a, i) => (
-                      <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
-                        <div className="flex items-center justify-between mb-2">
-                          <span className="text-xs text-text-tertiary">Action {i + 1}</span>
-                          {hasActions && (
-                            <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-danger hover:opacity-70 transition-opacity">
-                              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                            </button>
-                          )}
-                        </div>
-                        <textarea rows={3}
-                          value={hasActions ? a.text : ""}
-                          onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,text:e.target.value}:x)) : undefined}
-                          className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3"
-                          placeholder="Describe the action..."/>
-                        <div className="grid grid-cols-2 gap-2 mb-2">
-                          <div>
-                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Category</label>
-                            <select
-                              value={hasActions ? a.type : "Human Coaching"}
-                              onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
-                              className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
-                              <option>Human Coaching</option>
-                              <option>Training</option>
-                              <option>AI Coaching</option>
-                            </select>
-                          </div>
-                          <div>
-                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Due Date</label>
-                            <input type="date"
-                              value={hasActions ? a.dueDate : ""}
-                              onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
-                              className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
-                          </div>
-                        </div>
-                        <div className="mb-2">
-                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Coaching Tool</label>
-                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
-                            <option value="">Select tool...</option>
-                            <option>GROW Model</option>
-                            <option>Customer Experience Coaching</option>
-                            <option>Feedback Conversation</option>
-                            <option>Side-by-Side Observation</option>
+                  {sessionActions.map((a, i) => (
+                    <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-xs text-text-tertiary">Action {i + 1}</span>
+                        <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-danger hover:opacity-70 transition-opacity">
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                        </button>
+                      </div>
+                      <textarea rows={3} value={hasActions ? a.text : ""}
+                        onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,text:e.target.value}:x)) : undefined}
+                        className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3"
+                        placeholder="Describe the action..."/>
+                      <div className="grid grid-cols-2 gap-2 mb-2">
+                        <div>
+                          <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
+                          <select value={hasActions ? a.type : "Human Coaching"}
+                            onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                            <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
                           </select>
                         </div>
+                        <div>
+                          <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
+                          <input type="date" value={hasActions ? a.dueDate : ""}
+                            onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                        </div>
                       </div>
-                    ))}
-                  </div>
+                      <div>
+                        <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                          <option value="">Select tool...</option>
+                          <option>GROW Model</option><option>Customer Experience Coaching</option>
+                          <option>Feedback Conversation</option><option>Side-by-Side Observation</option>
+                        </select>
+                      </div>
+                    </div>
+                  ))}
+                </div>
 
                 </div>
 
