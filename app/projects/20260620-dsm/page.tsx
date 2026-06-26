@@ -351,7 +351,7 @@ export default function DSMPage() {
   const [tab, setTab] = useState<Tab>("open");
   // ITERATION E: all groups expanded by default — supervisor sees all actions immediately
   const [expandedAgents, setExpandedAgents] = useState<Record<string, boolean>>(
-    Object.fromEntries(AGENT_GROUPS.map((a) => [a.agentId, true]))
+    Object.fromEntries(AGENT_GROUPS.map((a) => [a.agentId, false]))
   );
   const [completingId, setCompletingId] = useState<string | null>(null);
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
