@@ -89,6 +89,34 @@ const AGENTS: Agent[] = [
       },
     ],
   },
+  {
+    id: "maria-santos", name: "Maria Santos", initials: "MS", tenure: "2y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"88.0", unit:"%", target:"Target 85.0%", delta:"+3%", deltaPos:true, status:"on-target" as KpiStatus, pendingActions:0, recentSessions:1, facts:[], trendData:[87,87.5,88,88,88,88,88], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:0, sessions:1, completed:1, pending:0 }],
+  },
+  {
+    id: "carlos-mendes", name: "Carlos Mendes", initials: "CM", tenure: "3y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"82.0", unit:"%", target:"Target 85.0%", delta:"-3%", deltaPos:false, status:"at-risk" as KpiStatus, pendingActions:1, recentSessions:2, facts:[], trendData:[83,83,82.5,82,82,82,82], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:1, sessions:2, completed:0, pending:1 }],
+  },
+  {
+    id: "ana-ferreira", name: "Ana Ferreira", initials: "AF", tenure: "1.5y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"85.0", unit:"%", target:"Target 85.0%", delta:"0%", deltaPos:true, status:"on-target" as KpiStatus, pendingActions:0, recentSessions:1, facts:[], trendData:[85,85,85,85,85,85,85], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:0, sessions:1, completed:1, pending:0 }],
+  },
+  {
+    id: "pedro-costa", name: "Pedro Costa", initials: "PC", tenure: "2y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"79.0", unit:"%", target:"Target 85.0%", delta:"-6%", deltaPos:false, status:"off-target" as KpiStatus, pendingActions:2, recentSessions:3, facts:[], trendData:[81,80,80,79,79,79,79], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:2, sessions:3, completed:0, pending:2 }],
+  },
+  {
+    id: "sofia-rodrigues", name: "Sofia Rodrigues", initials: "SR", tenure: "4y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"87.0", unit:"%", target:"Target 85.0%", delta:"+2%", deltaPos:true, status:"on-target" as KpiStatus, pendingActions:0, recentSessions:1, facts:[], trendData:[87,87,87,87,87,87,87], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:0, sessions:1, completed:1, pending:0 }],
+  },
+  {
+    id: "ricardo-nunes", name: "Ricardo Nunes", initials: "RN", tenure: "1y", focusKpi: "adh",
+    kpis: [{ key:"adh", label:"ADH", value:"85.0", unit:"%", target:"Target 95.0%", delta:"-10%", deltaPos:false, status:"at-risk" as KpiStatus, pendingActions:1, recentSessions:1, facts:[], trendData:[86,86,85.5,85,85,85,85], teamData:[94,95,95,95,95,95,95], targetValue:95, facts1:0, sessions:1, completed:0, pending:1 }],
+  },
+  {
+    id: "beatriz-lopes", name: "Beatriz Lopes", initials: "BL", tenure: "3y", focusKpi: "csat",
+    kpis: [{ key:"csat", label:"CSAT", value:"89.0", unit:"%", target:"Target 85.0%", delta:"+4%", deltaPos:true, status:"on-target" as KpiStatus, pendingActions:0, recentSessions:2, facts:[], trendData:[88,89,89,89,89,89,89], teamData:[84,85,85,85,85,85,85], targetValue:85, facts1:0, sessions:2, completed:2, pending:0 }],
+  },
 ];
 
 // ---------------------------------------------------------------------------
@@ -186,7 +214,10 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
 // Page
 // ---------------------------------------------------------------------------
 export default function OneToOnePage() {
-  const agent = AGENTS[0];
+  const [selectedAgentId, setSelectedAgentId] = useState(AGENTS[0].id);
+  const [showAgentDropdown, setShowAgentDropdown] = useState(false);
+  const [agentSearch, setAgentSearch] = useState("");
+  const agent = AGENTS.find(a => a.id === selectedAgentId) ?? AGENTS[0];
   const [focusKpi, setFocusKpi] = useState(agent.focusKpi);
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
@@ -226,15 +257,42 @@ export default function OneToOnePage() {
                   AGENT
                 </p>
                 <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors flex-1 min-w-0">
-                    <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">
-                      {agent.initials}
+                  <div className="relative flex-1 min-w-0">
+                    <div onClick={() => { setShowAgentDropdown(v => !v); setAgentSearch(""); }}
+                      className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors">
+                      <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">{agent.initials}</div>
+                      <div className="flex-1 min-w-0">
+                        <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
+                        <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
+                      </div>
+                      <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0">
+                        <path d={showAgentDropdown ? "M3 8.5l4-4 4 4" : "M3 5.5l4 4 4-4"} stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                      </svg>
                     </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
-                      <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
-                    </div>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/></svg>
+                    {showAgentDropdown && (
+                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-border rounded-xl shadow-xl z-30 overflow-hidden">
+                        <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" strokeWidth="1.2"/><path d="M10 10l3 3" stroke="#9CA3AF" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                          <input autoFocus type="text" placeholder="Search employee..."
+                            value={agentSearch} onChange={e => setAgentSearch(e.target.value)}
+                            className="flex-1 text-sm outline-none bg-transparent text-text-primary placeholder:text-text-tertiary"/>
+                        </div>
+                        <div className="px-4 pt-2 pb-1">
+                          <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Other</span>
+                        </div>
+                        <div className="max-h-64 overflow-y-auto pb-2">
+                          {AGENTS.filter(a => a.name.toLowerCase().includes(agentSearch.toLowerCase())).map(a => (
+                            <div key={a.id}
+                              onClick={() => { setSelectedAgentId(a.id); setFocusKpi(a.focusKpi); setShowAgentDropdown(false); setAgentSearch(""); }}
+                              className={`flex items-center gap-3 px-4 py-2.5 cursor-pointer transition-colors ${a.id === selectedAgentId ? "bg-surface-muted" : "hover:bg-surface-muted"}`}>
+                              <div className="w-7 h-7 rounded-full bg-brand-light flex items-center justify-center text-brand text-[10px] font-bold flex-shrink-0">{a.initials}</div>
+                              <span className={`text-sm flex-1 ${a.id === selectedAgentId ? "font-semibold text-text-primary" : "text-text-secondary"}`}>{a.name}</span>
+                              {a.id === selectedAgentId && <span className="text-xs text-text-tertiary">2 active</span>}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                   <button className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors flex-shrink-0 whitespace-nowrap">
                     <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
