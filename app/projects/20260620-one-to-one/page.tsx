@@ -624,38 +624,6 @@ export default function OneToOnePage() {
                     </select>
                   </div>
 
-                  {/* Linked Improvement Point — select with arrows */}
-                  <div>
-                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Linked Improvement Point</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
-                      <option>— Select —</option>
-                      <option>Improve closing technique — only 35% pitch rate</option>
-                      <option>Greeting protocol compliance — failed 3 consecutive evals</option>
-                    </select>
-                  </div>
-
-                  {/* Voice Recording */}
-                  <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-medium text-text-secondary flex items-center gap-1.5">
-                        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="3" y="0.5" width="5" height="7" rx="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 7a4.5 4.5 0 009 0" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/><line x1="5.5" y1="11.5" x2="5.5" y2="13" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                        Voice Recording
-                      </label>
-                      <div className="flex items-center gap-1.5">
-                        <select className="text-xs border border-border rounded-md px-2 py-1 bg-surface-muted focus:outline-none text-text-secondary">
-                          <option>Português</option>
-                          <option>English</option>
-                          <option>Español</option>
-                        </select>
-                        <button className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1 rounded-full text-white" style={{background:"#54B282"}}>
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><circle cx="5" cy="5" r="4.5" stroke="white" strokeWidth="1"/><path d="M4 3.5l3 1.5-3 1.5V3.5z" fill="white"/></svg>
-                          Start
-                        </button>
-                      </div>
-                    </div>
-                    <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-primary placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Transcript will appear here as you speak, or paste text manually..."/>
-                  </div>
-
                   {/* Goal + Performance Review — perfectly equal 2-col grid */}
                   <div className="grid grid-cols-2 gap-3">
                     <div className="flex flex-col">
@@ -699,11 +667,42 @@ export default function OneToOnePage() {
                       </button>
                     </div>
 
-                    {/* Action cards */}
-                    {(sessionActions.length === 0
-                      ? [{type:"Human Coaching", text:"", dueDate:""}]
-                      : sessionActions
-                    ).map((a, i) => (
+                    {/* Default empty state */}
+                    {sessionActions.length === 0 && (
+                      <div className="border border-border rounded-xl p-3 bg-white">
+                        <div className="flex items-center justify-between mb-2">
+                          <span className="text-xs text-text-tertiary">Action 1</span>
+                        </div>
+                        <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3" placeholder="Describe the action..."/>
+                        <div className="grid grid-cols-2 gap-2 mb-2">
+                          <div>
+                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Category</label>
+                            <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                              <option>Human Coaching</option>
+                              <option>Training</option>
+                              <option>AI Coaching</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label className="text-[11px] text-text-secondary font-medium block mb-1">Due Date</label>
+                            <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                          </div>
+                        </div>
+                        <div>
+                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Coaching Tool</label>
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                            <option value="">Select tool...</option>
+                            <option>GROW Model</option>
+                            <option>Customer Experience Coaching</option>
+                            <option>Feedback Conversation</option>
+                            <option>Side-by-Side Observation</option>
+                          </select>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Additional actions added by user */}
+                    {sessionActions.map((a, i) => (
                       <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
                         <div className="flex items-center justify-between mb-2">
                           <span className="text-xs text-text-tertiary">Action {i + 1}</span>
@@ -746,16 +745,6 @@ export default function OneToOnePage() {
                             <option>Customer Experience Coaching</option>
                             <option>Feedback Conversation</option>
                             <option>Side-by-Side Observation</option>
-                          </select>
-                        </div>
-                        <div>
-                          <label className="text-[11px] text-text-secondary font-medium block mb-1">Subject Category</label>
-                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
-                            <option>Call Opening</option>
-                            <option>Active Listening</option>
-                            <option>Needs Discovery</option>
-                            <option>Hold &amp; Transfer</option>
-                            <option>Disclosure Script</option>
                           </select>
                         </div>
                       </div>
