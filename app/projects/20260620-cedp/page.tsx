@@ -239,15 +239,24 @@ export default function CEDPPage() {
 
 
 
-          {/* Progress */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex-1 bg-surface-muted rounded-full h-1.5 border border-border overflow-hidden">
-              <div
-                className="h-full rounded-full transition-all duration-300"
-                style={{width: (completedCount / 9 * 100) + "%", background: "#10B981"}}
-              />
+          {/* UX guidance + counter */}
+          <div className="flex items-start justify-between gap-4 mb-4 px-4 py-3 rounded-xl border border-border bg-surface-muted">
+            <div className="flex items-start gap-2.5">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0 mt-0.5">
+                <circle cx="7" cy="7" r="6" stroke="#9CA3AF" strokeWidth="1.2"/>
+                <path d="M7 6v4M7 4.5v.5" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+              <p className="text-xs text-text-secondary m-0 leading-relaxed">
+                Open each competency, review the agent self-assessment on the left, then fill in your supervisor evaluation on the right. Press <span className="font-semibold text-text-primary">Mark as done</span> to move to the next one.
+              </p>
             </div>
-            <span className="text-xs text-text-tertiary flex-shrink-0">{completedCount} / 9 completed</span>
+            <span className="text-xs font-semibold text-text-secondary flex-shrink-0 whitespace-nowrap">
+              {completedCount > 0 ? (
+                <span className="text-brand">{completedCount} / 9 done</span>
+              ) : (
+                <span className="text-text-tertiary">0 / 9 done</span>
+              )}
+            </span>
           </div>
 
           {/* A — Ability to cope with the tasks and daily routine */}
