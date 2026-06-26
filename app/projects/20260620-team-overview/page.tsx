@@ -684,39 +684,6 @@ export default function TeamOverviewPage() {
             </div>
           </div>
 
-          {/* ── Your Key Topics ──────────────────────────────────── */}
-          <div className="bg-surface border border-border rounded-xl mb-5 overflow-hidden">
-            <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
-              <span className="text-sm font-semibold text-text-primary">Your Key Topics</span>
-            </div>
-            <div className="flex border-b border-border">
-              {([["top5","Top 5 Facts","4",false],["overdue","Overdue","8",true],["upcoming","Upcoming","5",false]] as const).map(([k,label,count,danger]) => (
-                <button key={k} onClick={() => setTopicTab(k)}
-                  className={`flex-1 py-2.5 text-xs font-medium flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
-                    topicTab===k ? "border-brand text-brand bg-surface" : "border-transparent text-text-secondary hover:text-text-primary bg-surface-muted"
-                  }`}>
-                  {label}
-                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${danger ? "bg-danger text-white" : "bg-border text-text-secondary"}`}>{count}</span>
-                </button>
-              ))}
-            </div>
-            <div>
-              {topics.map((t) => (
-                <div key={t.rank} className="flex items-start gap-4 px-5 py-3.5 border-b border-border last:border-b-0 hover:bg-surface-muted transition-colors">
-                  <span className="text-sm font-semibold text-text-tertiary min-w-[24px]">#{t.rank}</span>
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 flex-wrap">
-                      <span className="text-sm font-semibold text-text-primary">{t.agent}</span>
-                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${t.tagColor}`}>{t.tag}</span>
-                    </div>
-                    {t.body && <p className="text-sm text-text-secondary m-0 mt-0.5">{t.body}</p>}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
           {/* ── Team Members — Last 30 Days ───────────────────────── */}
           <div className="bg-surface border border-border rounded-xl overflow-hidden mb-8">
             <div className="flex items-center justify-between px-5 py-4 border-b border-border">
@@ -763,6 +730,41 @@ export default function TeamOverviewPage() {
               </tbody>
             </table>
           </div>
+
+
+          {/* ── Your Key Topics ──────────────────────────────────── */}
+          <div className="bg-surface border border-border rounded-xl mb-5 overflow-hidden">
+            <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
+              <span className="text-sm font-semibold text-text-primary">Your Key Topics</span>
+            </div>
+            <div className="flex border-b border-border">
+              {([["top5","Top 5 Facts","4",false],["overdue","Overdue","8",true],["upcoming","Upcoming","5",false]] as const).map(([k,label,count,danger]) => (
+                <button key={k} onClick={() => setTopicTab(k)}
+                  className={`flex-1 py-2.5 text-xs font-medium flex items-center justify-center gap-1.5 border-b-2 transition-colors ${
+                    topicTab===k ? "border-brand text-brand bg-surface" : "border-transparent text-text-secondary hover:text-text-primary bg-surface-muted"
+                  }`}>
+                  {label}
+                  <span className={`text-[10px] font-bold px-1.5 py-0.5 rounded-full ${danger ? "bg-danger text-white" : "bg-border text-text-secondary"}`}>{count}</span>
+                </button>
+              ))}
+            </div>
+            <div>
+              {topics.map((t) => (
+                <div key={t.rank} className="flex items-start gap-4 px-5 py-3.5 border-b border-border last:border-b-0 hover:bg-surface-muted transition-colors">
+                  <span className="text-sm font-semibold text-text-tertiary min-w-[24px]">#{t.rank}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="text-sm font-semibold text-text-primary">{t.agent}</span>
+                      <span className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${t.tagColor}`}>{t.tag}</span>
+                    </div>
+                    {t.body && <p className="text-sm text-text-secondary m-0 mt-0.5">{t.body}</p>}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
 
         </main>
       </div>
