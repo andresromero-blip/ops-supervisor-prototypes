@@ -624,7 +624,7 @@ export default function OneToOnePage() {
                 </div>
 
                 {/* Body */}
-                <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-4">
+                <div className="flex-1 overflow-y-auto px-5 py-4 flex flex-col gap-3">
 
                   {/* ════ ZONA 1 — CONTEXTO ════════════════════════════ */}
                 {/* Row: Employee | Session Type | KPI Focus */}
@@ -663,8 +663,7 @@ export default function OneToOnePage() {
                     {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
                   </select>
                   <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
-                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                    + New Fact
++ New Fact
                   </button>
                 </div>
 
@@ -678,17 +677,17 @@ export default function OneToOnePage() {
                   </select>
                 </div>
 
-                {/* ── Divider ─────────────────────────────────────────── */}
-                <div className="border-t border-border" />
+                <div className="border-t border-border -mx-5" />
 
                 {/* ════ ZONA 2 — CONTENIDO ════════════════════════════ */}
                 {/* Accordion: each content field collapses independently */}
-                {["Goal", "Performance Review", "Improvement Opportunities Discussion", "Development Plan", "Notes / Summary"].map((fieldName, fi) => (
-                  <ContentField label={fieldName} key={fi} />
-                ))}
+                <div className="flex flex-col gap-1.5">
+                  {["Goal", "Performance Review", "Improvement Opportunities Discussion", "Development Plan", "Notes / Summary"].map((fieldName, fi) => (
+                    <ContentField label={fieldName} key={fi} />
+                  ))}
+                </div>
 
-                {/* ── Divider ─────────────────────────────────────────── */}
-                <div className="border-t border-border" />
+                <div className="border-t border-border -mx-5" />
 
                 {/* ════ ZONA 3 — COMPROMISOS ══════════════════════════ */}
                 <div>
@@ -699,8 +698,7 @@ export default function OneToOnePage() {
                     onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
                     className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors mb-3"
                   >
-                    <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                    + Add Action
++ Add Action
                   </button>
 
                   {/* Default empty action */}
