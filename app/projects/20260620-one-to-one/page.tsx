@@ -363,9 +363,9 @@ export default function OneToOnePage() {
 
           {/* KPI Deep Dive */}
           <div className="mb-5">
-            {/* Header row: title left, helper right */}
-            <div className="flex items-center justify-between mb-3">
-              <div className="flex items-center gap-2">
+            {/* Header: title + helper below */}
+            <div className="mb-3">
+              <div className="flex items-center gap-2 mb-1">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
                   <polyline points="1,11 4,6 7,8 11,3 13,5"
                     stroke={VALUE_COLORS[activeKpi.status]}
@@ -373,7 +373,7 @@ export default function OneToOnePage() {
                 </svg>
                 <span className="text-sm font-semibold">KPI deep dive · {activeKpi.label}</span>
               </div>
-              <span className="text-xs text-text-tertiary">Click any KPI card above to switch focus.</span>
+              <p className="text-xs text-text-tertiary m-0 ml-5">Click any KPI card above to switch focus.</p>
             </div>
 
             {/* Single card: stats + chart + legend */}
