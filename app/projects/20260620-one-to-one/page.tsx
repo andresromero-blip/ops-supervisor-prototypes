@@ -222,8 +222,15 @@ export default function OneToOnePage() {
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
   const hasActions = sessionActions.length !== 0;
+  const [savedToast, setSavedToast] = useState(false);
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
+  const handleSave = () => {
+    setShowSession(false);
+    setSessionActions([]);
+    setSavedToast(true);
+    setTimeout(() => setSavedToast(false), 3000);
+  };
   const mainStyle: React.CSSProperties = showSession
     ? { paddingRight: '540px' }
     : {};
@@ -772,7 +779,7 @@ export default function OneToOnePage() {
                     <button onClick={() => setShowSession(false)} className="text-sm text-text-secondary border border-border px-3 py-1.5 rounded-lg hover:border-brand/40 transition-colors">
                       Cancel
                     </button>
-                    <button onClick={() => setShowSession(false)}
+                    <button onClick={handleSave}
                       className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg"
                       style={{background:"#10B981"}}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
@@ -782,6 +789,30 @@ export default function OneToOnePage() {
                 </div>
             </div>
           )}
+          {/* ── Success toast ── */}
+          {savedToast && (
+            <div
+              className="fixed bottom-6 left-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold"
+              style={{
+                transform: "translateX(-50%)",
+                background: "#10B981",
+                animation: "fadeInUp 0.2s ease",
+              }}
+            >
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+                <path d="M5 8l2.5 2.5 4-4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Coaching session saved successfully
+              <button
+                onClick={() => setSavedToast(false)}
+                className="ml-2 opacity-70 hover:opacity-100 transition-opacity"
+              >
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </button>
+            </div>
+          )}
+
         </main>
       </div>
     </div>
