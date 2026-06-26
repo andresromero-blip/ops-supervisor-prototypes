@@ -248,7 +248,7 @@ export default function OneToOnePage() {
           </div>
 
           {/* Agent module — collapses when session panel is open */}
-          <div className="border border-border rounded-xl mb-5 bg-surface overflow-hidden transition-all">
+          <div className="border border-border rounded-xl mb-5 bg-surface transition-all" style={{position:"relative", zIndex: 20}}>
             {!showSession ? (
               /* Full view: label + selector + buttons */
               <div className="px-4 pt-3 pb-3">
@@ -270,7 +270,7 @@ export default function OneToOnePage() {
                       </svg>
                     </div>
                     {showAgentDropdown && (
-                      <div className="absolute top-[calc(100%+4px)] left-0 right-0 bg-white border border-border rounded-xl shadow-xl z-30 overflow-hidden">
+                      <div className="absolute top-[calc(100%+4px)] left-0 bg-white border border-border rounded-xl shadow-xl overflow-hidden" style={{zIndex:50, minWidth:"320px", width:"100%"}}>
                         <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
                           <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" strokeWidth="1.2"/><path d="M10 10l3 3" stroke="#9CA3AF" strokeWidth="1.2" strokeLinecap="round"/></svg>
                           <input autoFocus type="text" placeholder="Search employee..."
