@@ -116,7 +116,7 @@ const VALUE_COLORS: Record<KpiStatus, string> = {
 };
 
 // Deep-dive chart: SVG with agent line, team dashed, target dashed, area fill
-function DeepDiveChart({ kpi }: { kpi: KpiCard }) {
+function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor?: string }) {
   const W = 700; const H = 160;
   const PL = 44; const PR = 60; const PT = 12; const PB = 28;
 
@@ -148,11 +148,11 @@ function DeepDiveChart({ kpi }: { kpi: KpiCard }) {
       <line x1={PL} y1={targetY} x2={W - PR} y2={targetY} stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="4 3" />
       <text x={W - PR + 4} y={targetY - 4} fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">TARGET</text>
       {/* Area under agent */}
-      <path d={areaPath} fill="rgba(16,185,129,0.08)" />
+      <path d={areaPath} fill={lineColor === "#10B981" ? "rgba(16,185,129,0.08)" : lineColor === "#EF4444" ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.06)"} />
       {/* Team line dashed */}
       <path d={teamPath} fill="none" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="4 3" />
       {/* Agent line */}
-      <path d={agentPath} fill="none" stroke="#10B981" strokeWidth="2" strokeLinejoin="round" />
+      <path d={agentPath} fill="none" stroke={lineColor} strokeWidth="2" strokeLinejoin="round" />
       {/* X labels */}
       {days.map((d, i) => d && (
         <text key={i} x={toX(i)} y={H - 4} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
@@ -341,116 +341,105 @@ export default function OneToOnePage() {
           </div>
 
           {/* KPI Deep Dive */}
-          <div className="border border-border rounded-xl bg-surface mb-5 overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+          <div className="mb-5">
+            {/* Header: title + helper text below */}
+            <div className="flex items-center justify-between mb-1">
               <div className="flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="1,11 4,6 7,8 11,3 13,5" stroke="#10B981" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                  <polyline
+                    points="1,11 4,6 7,8 11,3 13,5"
+                    stroke={VALUE_COLORS[activeKpi.status]}
+                    strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"
+                  />
+                </svg>
                 <span className="text-sm font-semibold">KPI deep dive · {activeKpi.label}</span>
               </div>
               <span className="text-xs text-text-tertiary">Click any KPI card above to switch focus.</span>
             </div>
 
-            {/* Stats row */}
-            <div className="px-5 py-4 flex items-center gap-8 border-b border-border">
-              <div className="flex items-center gap-3">
-                <span
-                  className="text-xs font-bold px-2 py-1 rounded-md"
-                  style={{ background: "#F0FDF9", color: "#10B981", border: "1px solid #D1FAE5" }}
-                >
-                  {activeKpi.label}
-                </span>
-                <span className="text-3xl font-bold text-text-primary">{activeKpi.value}</span>
-                <span className="text-sm text-text-tertiary">vs target {activeKpi.target.replace("Target ", "")}</span>
-              </div>
-              {[
-                { n: activeKpi.facts1, l: "FACTS" },
-                { n: activeKpi.sessions, l: "SESSIONS" },
-                { n: activeKpi.completed, l: "COMPLETED" },
-                { n: activeKpi.pending, l: "PENDING" },
-              ].map(s => (
-                <div key={s.l} className="text-center">
-                  <div className="text-xl font-bold text-text-primary">{s.n}</div>
-                  <div className="text-[10px] text-text-tertiary font-medium tracking-wide">{s.l}</div>
+            {/* Stats card */}
+            <div className="border border-border rounded-xl bg-surface overflow-hidden mb-3">
+              <div className="px-5 py-4 flex items-center gap-8">
+                <div className="flex items-center gap-3">
+                  <span
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1"
+                    style={{
+                      background: activeKpi.status === "outlier" ? "#FEE2E2"
+                                : activeKpi.status === "off-target" ? "#FEF3C7"
+                                : activeKpi.status === "at-risk" ? "#FEF3C7"
+                                : "#D1FAE5",
+                      color: VALUE_COLORS[activeKpi.status],
+                      border: `1px solid ${
+                        activeKpi.status === "outlier" ? "#FECACA"
+                        : activeKpi.status === "off-target" ? "#FDE68A"
+                        : activeKpi.status === "at-risk" ? "#FDE68A"
+                        : "#A7F3D0"
+                      }`
+                    }}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
+                      <polyline points="1,8 3.5,5 6,6.5 9,2" stroke="currentColor" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round"/>
+                    </svg>
+                    {activeKpi.label}
+                  </span>
+                  <span
+                    className="text-4xl font-bold"
+                    style={{ color: VALUE_COLORS[activeKpi.status] }}
+                  >
+                    {activeKpi.value}<span className="text-2xl">{activeKpi.unit}</span>
+                  </span>
+                  <span className="text-sm text-text-tertiary">vs target {activeKpi.target.replace("Target ", "")}</span>
                 </div>
-              ))}
+                {[
+                  { n: activeKpi.facts1, l: "FACTS" },
+                  { n: activeKpi.sessions, l: "SESSIONS" },
+                  { n: activeKpi.completed, l: "COMPLETED" },
+                  { n: activeKpi.pending, l: "PENDING" },
+                ].map(s => (
+                  <div key={s.l} className="text-center">
+                    <div className="text-2xl font-bold text-text-primary">{s.n}</div>
+                    <div className="text-[10px] text-text-tertiary font-semibold tracking-widest">{s.l}</div>
+                  </div>
+                ))}
+              </div>
             </div>
 
-            {/* Chart */}
-            <div className="px-5 py-3 border-b border-border">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">Last 7 days trend</p>
-              <DeepDiveChart kpi={activeKpi} />
-              {/* Legend */}
-              <div className="flex items-center gap-5 mt-3 justify-end">
+            {/* Chart card */}
+            <div className="border border-border rounded-xl bg-surface overflow-hidden mb-3">
+              <div className="px-5 pt-4 pb-2">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">Last 7 days trend</p>
+              </div>
+              <DeepDiveChart kpi={activeKpi} lineColor={VALUE_COLORS[activeKpi.status]} />
+              {/* Legend right-aligned */}
+              <div className="flex items-center justify-end gap-5 px-5 py-3">
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-                  <span style={{ width: 20, height: 2, background: "#10B981", display: "inline-block", borderRadius: 2 }} />
+                  <span style={{ width: 20, height: 2, background: VALUE_COLORS[activeKpi.status], display: "inline-block", borderRadius: 2 }} />
                   Agent
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #D1D5DB" }} />
+                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #9CA3AF" }} />
                   Team
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #D1D5DB" }} />
+                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #374151" }} />
                   Target
                 </span>
               </div>
             </div>
 
-            {/* Relevant Facts */}
-            <div className="px-5 py-4 border-b border-border">
-              <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">
-                Relevant facts on {activeKpi.label}
-              </p>
-              {activeKpi.facts.length === 0 ? (
-                <p className="text-sm text-text-tertiary">No relevant facts for this KPI.</p>
-              ) : (
-                <div className="flex flex-col gap-2">
-                  {activeKpi.facts.map((f, i) => (
-                    <div key={i} className="flex items-center justify-between py-2 border-b border-border last:border-b-0">
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="w-1 h-8 rounded-full flex-shrink-0"
-                          style={{ background: f.severity === "critical" ? "#EF4444" : "#F59E0B" }}
-                        />
-                        <span className="text-xs text-text-tertiary">{f.date}</span>
-                        <span className="text-sm font-semibold" style={{ color: f.severity === "critical" ? "#EF4444" : "#F59E0B" }}>
-                          {f.severity}
-                        </span>
-                      </div>
-                      <div className="flex items-center gap-3">
-                        <button className="text-text-tertiary hover:text-text-primary transition-colors p-1 rounded">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 7s2.5-5 6-5 6 5 6 5-2.5 5-6 5-6-5-6-5z" stroke="currentColor" strokeWidth="1.2"/><circle cx="7" cy="7" r="2" stroke="currentColor" strokeWidth="1.2"/></svg>
-                        </button>
-                        <button className="text-text-tertiary hover:text-danger transition-colors p-1 rounded">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 4l6 4 6-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" strokeWidth="1.2"/></svg>
-                        </button>
-                        <span className="text-xs font-medium text-brand flex items-center gap-1">
-                          <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M2 6l3 3 4-5" stroke="#10B981" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
-                          Actioned
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Storyline */}
-            <div className="px-5 py-4">
-              <div className="flex items-center justify-between mb-3">
+            {/* Storyline card */}
+            <div className="border border-border rounded-xl bg-surface overflow-hidden">
+              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary flex items-center gap-1.5 m-0">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1,9 4,5 7,7 11,2" stroke="#9CA3AF" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round"/></svg>
                   Storyline
                 </p>
-                <button className="text-xs text-text-tertiary hover:text-text-primary transition-colors flex items-center gap-1">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 4l4 4 4-4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
-                  Show 2 historical items
-                </button>
               </div>
-              <p className="text-sm text-text-tertiary text-center py-4">
-                No coaching activity recorded for this KPI yet.
-              </p>
+              <div className="px-5 py-6 text-center">
+                <p className="text-sm text-text-tertiary italic m-0">
+                  No coaching activity recorded for this KPI yet.
+                </p>
+              </div>
             </div>
           </div>
 
