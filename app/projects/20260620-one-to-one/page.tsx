@@ -38,7 +38,7 @@ const AGENTS: Agent[] = [
     kpis: [
       {
         key: "aht", label: "AHT", value: "390", unit: "s", target: "Target 420",
-        delta: "+2%", deltaPos: true, status: "outlier",
+        delta: "+2%", deltaPos: true, status: "on-target",
         pendingActions: 0, recentSessions: 3,
         facts: [],
         trendData: [410,405,400,395,392,388,390], teamData: [420,418,422,419,421,420,420], targetValue: 420,
@@ -117,8 +117,8 @@ const VALUE_COLORS: Record<KpiStatus, string> = {
 
 // Deep-dive chart: SVG with agent line, team dashed, target dashed, area fill
 function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor?: string }) {
-  const W = 700; const H = 160;
-  const PL = 44; const PR = 60; const PT = 12; const PB = 28;
+  const W = 700; const H = 200;
+  const PL = 42; const PR = 8; const PT = 16; const PB = 32;
 
   const allVals = [...kpi.trendData, ...kpi.teamData, kpi.targetValue];
   const minV = Math.min(...allVals) * 0.97;
@@ -139,14 +139,14 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
   const yLabels = [minV, minV + yStep, minV + yStep * 2, maxV].map(v => Math.round(v));
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{ height: 220, display: "block" }}>
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{ height: 240, display: "block" }}>
       {/* Y labels */}
       {yLabels.map((v, i) => (
         <text key={i} x={PL - 4} y={toY(v) + 4} textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{v}</text>
       ))}
       {/* Target dashed */}
       <line x1={PL} y1={targetY} x2={W - PR} y2={targetY} stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="4 3" />
-      <text x={W - PR + 4} y={targetY - 4} fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">TARGET</text>
+      <text x={W - PR - 6} y={targetY - 4} textAnchor="end" fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">TARGET</text>
       {/* Area under agent */}
       <path d={areaPath} fill={lineColor === "#10B981" ? "rgba(16,185,129,0.08)" : lineColor === "#EF4444" ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.06)"} />
       {/* Team line dashed */}
