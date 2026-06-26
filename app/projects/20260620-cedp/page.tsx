@@ -157,6 +157,11 @@ const AGENTS: Agent[] = [
 export default function CEDPPage() {
   const [agentId, setAgentId]             = useState(AGENTS[0].id);
   const [agentDropdown, setAgentDropdown] = useState(false);
+  const [openComp, setOpenComp]           = useState<string | null>("A");
+  const [completed, setCompleted]         = useState<Record<string, boolean>>({});
+  const completedCount = Object.values(completed).filter(Boolean).length;
+  const toggleComp = (letter: string) => setOpenComp(prev => prev === letter ? null : letter);
+  const markDone   = (letter: string) => { setCompleted(prev => ({...prev, [letter]: true})); setOpenComp(null); };
 
   const agent = AGENTS.find((a) => a.id === agentId) ?? AGENTS[0];
 
@@ -234,19 +239,57 @@ export default function CEDPPage() {
 
 
 
-          {/* A — Ability to cope with the tasks and daily routine */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">A</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Ability to cope with the tasks and daily routine</span>
+          {/* Progress */}
+          <div className="flex items-center gap-3 mb-4">
+            <div className="flex-1 bg-surface-muted rounded-full h-1.5 border border-border overflow-hidden">
+              <div
+                className="h-full rounded-full transition-all duration-300"
+                style={{width: (completedCount / 9 * 100) + "%", background: "#10B981"}}
+              />
             </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+            <span className="text-xs text-text-tertiary flex-shrink-0">{completedCount} / 9 completed</span>
+          </div>
+
+          {/* A — Ability to cope with the tasks and daily routine */}
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["A"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("A")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["A"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["A"] ? "✓" : "A"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Ability to cope with the tasks and daily routine</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "A" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "A" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -255,39 +298,62 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("A")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* B — Problem solving and continuous improvement */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">B</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Problem solving and continuous improvement</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["B"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("B")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["B"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["B"] ? "✓" : "B"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Problem solving and continuous improvement</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "B" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "B" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -296,39 +362,62 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("B")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* C — Commitment and responsibility */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">C</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Commitment and responsibility</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["C"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("C")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["C"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["C"] ? "✓" : "C"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Commitment and responsibility</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "C" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "C" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -337,39 +426,62 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("C")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* D — Attitude towards work */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">D</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Attitude towards work</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["D"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("D")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["D"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["D"] ? "✓" : "D"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Attitude towards work</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "D" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "D" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -378,39 +490,62 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("D")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* E — Project knowledge */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">E</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Project knowledge</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["E"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("E")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["E"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["E"] ? "✓" : "E"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Project knowledge</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "E" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "E" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -419,39 +554,62 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("E")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* F — Absenteeism and delays */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">F</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Absenteeism and delays</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["F"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("F")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["F"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["F"] ? "✓" : "F"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Absenteeism and delays</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "F" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "F" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option value="">Select a rating...</option>
+                    <option>1 — Below expectations</option>
+                    <option>2 — Developing</option>
+                    <option>3 — Meets expectations</option>
+                    <option>4 — Exceeds expectations</option>
+                    <option>5 — Outstanding</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
@@ -460,113 +618,176 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option value="">Select a rating...</option>
-                    <option>1 — Below expectations</option>
-                    <option>2 — Developing</option>
-                    <option>3 — Meets expectations</option>
-                    <option>4 — Exceeds expectations</option>
-                    <option>5 — Outstanding</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("F")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* G — Propensity to leave in the next 30 days */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">G</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Propensity to leave in the next 30 days</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
-                </div>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["G"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("G")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["G"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["G"] ? "✓" : "G"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Propensity to leave in the next 30 days</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "G" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "G" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                    <option>Low</option>
+                    <option>Medium</option>
+                    <option>High</option>
+                  </select>
+                  <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
                   </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  </div>
                 </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-[#F6FEF9] focus:outline-none focus:border-brand text-text-secondary mb-2">
-                    <option>Low</option>
-                    <option>Medium</option>
-                    <option>High</option>
-                  </select>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-[#F6FEF9] placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("G")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
+                </div>
               </div>
-            </div>
+            )}
           </div>
           {/* H — Personal Aspirations */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">H</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Personal Aspirations</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["H"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("H")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["H"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["H"] ? "✓" : "H"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Personal Aspirations</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "H" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "H" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <textarea rows={3} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Describe personal aspirations..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
+                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on personal aspirations..."/>
+                  </div>
                 </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-2 bg-white" placeholder="Describe personal aspirations..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("H")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
                 </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-2 bg-[#F6FEF9]" placeholder="Supervisor comments on personal aspirations..."/>
               </div>
-            </div>
+            )}
           </div>
           {/* I — Professional Aspirations */}
-          <div className="border border-border rounded-xl bg-surface overflow-hidden mb-4">
-            <div className="px-5 py-3 border-b border-border flex items-center gap-3">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="#E5E7EB" strokeWidth="1.5"/><text x="12" y="16" textAnchor="middle" fontSize="11" fontWeight="700" fill="#6B7280" fontFamily="Inter,system-ui">I</text></svg>
-              <span className="text-sm font-semibold text-text-primary">Professional Aspirations</span>
-            </div>
-            <div className="grid grid-cols-2">
-              {/* EXPERT */}
-              <div className="p-4 border-r border-border">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["I"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+            <button
+              onClick={() => toggleComp("I")}
+              className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
+            >
+              <span className={"w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 " + (completed["I"] ? "bg-brand text-white" : "bg-surface-muted border border-border text-text-secondary")}>
+                {completed["I"] ? "✓" : "I"}
+              </span>
+              <span className="text-sm font-semibold text-text-primary flex-1">Professional Aspirations</span>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "I" ? "rotate-180" : "")}>
+                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+              </svg>
+            </button>
+            {openComp === "I" && (
+              <div className="border-t border-border">
+                <div className="grid grid-cols-2">
+                  {/* EXPERT — read-only */}
+                  <div className="p-4 border-r border-border bg-surface-muted/40">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
+                      <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
+                    </div>
+                  <textarea rows={3} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Describe professional aspirations..."/>
+                  </div>
+                  {/* SUPERVISOR — active */}
+                  <div className="p-4 bg-[#F6FEF9]">
+                    <div className="flex items-center gap-1.5 mb-3">
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                    </div>
+                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on professional aspirations..."/>
+                  </div>
                 </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-2 bg-white" placeholder="Describe professional aspirations..."/>
-              </div>
-              {/* SUPERVISOR */}
-              <div className="p-4 bg-[#F6FEF9]">
-                <div className="flex items-center gap-1.5 mb-3">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#10B981" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#10B981" strokeWidth="1.1" strokeLinecap="round"/></svg>
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
+                <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
+                  <button
+                    onClick={() => markDone("I")}
+                    className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
+                    style={{background:"#10B981"}}
+                  >
+                    <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Mark as done
+                  </button>
                 </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-2 bg-[#F6FEF9]" placeholder="Supervisor comments on professional aspirations..."/>
               </div>
-            </div>
+            )}
           </div>
-
-
 
           </div>
         </main>
