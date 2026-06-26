@@ -117,8 +117,9 @@ const VALUE_COLORS: Record<KpiStatus, string> = {
 
 // Deep-dive chart: SVG with agent line, team dashed, target dashed, area fill
 function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor?: string }) {
-  const W = 700; const H = 200;
-  const PL = 42; const PR = 8; const PT = 16; const PB = 32;
+  // Canvas — NO side padding: the SVG fills the full card width edge-to-edge
+  const W = 700; const H = 220;
+  const PT = 24; const PB = 28; // top/bottom only — left/right = 0
 
   const allVals = [...kpi.trendData, ...kpi.teamData, kpi.targetValue];
   const minV = Math.min(...allVals) * 0.97;
@@ -126,36 +127,56 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
   const rangeV = maxV - minV || 1;
 
   const days = ["D-6", "", "D-4", "D-3", "", "D-1", "Today"];
-  const toX = (i: number) => PL + (i / (kpi.trendData.length - 1)) * (W - PL - PR);
+  const n = kpi.trendData.length;
+  // X: first point at 2% from left, last point at 98% from left
+  const toX = (i: number) => (i / (n - 1)) * W;
   const toY = (v: number) => PT + (1 - (v - minV) / rangeV) * (H - PT - PB);
 
   const agentPath = kpi.trendData.map((v, i) => `${i === 0 ? "M" : "L"} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(" ");
   const teamPath  = kpi.teamData.map((v, i)  => `${i === 0 ? "M" : "L"} ${toX(i).toFixed(1)} ${toY(v).toFixed(1)}`).join(" ");
-  const areaPath  = `${agentPath} L ${toX(kpi.trendData.length-1).toFixed(1)} ${(H-PB).toFixed(1)} L ${toX(0).toFixed(1)} ${(H-PB).toFixed(1)} Z`;
+  const areaPath  = `${agentPath} L ${toX(n-1).toFixed(1)} ${(H-PB).toFixed(1)} L ${toX(0).toFixed(1)} ${(H-PB).toFixed(1)} Z`;
   const targetY   = toY(kpi.targetValue);
+  const areaFill  = lineColor === "#10B981" ? "rgba(16,185,129,0.09)"
+                  : lineColor === "#EF4444" ? "rgba(239,68,68,0.07)"
+                  : "rgba(245,158,11,0.07)";
 
-  // Y axis labels
-  const yStep = Math.round((maxV - minV) / 3 / 5) * 5 || 1;
-  const yLabels = [minV, minV + yStep, minV + yStep * 2, maxV].map(v => Math.round(v));
+  // Y grid: 4 rounded values
+  const step = Math.round((maxV - minV) / 3 / 5) * 5 || 1;
+  const yLabels = [minV, minV + step, minV + step * 2, maxV].map(v => Math.round(v));
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{ height: 240, display: "block" }}>
-      {/* Y labels */}
-      {yLabels.map((v, i) => (
-        <text key={i} x={PL - 4} y={toY(v) + 4} textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{v}</text>
-      ))}
-      {/* Target dashed */}
-      <line x1={PL} y1={targetY} x2={W - PR} y2={targetY} stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="4 3" />
-      <text x={W - PR - 6} y={targetY - 4} textAnchor="end" fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">TARGET</text>
-      {/* Area under agent */}
-      <path d={areaPath} fill={lineColor === "#10B981" ? "rgba(16,185,129,0.08)" : lineColor === "#EF4444" ? "rgba(239,68,68,0.06)" : "rgba(245,158,11,0.06)"} />
-      {/* Team line dashed */}
-      <path d={teamPath} fill="none" stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="4 3" />
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" style={{ display: "block", height: 240 }}>
+      {/* Horizontal grid lines + floating Y labels */}
+      {yLabels.map((v, i) => {
+        const y = toY(v);
+        return (
+          <g key={i}>
+            <line x1={0} y1={y} x2={W} y2={y} stroke="#F3F4F6" strokeWidth="1" />
+            <text x={8} y={y - 4} fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{v}</text>
+          </g>
+        );
+      })}
+
+      {/* Target line — dark dashed, full width */}
+      <line x1={0} y1={targetY} x2={W} y2={targetY} stroke="#374151" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.5" />
+      {/* TARGET label — inside, top-right */}
+      <text x={W - 6} y={targetY - 5} textAnchor="end" fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif" fontWeight="600">TARGET</text>
+
+      {/* Team dashed line */}
+      <path d={teamPath} fill="none" stroke="#9CA3AF" strokeWidth="1.5" strokeDasharray="4 3" />
+
+      {/* Area fill under agent */}
+      <path d={areaPath} fill={areaFill} />
+
       {/* Agent line */}
-      <path d={agentPath} fill="none" stroke={lineColor} strokeWidth="2" strokeLinejoin="round" />
+      <path d={agentPath} fill="none" stroke={lineColor} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
+
+      {/* X axis baseline */}
+      <line x1={0} y1={H - PB} x2={W} y2={H - PB} stroke="#E5E7EB" strokeWidth="1" />
+
       {/* X labels */}
       {days.map((d, i) => d && (
-        <text key={i} x={toX(i)} y={H - 4} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
+        <text key={i} x={toX(i)} y={H - 6} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
       ))}
     </svg>
   );
