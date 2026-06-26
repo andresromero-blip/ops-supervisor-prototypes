@@ -270,7 +270,7 @@ export default function OneToOnePage() {
           </div>
 
           {/* KPI cards grid */}
-          <div className="grid gap-3 mb-5" style={{gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))"}}>
+          <div className="grid grid-cols-4 gap-3 mb-5">
             {agent.kpis.map(k => {
               const sc = STATUS_COLORS[k.status];
               const vc = VALUE_COLORS[k.status];
@@ -343,13 +343,12 @@ export default function OneToOnePage() {
           {/* KPI Deep Dive */}
           <div className="border border-border rounded-xl bg-surface mb-5 overflow-hidden">
             {/* Header */}
-            <div className="px-5 py-3 border-b border-border">
-              <div className="flex items-center gap-2 mb-0.5">
+            <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+              <div className="flex items-center gap-2">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><polyline points="1,11 4,6 7,8 11,3 13,5" stroke="#10B981" strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold">KPI deep dive · {activeKpi.label}</span>
               </div>
-              {/* B: helper text below title, not to the right */}
-              <p className="text-xs text-text-tertiary m-0 pl-5">Click any KPI card above to switch focus.</p>
+              <span className="text-xs text-text-tertiary">Click any KPI card above to switch focus.</span>
             </div>
 
             {/* Stats row */}
@@ -382,7 +381,7 @@ export default function OneToOnePage() {
               <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">Last 7 days trend</p>
               <DeepDiveChart kpi={activeKpi} />
               {/* Legend */}
-              <div className="flex items-center gap-5 mt-3">
+              <div className="flex items-center gap-5 mt-3 justify-end">
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
                   <span style={{ width: 20, height: 2, background: "#10B981", display: "inline-block", borderRadius: 2 }} />
                   Agent
@@ -450,7 +449,7 @@ export default function OneToOnePage() {
                 </button>
               </div>
               <p className="text-sm text-text-tertiary text-center py-4">
-                No pending items. Click &quot;Show history&quot; to see past activity.
+                No coaching activity recorded for this KPI yet.
               </p>
             </div>
           </div>
