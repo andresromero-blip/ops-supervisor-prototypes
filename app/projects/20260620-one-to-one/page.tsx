@@ -609,19 +609,17 @@ export default function OneToOnePage() {
                     </div>
                   </div>
 
-                  {/* Topic / Subject — select with visible arrows + New Fact */}
+                  {/* Topic / Subject */}
                   <div>
-                    <div className="flex items-center justify-between mb-1.5">
-                      <label className="text-xs font-medium text-text-secondary">Topic / Subject</label>
-                      <button className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-full border border-border bg-white text-text-primary hover:border-brand transition-colors">
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                        New Fact
-                      </button>
-                    </div>
-                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Topic / Subject</label>
+                    <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand mb-2">
                       <option>— Select a fact —</option>
                       {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
                     </select>
+                    <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                      + New Fact
+                    </button>
                   </div>
 
                   {/* Linked Improvement Point — connects to Agent View Personal Insights */}
@@ -666,14 +664,14 @@ export default function OneToOnePage() {
 
                   {/* Actions — always one visible by default, + Add Action to add more */}
                   <div>
-                    <div className="flex items-center justify-between mb-3">
-                      <label className="text-xs font-medium text-text-secondary">Actions ({sessionActions.length === 0 ? 1 : sessionActions.length})</label>
+                    <div className="mb-3">
+                      <label className="text-xs font-medium text-text-secondary block mb-2">Actions ({sessionActions.length === 0 ? 1 : sessionActions.length})</label>
                       <button
                         onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
-                        className="flex items-center gap-1 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors"
+                        className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors"
                       >
                         <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
-                        Add Action
+                        + Add Action
                       </button>
                     </div>
 
