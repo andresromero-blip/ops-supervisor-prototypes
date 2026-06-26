@@ -139,7 +139,7 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
   const yLabels = [minV, minV + yStep, minV + yStep * 2, maxV].map(v => Math.round(v));
 
   return (
-    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{ height: 160 }}>
+    <svg viewBox={`0 0 ${W} ${H}`} className="w-full block" style={{ height: 220, display: "block" }}>
       {/* Y labels */}
       {yLabels.map((v, i) => (
         <text key={i} x={PL - 4} y={toY(v) + 4} textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{v}</text>
@@ -342,39 +342,36 @@ export default function OneToOnePage() {
 
           {/* KPI Deep Dive */}
           <div className="mb-5">
-            {/* Header: title + helper text below */}
-            <div className="flex items-center justify-between mb-1">
+            {/* Header row: title left, helper right */}
+            <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-2">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <polyline
-                    points="1,11 4,6 7,8 11,3 13,5"
+                  <polyline points="1,11 4,6 7,8 11,3 13,5"
                     stroke={VALUE_COLORS[activeKpi.status]}
-                    strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"
-                  />
+                    strokeWidth="1.6" strokeLinejoin="round" strokeLinecap="round"/>
                 </svg>
                 <span className="text-sm font-semibold">KPI deep dive · {activeKpi.label}</span>
               </div>
               <span className="text-xs text-text-tertiary">Click any KPI card above to switch focus.</span>
             </div>
 
-            {/* Stats card */}
+            {/* Single card: stats + chart + legend */}
             <div className="border border-border rounded-xl bg-surface overflow-hidden mb-3">
-              <div className="px-5 py-4 flex items-center gap-8">
+
+              {/* Stats row */}
+              <div className="px-5 py-4 flex items-center gap-8 border-b border-border">
                 <div className="flex items-center gap-3">
                   <span
-                    className="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1"
+                    className="text-xs font-bold px-2.5 py-1 rounded-lg flex items-center gap-1.5"
                     style={{
                       background: activeKpi.status === "outlier" ? "#FEE2E2"
                                 : activeKpi.status === "off-target" ? "#FEF3C7"
                                 : activeKpi.status === "at-risk" ? "#FEF3C7"
                                 : "#D1FAE5",
                       color: VALUE_COLORS[activeKpi.status],
-                      border: `1px solid ${
-                        activeKpi.status === "outlier" ? "#FECACA"
-                        : activeKpi.status === "off-target" ? "#FDE68A"
-                        : activeKpi.status === "at-risk" ? "#FDE68A"
-                        : "#A7F3D0"
-                      }`
+                      border: `1px solid ${activeKpi.status === "outlier" ? "#FECACA"
+                        : activeKpi.status === "off-target" || activeKpi.status === "at-risk" ? "#FDE68A"
+                        : "#A7F3D0"}`
                     }}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -382,34 +379,32 @@ export default function OneToOnePage() {
                     </svg>
                     {activeKpi.label}
                   </span>
-                  <span
-                    className="text-4xl font-bold"
-                    style={{ color: VALUE_COLORS[activeKpi.status] }}
-                  >
-                    {activeKpi.value}<span className="text-2xl">{activeKpi.unit}</span>
+                  <span className="font-bold" style={{ color: VALUE_COLORS[activeKpi.status], fontSize: 42, lineHeight: 1 }}>
+                    {activeKpi.value}<span style={{ fontSize: 24, fontWeight: 700 }}>{activeKpi.unit}</span>
                   </span>
                   <span className="text-sm text-text-tertiary">vs target {activeKpi.target.replace("Target ", "")}</span>
                 </div>
                 {[
-                  { n: activeKpi.facts1, l: "FACTS" },
-                  { n: activeKpi.sessions, l: "SESSIONS" },
-                  { n: activeKpi.completed, l: "COMPLETED" },
-                  { n: activeKpi.pending, l: "PENDING" },
+                  { n: activeKpi.facts1,   l: "FACTS"     },
+                  { n: activeKpi.sessions, l: "SESSIONS"  },
+                  { n: activeKpi.completed,l: "COMPLETED" },
+                  { n: activeKpi.pending,  l: "PENDING"   },
                 ].map(s => (
                   <div key={s.l} className="text-center">
-                    <div className="text-2xl font-bold text-text-primary">{s.n}</div>
-                    <div className="text-[10px] text-text-tertiary font-semibold tracking-widest">{s.l}</div>
+                    <div className="text-2xl font-bold text-text-primary leading-tight">{s.n}</div>
+                    <div className="text-[10px] text-text-tertiary font-semibold tracking-widest mt-0.5">{s.l}</div>
                   </div>
                 ))}
               </div>
-            </div>
 
-            {/* Chart card */}
-            <div className="border border-border rounded-xl bg-surface overflow-hidden mb-3">
-              <div className="px-5 pt-4 pb-2">
-                <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary mb-3">Last 7 days trend</p>
+              {/* Chart — full width, no horizontal padding */}
+              <div className="pt-4 pb-0">
+                <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary px-5 mb-3">
+                  Last 7 days trend
+                </p>
+                <DeepDiveChart kpi={activeKpi} lineColor={VALUE_COLORS[activeKpi.status]} />
               </div>
-              <DeepDiveChart kpi={activeKpi} lineColor={VALUE_COLORS[activeKpi.status]} />
+
               {/* Legend right-aligned */}
               <div className="flex items-center justify-end gap-5 px-5 py-3">
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
@@ -429,13 +424,13 @@ export default function OneToOnePage() {
 
             {/* Storyline card */}
             <div className="border border-border rounded-xl bg-surface overflow-hidden">
-              <div className="flex items-center justify-between px-5 py-3 border-b border-border">
+              <div className="px-5 py-3 border-b border-border">
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary flex items-center gap-1.5 m-0">
                   <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1,9 4,5 7,7 11,2" stroke="#9CA3AF" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round"/></svg>
                   Storyline
                 </p>
               </div>
-              <div className="px-5 py-6 text-center">
+              <div className="px-5 py-8 text-center">
                 <p className="text-sm text-text-tertiary italic m-0">
                   No coaching activity recorded for this KPI yet.
                 </p>
