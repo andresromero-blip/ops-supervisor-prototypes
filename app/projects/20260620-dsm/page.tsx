@@ -349,6 +349,17 @@ function OutcomeCapture({
 // ---------------------------------------------------------------------------
 export default function DSMPage() {
   const [tab, setTab] = useState<Tab>("open");
+  const [showNewDSM, setShowNewDSM] = useState(false);
+  const [dsmForm, setDsmForm] = useState({
+    date: new Date().toISOString().split("T")[0],
+    transcript: "",
+    attendance: "",
+    kpiLob: "",
+    topics: "",
+    consent: false,
+  });
+  const [dsmActions, setDsmActions] = useState<{desc:string; due:string; owner:string}[]>([]);
+  const [dsmSaved, setDsmSaved] = useState(false);
   // ITERATION E: all groups expanded by default — supervisor sees all actions immediately
   const [expandedAgents, setExpandedAgents] = useState<Record<string, boolean>>(
     Object.fromEntries(AGENT_GROUPS.map((a) => [a.agentId, false]))
@@ -386,7 +397,7 @@ export default function DSMPage() {
                 Performance tracking, daily focus, and delivery
               </p>
             </div>
-            <button className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm rounded-md font-medium bg-brand text-white hover:bg-brand/90 transition-colors">
+            <button onClick={() => { setShowNewDSM(true); setDsmForm({date: new Date().toISOString().split("T")[0], transcript:"", attendance:"", kpiLob:"", topics:"", consent:false}); setDsmActions([]); }} className="inline-flex items-center gap-1.5 px-3.5 py-1.5 text-sm rounded-lg font-medium bg-brand text-white hover:bg-brand/90 transition-colors">
               <Plus size={14} /> New DSM
             </button>
           </div>
@@ -641,6 +652,168 @@ export default function DSMPage() {
           )}
 
         </div>
+
+          {/* ── New DSM Meeting Modal ─────────────────────────────────── */}
+          {showNewDSM && (
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4" style={{background:"rgba(0,0,0,0.4)"}}>
+              <div className="bg-white rounded-xl shadow-2xl w-full max-w-lg max-h-[90vh] flex flex-col overflow-hidden">
+
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-border flex-shrink-0">
+                  <h2 className="text-base font-semibold text-text-primary">New DSM Meeting</h2>
+                  <button onClick={() => setShowNewDSM(false)} className="text-text-tertiary hover:text-text-primary transition-colors p-1 rounded-lg">
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+                  </button>
+                </div>
+
+                {/* Body */}
+                <div className="flex-1 overflow-y-auto px-6 py-5 flex flex-col gap-5">
+
+                  {/* Meeting Date */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Meeting Date</label>
+                    <input type="date" value={dsmForm.date}
+                      onChange={e => setDsmForm(f => ({...f, date: e.target.value}))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                  </div>
+
+                  {/* Voice Transcript */}
+                  <div>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="text-xs font-medium text-text-secondary flex items-center gap-1.5">
+                        <svg width="11" height="13" viewBox="0 0 11 13" fill="none"><rect x="3" y="0.5" width="5" height="7" rx="2.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M1 7a4.5 4.5 0 009 0" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/><line x1="5.5" y1="11.5" x2="5.5" y2="13" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                        Voice Transcript
+                      </label>
+                      <div className="flex items-center gap-2">
+                        <select className="text-xs border border-border rounded-lg px-2 py-1 bg-surface-muted focus:outline-none text-text-secondary">
+                          <option>Português</option><option>English</option><option>Español</option>
+                        </select>
+                        <button disabled={!dsmForm.consent}
+                          className={"flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white transition-opacity " + (dsmForm.consent ? "" : "opacity-40 cursor-not-allowed")}
+                          style={{background:"#54B282"}}>
+                          <svg width="8" height="9" viewBox="0 0 8 9" fill="none"><path d="M1 1.5l6 3-6 3V1.5z" fill="white"/></svg>
+                          Start
+                        </button>
+                        <button disabled={!dsmForm.transcript}
+                          className={"flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg border border-border bg-white text-text-secondary transition-opacity " + (dsmForm.transcript ? "hover:border-brand hover:text-brand" : "opacity-40 cursor-not-allowed")}>
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 5.5l2.5 2.5 5.5-5" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                          AI Analysis
+                        </button>
+                      </div>
+                    </div>
+                    {/* GDPR notice */}
+                    <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2.5 mb-2 text-xs text-amber-800 leading-relaxed">
+                      <p className="mb-1">When you press <strong>Start</strong>, your browser streams microphone audio to a third-party cloud service operated by the browser vendor (typically outside the EEA) for transcription. Audio does not pass through OPS.Supervisor servers, but it may contain personal data (RGPD Arts. 13 &amp; 44).</p>
+                      <p className="mb-2">You must obtain verbal consent from every participant before recording (RGPD Arts. 6, 7). For sensitive meetings, type the transcript manually instead.</p>
+                      <label className="flex items-center gap-2 cursor-pointer font-medium">
+                        <input type="checkbox" checked={dsmForm.consent}
+                          onChange={e => setDsmForm(f => ({...f, consent: e.target.checked}))}
+                          className="rounded accent-brand"/>
+                        I have informed all participants and obtained their consent to record.
+                      </label>
+                    </div>
+                    <textarea rows={5} value={dsmForm.transcript}
+                      onChange={e => setDsmForm(f => ({...f, transcript: e.target.value}))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+                      placeholder="Paste, type, or speak the meeting transcript here..."/>
+                    <p className="text-[11px] text-text-tertiary text-right mt-1">{dsmForm.transcript.length.toLocaleString()} / 80,000</p>
+                  </div>
+
+                  {/* Meeting Attendance */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Meeting Attendance</label>
+                    <textarea rows={2} value={dsmForm.attendance}
+                      onChange={e => setDsmForm(f => ({...f, attendance: e.target.value}))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+                      placeholder="List attendees..."/>
+                  </div>
+
+                  {/* KPI / LOB / Market Addressed */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">KPI / LOB / Market Addressed</label>
+                    <textarea rows={2} value={dsmForm.kpiLob}
+                      onChange={e => setDsmForm(f => ({...f, kpiLob: e.target.value}))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+                      placeholder="KPIs, lines of business or markets discussed..."/>
+                  </div>
+
+                  {/* Discussed Topics */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-1.5">Discussed Topics</label>
+                    <textarea rows={3} value={dsmForm.topics}
+                      onChange={e => setDsmForm(f => ({...f, topics: e.target.value}))}
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
+                      placeholder="Topics covered in the meeting..."/>
+                  </div>
+
+                  {/* Action Items — no default card, left-aligned add button */}
+                  <div>
+                    <label className="text-xs font-medium text-text-secondary block mb-2">Action Items</label>
+                    {dsmActions.map((a, i) => (
+                      <div key={i} className="border border-border rounded-lg p-3 mb-2 bg-surface-muted">
+                        <div className="flex items-center gap-2 mb-2">
+                          <input type="text" value={a.desc}
+                            onChange={e => setDsmActions(prev => prev.map((x,j) => j===i ? {...x, desc:e.target.value} : x))}
+                            className="flex-1 text-sm border border-border rounded-lg px-2.5 py-1.5 bg-white outline-none focus:border-brand placeholder:text-text-tertiary"
+                            placeholder="Description"/>
+                          <button onClick={() => setDsmActions(prev => prev.filter((_,j) => j!==i))}
+                            className="text-danger hover:opacity-70 transition-opacity flex-shrink-0">
+                            <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                          </button>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2">
+                          <input type="date" value={a.due}
+                            onChange={e => setDsmActions(prev => prev.map((x,j) => j===i ? {...x, due:e.target.value} : x))}
+                            className="text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white outline-none focus:border-brand"/>
+                          <input type="text" value={a.owner}
+                            onChange={e => setDsmActions(prev => prev.map((x,j) => j===i ? {...x, owner:e.target.value} : x))}
+                            className="text-xs border border-border rounded-lg px-2.5 py-1.5 bg-white outline-none focus:border-brand placeholder:text-text-tertiary"
+                            placeholder="+ Add owner"/>
+                        </div>
+                      </div>
+                    ))}
+                    <button onClick={() => setDsmActions(prev => [...prev, {desc:"", due:"", owner:""}])}
+                      className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                      <svg width="9" height="9" viewBox="0 0 9 9" fill="none"><path d="M4.5 1v7M1 4.5h7" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                      + Add Action
+                    </button>
+                  </div>
+
+                </div>
+
+                {/* Footer */}
+                <div className="flex items-center justify-end gap-2 px-6 py-3 border-t border-border flex-shrink-0 bg-white">
+                  <button onClick={() => setShowNewDSM(false)}
+                    className="text-sm text-text-secondary border border-border px-4 py-1.5 rounded-lg hover:border-brand/40 transition-colors">
+                    Cancel
+                  </button>
+                  <button
+                    disabled={!dsmForm.date}
+                    onClick={() => { setShowNewDSM(false); setDsmSaved(true); setTimeout(() => setDsmSaved(false), 3000); }}
+                    className={"flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg transition-opacity " + (dsmForm.date ? "" : "opacity-40 cursor-not-allowed")}
+                    style={{background:"#10B981"}}>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    Save Meeting
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Success toast */}
+          {dsmSaved && (
+            <div className="fixed bottom-6 left-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold"
+              style={{transform:"translateX(-50%)", background:"#10B981", animation:"fadeInUp 0.2s ease"}}>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.5" opacity="0.5"/>
+                <path d="M5 8l2.5 2.5 4-4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              DSM meeting saved successfully
+              <button onClick={() => setDsmSaved(false)} className="ml-2 opacity-70 hover:opacity-100 transition-opacity">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 2l8 8M10 2l-8 8" stroke="white" strokeWidth="1.5" strokeLinecap="round"/></svg>
+              </button>
+            </div>
+          )}
       </main>
       </div>
     </div>
