@@ -31,7 +31,7 @@ const NAV_GROUPS = [
     items: [
       { label: "Game Plan",  href: "/projects/20260620-game-plan", icon: ClipboardList },
       { label: "DSM",        href: "/projects/20260620-dsm",       icon: FileSpreadsheet },
-      { label: "Schedules",  href: "#",                            icon: CalendarDays, disabled: true },
+      { label: "Schedules",  href: "/projects/20260620-schedules", icon: CalendarDays },
     ],
   },
   {
@@ -44,7 +44,7 @@ const NAV_GROUPS = [
     label: "",
     items: [
       { label: "Communications", href: "#", icon: MessageSquare, disabled: true },
-      { label: "Project Config", href: "#", icon: Settings },
+      { label: "Project Config", href: "/projects/20260620-project-config", icon: Settings },
     ],
   },
 ];
@@ -55,19 +55,32 @@ export default function Sidebar() {
   return (
     <aside
       className="w-52 flex-shrink-0 min-h-screen flex flex-col"
-      style={{ background: "#1A1D23", borderRight: "1px solid #2D3148" }}
+      style={{ background: "#000000", borderRight: "1px solid #222222" }}
     >
-      {/* Logo */}
-      <div className="px-4 py-4 border-b" style={{ borderColor: "#2D3148" }}>
-        <p className="text-white font-semibold text-sm m-0 leading-tight tracking-tight">
-          OPS Supervisor
-        </p>
-        <p className="text-[10px] uppercase tracking-widest m-0 mt-0.5" style={{ color: "#6B7280" }}>
-          Prescriptive Operations Tool
-        </p>
+            {/* Logo — GMT brand */}
+      <div
+        className="flex items-center gap-3 px-5 py-4 border-b"
+        style={{ borderColor: "#222222" }}
+      >
+        {/* GMT monogram mark */}
+        <div
+          className="flex items-center justify-center w-8 h-8 rounded font-bold text-sm tracking-wider flex-shrink-0"
+          style={{ background: "#F5C800", color: "#000000", letterSpacing: "0.05em" }}
+        >
+          G
+        </div>
+        <div>
+          <p className="text-white text-xs font-semibold m-0 leading-tight tracking-wide">
+            OPS<span style={{ color: "#F5C800" }}>.</span>Supervisor
+          </p>
+          <p className="text-[10px] m-0 leading-tight" style={{ color: "#666666" }}>
+            PRESCRIPTIVE OPERATIONS
+          </p>
+        </div>
       </div>
 
       {/* Nav groups */}
+{/* Nav groups */}
       <nav className="flex-1 px-2 py-2 overflow-y-auto">
         {NAV_GROUPS.map((group, gi) => (
           <div key={gi} className="mb-1">
@@ -105,7 +118,7 @@ export default function Sidebar() {
                       href={item.href}
                       style={
                         isActive
-                          ? { color: "#10B981", background: "rgba(16,185,129,0.08)", borderLeft: "2px solid #10B981", paddingLeft: "10px" }
+                          ? { color: "#F5C800", background: "rgba(245,200,0,0.10)", borderLeft: "2px solid #10B981", paddingLeft: "10px" }
                           : { color: "#8B8FA8", borderLeft: "2px solid transparent", paddingLeft: "10px" }
                       }
                       className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm transition-colors hover:text-white"

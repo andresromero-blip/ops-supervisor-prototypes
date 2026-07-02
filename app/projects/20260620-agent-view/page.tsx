@@ -383,7 +383,7 @@ function AgentViewContent() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" strokeWidth="1.2" rx="1"/><path d="M5 5h4M5 8h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
             CEDP
           </button>
-          <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium text-white" style={{background:"#10B981"}}>
+          <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium text-white" style={{background:"#F5C800"}}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" strokeWidth="1.2"/><circle cx="5" cy="6" r="0.7" fill="white"/><circle cx="9" cy="6" r="0.7" fill="white"/><path d="M4.5 8.5c.5 1 4.5 1 5 0" stroke="white" strokeWidth="1.1" strokeLinecap="round"/></svg>
             How are you feeling?
           </button>

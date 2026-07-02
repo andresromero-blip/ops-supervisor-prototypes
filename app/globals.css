@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+/* ── GMT Brand Fonts — TP Sans via system fallback chain ─────────────────────
+   TP Sans is a proprietary typeface. If hosted font files are available,
+   add @font-face declarations here. Otherwise we use the closest system match. */
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -9,8 +12,13 @@
 }
 
 body {
-  background: #FFFFFF;
-  color: #111827;
-  font-family: 'Inter', system-ui, sans-serif;
+  background: #F5F5F5;
+  color: #1A1A1A;
+  font-family: 'DM Sans', 'TP Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateX(-50%) translateY(8px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }

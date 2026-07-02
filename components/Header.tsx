@@ -46,7 +46,7 @@ export function GlobalHeader() {
         height: 44,
         paddingLeft: 20,
         paddingRight: 20,
-        borderColor: "#E5E7EB",
+        borderColor: "#E0E0E0",
         flexShrink: 0,
         position: "sticky",
         top: 0,
@@ -91,7 +91,7 @@ export function GlobalHeader() {
                 onClick={() => setPeriod(p)}
                 className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                   period === p
-                    ? "bg-brand text-white"
+                    ? "bg-brand text-black font-semibold"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
               >
@@ -127,7 +127,7 @@ export function GlobalHeader() {
         {/* Switch Team */}
         <button
           className="flex items-center gap-1.5 text-xs font-medium rounded-md border px-3 py-1.5 transition-colors hover:border-brand/40"
-          style={{ borderColor: "#E5E7EB", color: "#374151", background: "#fff" }}
+          style={{ borderColor: "#E0E0E0", color: "#374151", background: "#fff" }}
         >
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <circle cx="5" cy="4.5" r="2" stroke="currentColor" strokeWidth="1.2" />
