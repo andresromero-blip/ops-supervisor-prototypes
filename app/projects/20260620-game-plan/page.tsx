@@ -319,7 +319,7 @@ export default function GamePlanPage() {
                     <select
                       value={addForm.period}
                       onChange={(e) => setAddForm((f) => ({ ...f, period: e.target.value }))}
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:[border-color:#8051FF]"
                     >
                       <option>Morning</option>
                       <option>Afternoon</option>
@@ -333,7 +333,7 @@ export default function GamePlanPage() {
                       value={addForm.activity}
                       onChange={(e) => setAddForm((f) => ({ ...f, activity: e.target.value }))}
                       placeholder="e.g. 1:1 with João"
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:[border-color:#8051FF] placeholder:text-text-tertiary"
                     />
                   </div>
                   <div>
@@ -343,7 +343,7 @@ export default function GamePlanPage() {
                       value={addForm.agent}
                       onChange={(e) => setAddForm((f) => ({ ...f, agent: e.target.value }))}
                       placeholder="e.g. João Silva"
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:[border-color:#8051FF] placeholder:text-text-tertiary"
                     />
                   </div>
                   {/* ITERATION C: Additional Context textarea */}
@@ -354,7 +354,7 @@ export default function GamePlanPage() {
                       onChange={(e) => setAddForm((f) => ({ ...f, context: e.target.value }))}
                       placeholder="Add objectives, preparation notes or relevant context for attendees."
                       rows={3}
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:border-brand placeholder:text-text-tertiary resize-none"
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface focus:outline-none focus:[border-color:#8051FF] placeholder:text-text-tertiary resize-none"
                     />
                   </div>
                   <div className="flex justify-end gap-2 pt-1">

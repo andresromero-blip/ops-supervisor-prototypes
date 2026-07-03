@@ -185,7 +185,7 @@ export default function CEDPPage() {
               <div className="relative">
                 <button
                   onClick={() => setAgentDropdown((v: boolean) => !v)}
-                  className="flex items-center gap-2 px-3 py-1.5 border border-border rounded-lg text-sm bg-surface-muted hover:border-brand/40 transition-colors"
+                  className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm bg-surface-muted transition-colors" style={agentDropdown ? {borderColor:"#8051FF"} : {borderColor:"#E2E3E8"}}
                 >
                   <span className="w-6 h-6 rounded-full bg-brand-light text-brand text-[10px] font-bold flex items-center justify-center flex-shrink-0">{agent.initials}</span>
                   <span className="font-medium text-text-primary">{agent.name}</span>
@@ -283,7 +283,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -299,7 +299,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -347,7 +347,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -363,7 +363,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -411,7 +411,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -427,7 +427,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -475,7 +475,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -491,7 +491,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -539,7 +539,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -555,7 +555,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -603,7 +603,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -619,7 +619,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -667,7 +667,7 @@ export default function CEDPPage() {
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -680,7 +680,7 @@ export default function CEDPPage() {
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>

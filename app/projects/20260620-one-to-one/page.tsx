@@ -305,7 +305,7 @@ export default function OneToOnePage() {
                 <div className="flex items-center gap-3">
                   <div className="relative flex-1 min-w-0">
                     <div onClick={() => { setShowAgentDropdown(v => !v); setAgentSearch(""); }}
-                      className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-white cursor-pointer hover:border-brand/40 transition-colors">
+                      className="flex items-center gap-3 border rounded-lg px-3 py-2 bg-white cursor-pointer transition-colors" style={showAgentDropdown ? {borderColor:"#8051FF"} : {borderColor:"#E2E3E8"}}>
                       <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">{agent.initials}</div>
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
@@ -642,7 +642,7 @@ export default function OneToOnePage() {
                   </div>
                   <div>
                     <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Session Type</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF]">
                       <option value="">Select...</option>
                       <option>Coaching</option>
                       <option>Performance Review</option>
@@ -652,7 +652,7 @@ export default function OneToOnePage() {
                   </div>
                   <div>
                     <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">KPI Focus</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:border-brand">
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:[border-color:#8051FF]">
                       <option>None</option>
                       {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
                     </select>
@@ -662,7 +662,7 @@ export default function OneToOnePage() {
                 {/* Topic / Subject */}
                 <div>
                   <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Topic / Subject</label>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF] mb-2">
                     <option>— Select a fact —</option>
                     {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
                   </select>
@@ -674,7 +674,7 @@ export default function OneToOnePage() {
                 {/* Linked Improvement Point */}
                 <div>
                   <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Linked Improvement Point</label>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF]">
                     <option>— Select —</option>
                     <option>Improve closing technique — only 35% pitch rate</option>
                     <option>Greeting protocol compliance — failed 3 consecutive evals</option>
@@ -713,18 +713,18 @@ export default function OneToOnePage() {
                       <div className="grid grid-cols-2 gap-2 mb-2">
                         <div>
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
-                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]">
                             <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
                           </select>
                         </div>
                         <div>
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
-                          <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                          <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"/>
                         </div>
                       </div>
                       <div>
                         <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
-                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF] text-text-tertiary">
                           <option value="">Select tool...</option>
                           <option>GROW Model</option><option>Customer Experience Coaching</option>
                           <option>Feedback Conversation</option><option>Side-by-Side Observation</option>
@@ -750,7 +750,7 @@ export default function OneToOnePage() {
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
                           <select value={hasActions ? a.type : "Human Coaching"}
                             onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
-                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]">
                             <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
                           </select>
                         </div>
@@ -758,12 +758,12 @@ export default function OneToOnePage() {
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
                           <input type="date" value={hasActions ? a.dueDate : ""}
                             onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
-                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"/>
                         </div>
                       </div>
                       <div>
                         <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
-                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF] text-text-tertiary">
                           <option value="">Select tool...</option>
                           <option>GROW Model</option><option>Customer Experience Coaching</option>
                           <option>Feedback Conversation</option><option>Side-by-Side Observation</option>

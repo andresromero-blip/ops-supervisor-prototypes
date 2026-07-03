@@ -17,3 +17,20 @@ body {
   from { opacity: 0; transform: translateX(-50%) translateY(8px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
+
+/* ── Universal focus ring — WCAG 2.4.7 ─────────────────────────────────────
+   All interactive elements show a Lavender #8051FF outline on keyboard focus.
+   Uses focus-visible so it only shows for keyboard users, not mouse clicks. */
+:focus-visible {
+  outline: 2px solid #8051FF;
+  outline-offset: 2px;
+}
+
+/* Native selects and inputs: border highlight on focus */
+select:focus,
+input:focus,
+textarea:focus {
+  border-color: #8051FF !important;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(128, 81, 255, 0.12);
+}

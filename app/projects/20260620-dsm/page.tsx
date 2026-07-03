@@ -323,7 +323,7 @@ function OutcomeCapture({
         value={text}
         onChange={(e) => setText(e.target.value)}
         placeholder="e.g. Root cause identified — overflow calls pushing AHT. Escalated to WFM."
-        className="w-full text-sm px-3 py-1.5 border border-border rounded-md bg-surface-muted focus:outline-none focus:border-brand"
+        className="w-full text-sm px-3 py-1.5 border border-border rounded-md bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"
         autoFocus
       />
       <div className="flex gap-2">
@@ -674,7 +674,7 @@ export default function DSMPage() {
                     <label className="text-xs font-medium text-text-secondary block mb-1.5">Meeting Date</label>
                     <input type="date" value={dsmForm.date}
                       onChange={e => setDsmForm(f => ({...f, date: e.target.value}))}
-                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
+                      className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"/>
                   </div>
 
                   {/* Voice Transcript */}
