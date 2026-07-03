@@ -19,9 +19,9 @@ const config: Config = {
 
         // Primary structural: TP Dark Slate
         brand: {
-          DEFAULT: "#4B4C6A",   // TP Dark Slate — base/structural
-          light:   "#EEEEF4",   // Dark Slate 8% tint — hover bg
-          dark:    "#35364E",   // Dark Slate pressed
+          DEFAULT: "#8051FF",   // TP Lavender — primary action
+          light:   "#EDE8FF",   // Lavender 10% tint
+          dark:    "#6340CC",   // Lavender pressed
         },
 
         // Accent: TP Pink — CTAs, active states, highlights

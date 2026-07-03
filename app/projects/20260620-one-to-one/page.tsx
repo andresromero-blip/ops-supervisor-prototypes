@@ -346,7 +346,7 @@ export default function OneToOnePage() {
                   <button
                     onClick={() => setShowSession(true)}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0 whitespace-nowrap"
-                    style={{ background:"#FF0082" }}
+                    style={{ background:"#8051FF" }}
                   >
                     + New Session
                   </button>
@@ -589,7 +589,7 @@ export default function OneToOnePage() {
                     <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#9CA3AF" strokeWidth="1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/></svg>
                     Monthly cadence
                   </span>
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white" style={{ background:"#FF0082" }}>
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white" style={{ background:"#8051FF" }}>
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M8 4l2 2-2 2" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Open CEDP
                   </button>
@@ -784,7 +784,7 @@ export default function OneToOnePage() {
                     </button>
                     <button onClick={handleSave}
                       className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg"
-                      style={{background:"#FF0082", color:"#000000"}}>
+                      style={{background:"#8051FF", color:"#FFFFFF"}}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Save Session
                     </button>
@@ -798,7 +798,7 @@ export default function OneToOnePage() {
               className="fixed bottom-6 left-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold"
               style={{
                 transform: "translateX(-50%)",
-                background:"#FF0082",
+                background:"#8051FF",
                 animation: "fadeInUp 0.2s ease",
               }}
             >

@@ -65,7 +65,7 @@ export default function Sidebar() {
         {/* GMT monogram mark */}
         <div
           className="flex items-center justify-center w-8 h-8 rounded font-bold text-sm tracking-wider flex-shrink-0"
-          style={{ background: "#FF0082", color: "#FFFFFF", letterSpacing: "0.05em" }}
+          style={{ background: "#8051FF", color: "#FFFFFF", letterSpacing: "0.05em" }}
         >
           G
         </div>

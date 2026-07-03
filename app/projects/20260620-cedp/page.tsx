@@ -314,7 +314,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("A")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -378,7 +378,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("B")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -442,7 +442,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("C")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -506,7 +506,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("D")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -570,7 +570,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("E")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -634,7 +634,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("F")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -692,7 +692,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("G")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -740,7 +740,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("H")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -788,7 +788,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("I")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#FF0082", color:"#000000"}}
+                    style={{background:"#8051FF", color:"#FFFFFF"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
