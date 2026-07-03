@@ -1,19 +1,14 @@
-/* ── GMT Brand Fonts — TP Sans via system fallback chain ─────────────────────
-   TP Sans is a proprietary typeface. If hosted font files are available,
-   add @font-face declarations here. Otherwise we use the closest system match. */
 @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
 body {
   background: #F5F5F5;
-  color: #1A1A1A;
+  color: #1A1A2E;
   font-family: 'DM Sans', 'TP Sans', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

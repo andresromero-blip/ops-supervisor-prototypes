@@ -690,7 +690,7 @@ export default function DSMPage() {
                         </select>
                         <button disabled={!dsmForm.consent}
                           className={"flex items-center gap-1.5 text-[11px] font-semibold px-2.5 py-1 rounded-lg text-white transition-opacity " + (dsmForm.consent ? "" : "opacity-40 cursor-not-allowed")}
-                          style={{background:"#54B282"}}>
+                          style={{background:"#4B4C6A"}}>
                           <svg width="8" height="9" viewBox="0 0 8 9" fill="none"><path d="M1 1.5l6 3-6 3V1.5z" fill="white"/></svg>
                           Start
                         </button>
@@ -791,7 +791,7 @@ export default function DSMPage() {
                     disabled={!dsmForm.date}
                     onClick={() => { setShowNewDSM(false); setDsmSaved(true); setTimeout(() => setDsmSaved(false), 3000); }}
                     className={"flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg transition-opacity " + (dsmForm.date ? "" : "opacity-40 cursor-not-allowed")}
-                    style={{background:"#F5C800"}}>
+                    style={{background:"#FF0082"}}>
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Save Meeting
                   </button>
@@ -803,7 +803,7 @@ export default function DSMPage() {
           {/* Success toast */}
           {dsmSaved && (
             <div className="fixed bottom-6 left-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold"
-              style={{transform:"translateX(-50%)", background:"#F5C800", animation:"fadeInUp 0.2s ease"}}>
+              style={{transform:"translateX(-50%)", background:"#FF0082", animation:"fadeInUp 0.2s ease"}}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                 <circle cx="8" cy="8" r="7" stroke="white" strokeWidth="1.5" opacity="0.5"/>
                 <path d="M5 8l2.5 2.5 4-4" stroke="white" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>

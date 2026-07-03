@@ -597,7 +597,7 @@ export default function TeamOverviewPage() {
             <div className="bg-surface border border-border rounded-xl p-5">
               {/* Header with chip */}
               <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#F5C800" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#FF0082" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold text-text-primary">
                   KPI Trends — {activeKpi.fullLabel}
                 </span>
@@ -735,7 +735,7 @@ export default function TeamOverviewPage() {
           {/* ── Your Key Topics ──────────────────────────────────── */}
           <div className="bg-surface border border-border rounded-xl mb-5 overflow-hidden">
             <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#F5C800" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#FF0082" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
               <span className="text-sm font-semibold text-text-primary">Your Key Topics</span>
             </div>
             <div className="flex border-b border-border">

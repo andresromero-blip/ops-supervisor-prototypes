@@ -223,7 +223,7 @@ export default function CEDPPage() {
           {/* Current / History tabs */}
           <div className="flex items-center gap-1 mb-4">
             <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-brand bg-white text-brand">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
               Current
             </button>
             <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:border-brand/40 transition-colors">
@@ -296,7 +296,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -314,7 +314,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("A")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -360,7 +360,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -378,7 +378,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("B")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -424,7 +424,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -442,7 +442,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("C")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -488,7 +488,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -506,7 +506,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("D")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -552,7 +552,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -570,7 +570,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("E")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -616,7 +616,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -634,7 +634,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("F")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -677,7 +677,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:border-brand text-text-secondary mb-2">
@@ -692,7 +692,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("G")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -730,7 +730,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on personal aspirations..."/>
@@ -740,7 +740,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("H")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -778,7 +778,7 @@ export default function CEDPPage() {
                   {/* SUPERVISOR — active */}
                   <div className="p-4 bg-[#F6FEF9]">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#F5C800" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#F5C800" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
                   <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on professional aspirations..."/>
@@ -788,7 +788,7 @@ export default function CEDPPage() {
                   <button
                     onClick={() => markDone("I")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#F5C800"}}
+                    style={{background:"#FF0082"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done

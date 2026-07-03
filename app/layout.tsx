@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import "./globals.css";
 import { PeriodProvider } from "@/components/Header";
@@ -11,6 +12,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en">
       <body>
+        {/* @ts-ignore */}
         <PeriodProvider>{children}</PeriodProvider>
       </body>
     </html>

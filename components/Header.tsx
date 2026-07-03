@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState } from "react";
 
 export type Period = "D-1" | "WTD" | "MTD" | "QTD";
 
@@ -91,9 +91,10 @@ export function GlobalHeader() {
                 onClick={() => setPeriod(p)}
                 className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                   period === p
-                    ? "bg-brand text-black font-semibold"
+                    ? "text-white font-semibold"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
+              style={period === p ? ({background:"#4B4C6A"} as React.CSSProperties) : undefined}
               >
                 {p}
               </button>

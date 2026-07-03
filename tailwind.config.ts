@@ -8,40 +8,51 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ── GMT Brand Palette ───────────────────────────────────────────
-        // Primary: Black + White + GMT Yellow
-        // GMT Yellow #F5C800 replaces #10B981 as brand accent
-        bg:              "#F5F5F5",   // light grey page background (brand "off-white")
-        surface:         "#FFFFFF",   // card / panel surface
-        "surface-muted": "#F0F0F0",   // muted surface (inputs, subtle bg)
-        border:          "#E0E0E0",   // borders
-        "text-primary":  "#1A1A1A",   // near-black body text
-        "text-secondary":"#666666",   // secondary text
-        "text-tertiary": "#999999",   // placeholder / tertiary
+        // ── TP Brand Palette — Essential Guidelines 2026 ──────────────
+        bg:              "#F5F5F5",   // neutral page bg
+        surface:         "#FFFFFF",
+        "surface-muted": "#F0F1F4",   // TP Pastel Sand-ish
+        border:          "#E2E3E8",
+        "text-primary":  "#1A1A2E",   // near Dark Slate for body
+        "text-secondary":"#6B6C80",
+        "text-tertiary": "#9A9BAD",
+
+        // Primary structural: TP Dark Slate
         brand: {
-          DEFAULT: "#F5C800",         // GMT Yellow — primary action
-          light:   "#FFF9CC",         // yellow 10% tint (hover states, highlights)
-          dark:    "#D4A900",         // yellow dark (pressed states)
+          DEFAULT: "#4B4C6A",   // TP Dark Slate — base/structural
+          light:   "#EEEEF4",   // Dark Slate 8% tint — hover bg
+          dark:    "#35364E",   // Dark Slate pressed
         },
+
+        // Accent: TP Pink — CTAs, active states, highlights
+        accent: {
+          DEFAULT: "#FF0082",   // TP Pink
+          light:   "#FFF0F7",   // Pink 5% tint
+          dark:    "#CC0068",   // Pink pressed
+        },
+
+        // Semantic
         danger: {
-          DEFAULT: "#D93025",
+          DEFAULT: "#E53935",
           light:   "#FDECEA",
         },
         warning: {
-          DEFAULT: "#F5C800",         // warning = brand yellow
-          light:   "#FFF9CC",
+          DEFAULT: "#F5A623",
+          light:   "#FFF3E0",
         },
         success: {
-          DEFAULT: "#1E7E34",         // dark green (positive delta)
+          DEFAULT: "#1E7E34",
           light:   "#E8F5E9",
         },
+
+        // Sidebar: TP Dark Slate as structural bg
         sidebar: {
-          bg:          "#000000",     // GMT black sidebar
-          text:        "#999999",     // muted nav labels
-          "text-muted":"#666666",
-          active:      "#F5C800",     // GMT yellow active item
-          "active-bg": "#F5C80018",   // yellow 10% tint
-          border:      "#222222",     // subtle sidebar border
+          bg:           "#4B4C6A",   // TP Dark Slate
+          text:         "#B8B9CC",
+          "text-muted": "#8A8B9E",
+          active:       "#FF0082",   // TP Pink active
+          "active-bg":  "#FF008214", // Pink 8% tint
+          border:       "#5A5B7A",
         },
       },
       fontFamily: {
@@ -49,7 +60,7 @@ const config: Config = {
         mono: ["IBM Plex Mono", "monospace"],
       },
       borderRadius: {
-        md: "4px",   // tighter radius — brand is more geometric
+        md: "4px",
         lg: "6px",
         xl: "8px",
       },

@@ -29,8 +29,8 @@ export default function ProjectConfigPage() {
           {/* ── Total Weight validity banner ──────────────────────────── */}
           <div className="flex items-center gap-2 px-4 py-2.5 rounded-xl border border-brand/30 bg-[#F6FEF9] mb-4">
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-              <circle cx="7" cy="7" r="6" stroke="#F5C800" strokeWidth="1.2"/>
-              <path d="M4.5 7l2 2 3-3" stroke="#F5C800" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
+              <circle cx="7" cy="7" r="6" stroke="#FF0082" strokeWidth="1.2"/>
+              <path d="M4.5 7l2 2 3-3" stroke="#FF0082" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
             <span className="text-sm font-medium text-brand">Total Weight: 100% ✓ Valid</span>
           </div>

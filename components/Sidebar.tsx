@@ -55,23 +55,23 @@ export default function Sidebar() {
   return (
     <aside
       className="w-52 flex-shrink-0 min-h-screen flex flex-col"
-      style={{ background: "#000000", borderRight: "1px solid #222222" }}
+      style={{ background: "#4B4C6A", borderRight: "1px solid #5A5B7A" }}
     >
             {/* Logo — GMT brand */}
       <div
         className="flex items-center gap-3 px-5 py-4 border-b"
-        style={{ borderColor: "#222222" }}
+        style={{ borderColor: "#5A5B7A" }}
       >
         {/* GMT monogram mark */}
         <div
           className="flex items-center justify-center w-8 h-8 rounded font-bold text-sm tracking-wider flex-shrink-0"
-          style={{ background: "#F5C800", color: "#000000", letterSpacing: "0.05em" }}
+          style={{ background: "#FF0082", color: "#FFFFFF", letterSpacing: "0.05em" }}
         >
           G
         </div>
         <div>
           <p className="text-white text-xs font-semibold m-0 leading-tight tracking-wide">
-            OPS<span style={{ color: "#F5C800" }}>.</span>Supervisor
+            OPS<span style={{ color: "#FF0082" }}>.</span>Supervisor
           </p>
           <p className="text-[10px] m-0 leading-tight" style={{ color: "#666666" }}>
             PRESCRIPTIVE OPERATIONS
@@ -118,7 +118,7 @@ export default function Sidebar() {
                       href={item.href}
                       style={
                         isActive
-                          ? { color: "#F5C800", background: "rgba(245,200,0,0.10)", borderLeft: "2px solid #10B981", paddingLeft: "10px" }
+                          ? { color: "#FF0082", background: "rgba(245,200,0,0.10)", borderLeft: "2px solid #10B981", paddingLeft: "10px" }
                           : { color: "#8B8FA8", borderLeft: "2px solid transparent", paddingLeft: "10px" }
                       }
                       className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm transition-colors hover:text-white"
