@@ -260,6 +260,7 @@ export default function OneToOnePage() {
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
   const hasActions = sessionActions.length !== 0;
+  const [kpiFilter, setKpiFilter] = useState<string>("all");
   const [savedToast, setSavedToast] = useState(false);
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
@@ -370,32 +371,35 @@ export default function OneToOnePage() {
             )}
           </div>
 
-          {/* KPI filter bar */}
+          {/* KPI filter bar — interactive */}
           <div className="mb-4">
             <div className="flex items-center gap-2 flex-wrap">
-              <button className="px-3 py-1 rounded-full text-xs font-semibold text-white" style={{background:"#8051FF"}}>
-                {agent.kpis.length} All
-              </button>
-              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-                {outlierCount} Outlier
-              </button>
-              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-                {offTargetCount} Off target
-              </button>
-              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-                {atRiskCount} At risk
-              </button>
-              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
-                {onTargetCount} On target
-              </button>
+              {([
+                { key: "all",        label: "All",        count: agent.kpis.length },
+                { key: "outlier",    label: "Outlier",    count: outlierCount },
+                { key: "off-target", label: "Off target", count: offTargetCount },
+                { key: "at-risk",    label: "At risk",    count: atRiskCount },
+                { key: "on-target",  label: "On target",  count: onTargetCount },
+              ] as {key:string;label:string;count:number}[]).map(f => (
+                <button
+                  key={f.key}
+                  onClick={() => setKpiFilter(f.key)}
+                  className="px-3 py-1 rounded-full text-xs font-semibold transition-colors"
+                  style={kpiFilter === f.key
+                    ? {background:"#8051FF", color:"#FFFFFF"}
+                    : {background:"transparent", color:"#6B7280", border:"1px solid #E5E7EB"}
+                  }
+                >
+                  {f.count} {f.label}
+                </button>
+              ))}
             </div>
-            {/* B: helper text below the filter bar, not floated to the right */}
             <p className="text-xs text-text-tertiary mt-2 m-0">Click a KPI to focus its story below</p>
           </div>
 
           {/* KPI cards grid */}
           <div className="grid grid-cols-4 gap-3 mb-5">
-            {agent.kpis.map(k => {
+            {agent.kpis.filter(k => kpiFilter === "all" || k.status === kpiFilter).map(k => {
               const sc = STATUS_COLORS[k.status];
               const vc = VALUE_COLORS[k.status];
               const isActive = k.key === focusKpi;
