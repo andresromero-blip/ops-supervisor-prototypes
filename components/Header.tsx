@@ -94,7 +94,7 @@ export function GlobalHeader() {
                     ? "text-white font-semibold"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
-              style={period === p ? ({background:"#B40060", color:"#FFFFFF"} as React.CSSProperties) : undefined}
+              style={period === p ? ({background:"#8051FF", color:"#FFFFFF"} as React.CSSProperties) : undefined}
               >
                 {p}
               </button>
