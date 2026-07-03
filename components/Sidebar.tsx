@@ -87,7 +87,7 @@ export default function Sidebar() {
             {group.label && (
               <p
                 className="text-[10px] uppercase tracking-widest px-2 pt-3 pb-1 m-0"
-                style={{ color: "#4B5563", fontWeight: 600, letterSpacing: "0.08em" }}
+                style={{ color: "#D4D2CA", fontWeight: 600, letterSpacing: "0.08em" }}
               >
                 {group.label}
               </p>
