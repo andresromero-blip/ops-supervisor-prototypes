@@ -48,10 +48,10 @@ const config: Config = {
         // Sidebar: TP Dark Slate as structural bg
         sidebar: {
           bg:           "#4B4C6A",   // TP Dark Slate
-          text:         "#B8B9CC",
-          "text-muted": "#8A8B9E",
-          active:       "#FF0082",   // TP Pink active
-          "active-bg":  "#FF008214", // Pink 8% tint
+          text:         "#ECE9E7",   // TP Pastel Sand — 6.84:1 ✓ WCAG AA
+          "text-muted": "#D4D2CA",   // TP Sand — 5.46:1 ✓ WCAG AA
+          active:       "#FFFFFF",   // White — 8.26:1 ✓ WCAG AA (pink as border accent)
+          "active-bg":  "#FFFFFF14", // White 8% tint
           border:       "#5A5B7A",
         },
       },

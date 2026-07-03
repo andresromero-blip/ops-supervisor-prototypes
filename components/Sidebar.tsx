@@ -71,9 +71,9 @@ export default function Sidebar() {
         </div>
         <div>
           <p className="text-white text-xs font-semibold m-0 leading-tight tracking-wide">
-            OPS<span style={{ color: "#FF0082" }}>.</span>Supervisor
+            OPS<span style={{ color: "#FFFFFF" }}>.</span>Supervisor
           </p>
-          <p className="text-[10px] m-0 leading-tight" style={{ color: "#666666" }}>
+          <p className="text-[10px] m-0 leading-tight" style={{ color: "#D4D2CA" }}>
             PRESCRIPTIVE OPERATIONS
           </p>
         </div>
@@ -103,7 +103,7 @@ export default function Sidebar() {
                     <li key={item.label}>
                       <span
                         className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm"
-                        style={{ color: "#8B8FA8", paddingLeft: 10, borderLeft: "2px solid transparent", opacity: 0.38 }}
+                        style={{ color: "#D4D2CA", paddingLeft: 10, borderLeft: "2px solid transparent", opacity: 0.38 }}
                       >
                         <Icon size={15} className="flex-shrink-0" />
                         <span>{item.label}</span>
@@ -118,8 +118,8 @@ export default function Sidebar() {
                       href={item.href}
                       style={
                         isActive
-                          ? { color: "#FF0082", background: "rgba(245,200,0,0.10)", borderLeft: "2px solid #10B981", paddingLeft: "10px" }
-                          : { color: "#8B8FA8", borderLeft: "2px solid transparent", paddingLeft: "10px" }
+                          ? { color: "#FFFFFF", background: "rgba(255,255,255,0.10)", borderLeft: "3px solid #FF0082", paddingLeft: "10px" }
+                          : { color: "#ECE9E7", borderLeft: "2px solid transparent", paddingLeft: "10px" }
                       }
                       className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm transition-colors hover:text-white"
                     >

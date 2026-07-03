@@ -784,7 +784,7 @@ export default function OneToOnePage() {
                     </button>
                     <button onClick={handleSave}
                       className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg"
-                      style={{background:"#FF0082"}}>
+                      style={{background:"#FF0082", color:"#000000"}}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Save Session
                     </button>
