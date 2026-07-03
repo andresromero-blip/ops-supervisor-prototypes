@@ -373,7 +373,7 @@ export default function OneToOnePage() {
           {/* KPI filter bar */}
           <div className="mb-4">
             <div className="flex items-center gap-2 flex-wrap">
-              <button className="px-3 py-1 rounded-full text-xs font-semibold bg-text-primary text-white">
+              <button className="px-3 py-1 rounded-full text-xs font-semibold text-white" style={{background:"#8051FF"}}>
                 {agent.kpis.length} All
               </button>
               <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
