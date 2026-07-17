@@ -143,6 +143,16 @@ const VALUE_COLORS: Record<KpiStatus, string> = {
   "on-target":  "#10B981",
 };
 
+// Translucent glow matching each status color — used for the selected-card
+// highlight, so the selection state reads as "this KPI's own color", the
+// same pattern used on the Team Overview page (not a fixed brand color).
+const VALUE_GLOW: Record<KpiStatus, string> = {
+  "outlier":    "rgba(16,185,129,0.12)",
+  "off-target": "rgb(var(--danger) / 0.12)",
+  "at-risk":    "rgb(var(--warning) / 0.12)",
+  "on-target":  "rgba(16,185,129,0.12)",
+};
+
 // Deep-dive chart: SVG with agent line, team dashed, target dashed, area fill
 function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor?: string }) {
   // Canvas — NO side padding: the SVG fills the full card width edge-to-edge
@@ -407,8 +417,8 @@ export default function OneToOnePage() {
                   className="cursor-pointer rounded-xl p-4 transition-all"
                   style={{
                     background: "rgb(var(--surface))",
-                    border: `1.5px solid ${isActive ? "rgb(var(--brand))" : "rgb(var(--border))"}`,
-                    boxShadow: isActive ? "0 0 0 3px rgba(128,81,255,0.10)" : "none",
+                    border: `1.5px solid ${isActive ? vc : "rgb(var(--border))"}`,
+                    boxShadow: isActive ? `0 0 0 3px ${VALUE_GLOW[k.status]}` : "none",
                   }}
                 >
                   {/* Label + status badge */}
