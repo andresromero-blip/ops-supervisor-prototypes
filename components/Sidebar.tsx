@@ -14,7 +14,9 @@ import {
   Settings,
   Send,
   Moon,
+  Sun,
 } from "lucide-react";
+import { useTheme } from "./Theme";
 
 // ITERATION: sidebar grouped into Performance / Execution / Development
 const NAV_GROUPS = [
@@ -51,43 +53,36 @@ const NAV_GROUPS = [
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const { theme, toggleTheme } = useTheme();
+  const isDark = theme === "dark";
 
   return (
-    <aside
-      className="w-52 flex-shrink-0 min-h-screen flex flex-col"
-      style={{ background: "#4B4C6A", borderRight: "1px solid #5A5B7A" }}
-    >
-            {/* Logo — GMT brand */}
-      <div
-        className="flex items-center gap-3 px-5 py-4 border-b"
-        style={{ borderColor: "#5A5B7A" }}
-      >
-        {/* GMT monogram mark */}
-        <div
-          className="flex items-center justify-center w-8 h-8 rounded font-bold text-sm tracking-wider flex-shrink-0"
-          style={{ background: "#8051FF", color: "#FFFFFF", letterSpacing: "0.05em" }}
+    <aside className="w-52 flex-shrink-0 min-h-screen flex flex-col bg-sidebar-bg border-r border-sidebar-border">
+      {/* Logo */}
+      <div className="px-4 py-4 border-b border-sidebar-border flex items-center gap-2">
+        <span
+          className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold flex-shrink-0 bg-brand"
         >
           G
-        </div>
+        </span>
         <div>
-          <p className="text-white text-xs font-semibold m-0 leading-tight tracking-wide">
-            OPS<span style={{ color: "#FFFFFF" }}>.</span>Supervisor
+          <p className="text-sidebar-active font-semibold text-sm m-0 leading-tight tracking-tight">
+            OPS Supervisor<span className="text-accent">.</span>
           </p>
-          <p className="text-[10px] m-0 leading-tight" style={{ color: "#D4D2CA" }}>
-            PRESCRIPTIVE OPERATIONS
+          <p className="text-[10px] uppercase tracking-widest m-0 mt-0.5 text-sidebar-text-muted">
+            Prescriptive Operations Tool
           </p>
         </div>
       </div>
 
       {/* Nav groups */}
-{/* Nav groups */}
       <nav className="flex-1 px-2 py-2 overflow-y-auto">
         {NAV_GROUPS.map((group, gi) => (
           <div key={gi} className="mb-1">
             {group.label && (
               <p
-                className="text-[10px] uppercase tracking-widest px-2 pt-3 pb-1 m-0"
-                style={{ color: "#D4D2CA", fontWeight: 600, letterSpacing: "0.08em" }}
+                className="text-[10px] uppercase tracking-widest px-2 pt-3 pb-1 m-0 text-sidebar-text-muted"
+                style={{ fontWeight: 600, letterSpacing: "0.08em" }}
               >
                 {group.label}
               </p>
@@ -102,8 +97,8 @@ export default function Sidebar() {
                   return (
                     <li key={item.label}>
                       <span
-                        className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm"
-                        style={{ color: "#D4D2CA", paddingLeft: 10, borderLeft: "2px solid transparent", opacity: 0.38 }}
+                        className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm text-sidebar-text opacity-40"
+                        style={{ paddingLeft: 10, borderLeft: "2px solid transparent" }}
                       >
                         <Icon size={15} className="flex-shrink-0" />
                         <span>{item.label}</span>
@@ -116,15 +111,15 @@ export default function Sidebar() {
                   <li key={item.label}>
                     <Link
                       href={item.href}
-                      style={
+                      className={`flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm transition-colors hover:text-sidebar-active ${
                         isActive
-                          ? { color: "#FFFFFF", background: "rgba(255,255,255,0.10)", borderLeft: "3px solid #FF0082", paddingLeft: "10px" }
-                          : { color: "#ECE9E7", borderLeft: "2px solid transparent", paddingLeft: "10px" }
-                      }
-                      className="flex items-center gap-2.5 py-1.5 pr-3 rounded-r-md text-sm transition-colors hover:text-white"
+                          ? "text-sidebar-active font-medium bg-sidebar-active-bg/10 border-l-[3px] border-accent"
+                          : "text-sidebar-text border-l-[3px] border-transparent"
+                      }`}
+                      style={{ paddingLeft: isActive ? 9 : 10 }}
                     >
                       <Icon size={15} className="flex-shrink-0" />
-                      <span className={isActive ? "font-medium" : ""}>{item.label}</span>
+                      <span>{item.label}</span>
                     </Link>
                   </li>
                 );
@@ -135,20 +130,20 @@ export default function Sidebar() {
       </nav>
 
       {/* Footer */}
-      <div className="px-2 pb-4 pt-3" style={{ borderTop: "1px solid #2D3148" }}>
+      <div className="px-2 pb-4 pt-3 border-t border-sidebar-border">
         <button
-          className="w-full flex items-center gap-2.5 py-1.5 px-3 rounded-md text-sm transition-colors hover:text-white text-left"
-          style={{ color: "#8B8FA8" }}
+          className="w-full flex items-center gap-2.5 py-1.5 px-3 rounded-md text-sm transition-colors hover:text-sidebar-active text-left text-sidebar-text"
         >
           <Send size={14} className="flex-shrink-0" />
           Email Daily Summary
         </button>
         <button
-          className="w-full flex items-center gap-2.5 py-1.5 px-3 rounded-md text-sm transition-colors hover:text-white text-left"
-          style={{ color: "#8B8FA8" }}
+          onClick={toggleTheme}
+          aria-pressed={isDark}
+          className="w-full flex items-center gap-2.5 py-1.5 px-3 rounded-md text-sm transition-colors hover:text-sidebar-active text-left text-sidebar-text"
         >
-          <Moon size={14} className="flex-shrink-0" />
-          Dark Mode
+          {isDark ? <Sun size={14} className="flex-shrink-0" /> : <Moon size={14} className="flex-shrink-0" />}
+          {isDark ? "Light Mode" : "Dark Mode"}
         </button>
       </div>
     </aside>

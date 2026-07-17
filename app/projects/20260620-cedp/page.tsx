@@ -185,7 +185,7 @@ export default function CEDPPage() {
               <div className="relative">
                 <button
                   onClick={() => setAgentDropdown((v: boolean) => !v)}
-                  className="flex items-center gap-2 px-3 py-1.5 border rounded-lg text-sm bg-surface-muted transition-colors" style={agentDropdown ? {borderColor:"#8051FF"} : {borderColor:"#E2E3E8"}}
+                  className="flex items-center gap-2 px-3 py-1.5 border border-border rounded-lg text-sm bg-surface-muted hover:border-brand/40 transition-colors"
                 >
                   <span className="w-6 h-6 rounded-full bg-brand-light text-brand text-[10px] font-bold flex items-center justify-center flex-shrink-0">{agent.initials}</span>
                   <span className="font-medium text-text-primary">{agent.name}</span>
@@ -210,9 +210,9 @@ export default function CEDPPage() {
               </div>
               <div className="flex-1" />
               <div className="flex items-center gap-1">
-                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:bg-surface-muted transition-colors">Agent</button>
+                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-surface text-text-secondary hover:bg-surface-muted transition-colors">Agent</button>
                 <button className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand text-white">Supervisor</button>
-                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:bg-surface-muted transition-colors">Draft</button>
+                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-surface text-text-secondary hover:bg-surface-muted transition-colors">Draft</button>
               </div>
               <button className="flex items-center gap-1.5 text-xs text-text-secondary border border-border rounded-lg px-3 py-1.5 hover:border-brand/40 transition-colors flex-shrink-0">
                 <ExternalLink size={12} />
@@ -222,12 +222,12 @@ export default function CEDPPage() {
 
           {/* Current / History tabs */}
           <div className="flex items-center gap-1 mb-4">
-            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-brand bg-white text-brand">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-brand bg-surface text-brand">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
               Current
             </button>
-            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:border-brand/40 transition-colors">
-              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v3l2 2" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/><circle cx="5.5" cy="5.5" r="4.5" stroke="#9CA3AF" strokeWidth="1.1"/></svg>
+            <button className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-surface text-text-secondary hover:border-brand/40 transition-colors">
+              <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><path d="M5.5 1v3l2 2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/><circle cx="5.5" cy="5.5" r="4.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/></svg>
               History
             </button>
           </div>
@@ -243,8 +243,8 @@ export default function CEDPPage() {
           <div className="flex items-start justify-between gap-4 mb-4 px-4 py-3 rounded-xl border border-border bg-surface-muted">
             <div className="flex items-start gap-2.5">
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0 mt-0.5">
-                <circle cx="7" cy="7" r="6" stroke="#9CA3AF" strokeWidth="1.2"/>
-                <path d="M7 6v4M7 4.5v.5" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <circle cx="7" cy="7" r="6" stroke="rgb(var(--text-tertiary))" strokeWidth="1.2"/>
+                <path d="M7 6v4M7 4.5v.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
               <p className="text-xs text-text-secondary m-0 leading-relaxed">
                 Open each competency, review the agent self-assessment on the left, then fill in your supervisor evaluation on the right. Press <span className="font-semibold text-text-primary">Mark as done</span> to move to the next one.
@@ -260,7 +260,7 @@ export default function CEDPPage() {
           </div>
 
           {/* A — Ability to cope with the tasks and daily routine */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["A"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["A"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("A")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -270,7 +270,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Ability to cope with the tasks and daily routine</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "A" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "A" && (
@@ -279,11 +279,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -294,12 +294,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -307,14 +307,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("A")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -324,7 +324,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* B — Problem solving and continuous improvement */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["B"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["B"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("B")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -334,7 +334,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Problem solving and continuous improvement</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "B" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "B" && (
@@ -343,11 +343,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -358,12 +358,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -371,14 +371,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("B")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -388,7 +388,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* C — Commitment and responsibility */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["C"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["C"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("C")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -398,7 +398,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Commitment and responsibility</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "C" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "C" && (
@@ -407,11 +407,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -422,12 +422,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -435,14 +435,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("C")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -452,7 +452,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* D — Attitude towards work */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["D"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["D"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("D")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -462,7 +462,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Attitude towards work</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "D" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "D" && (
@@ -471,11 +471,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -486,12 +486,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -499,14 +499,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("D")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -516,7 +516,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* E — Project knowledge */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["E"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["E"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("E")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -526,7 +526,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Project knowledge</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "E" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "E" && (
@@ -535,11 +535,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -550,12 +550,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -563,14 +563,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("E")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -580,7 +580,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* F — Absenteeism and delays */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["F"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["F"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("F")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -590,7 +590,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Absenteeism and delays</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "F" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "F" && (
@@ -599,11 +599,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -614,12 +614,12 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option value="">Select a rating...</option>
                     <option>1 — Below expectations</option>
                     <option>2 — Developing</option>
@@ -627,14 +627,14 @@ export default function CEDPPage() {
                     <option>4 — Exceeds expectations</option>
                     <option>5 — Outstanding</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("F")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -644,7 +644,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* G — Propensity to leave in the next 30 days */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["G"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["G"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("G")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -654,7 +654,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Propensity to leave in the next 30 days</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "G" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "G" && (
@@ -663,11 +663,11 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
-                  <select disabled className="w-full text-sm border border-border focus:outline-none focus:[border-color:#8051FF] rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
+                  <select disabled className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface-muted text-text-tertiary mb-2 cursor-not-allowed opacity-60">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
@@ -675,24 +675,24 @@ export default function CEDPPage() {
                   <textarea rows={2} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Comments..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-white focus:outline-none focus:[border-color:#8051FF] text-text-secondary mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-1.5 bg-surface focus:outline-none focus:border-brand text-text-secondary mb-2">
                     <option>Low</option>
                     <option>Medium</option>
                     <option>High</option>
                   </select>
-                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
+                  <textarea rows={2} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Comments..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("G")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -702,7 +702,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* H — Personal Aspirations */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["H"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["H"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("H")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -712,7 +712,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Personal Aspirations</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "H" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "H" && (
@@ -721,26 +721,26 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
                   <textarea rows={3} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Describe personal aspirations..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on personal aspirations..."/>
+                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on personal aspirations..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("H")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done
@@ -750,7 +750,7 @@ export default function CEDPPage() {
             )}
           </div>
           {/* I — Professional Aspirations */}
-          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["I"] ? "border-brand/30 bg-[#F6FEF9]" : "border-border bg-surface")}>
+          <div className={"border rounded-xl overflow-hidden mb-3 transition-all " + (completed["I"] ? "border-brand/30 bg-brand-light" : "border-border bg-surface")}>
             <button
               onClick={() => toggleComp("I")}
               className="w-full flex items-center gap-3 px-5 py-3.5 text-left hover:bg-surface-muted/50 transition-colors"
@@ -760,7 +760,7 @@ export default function CEDPPage() {
               </span>
               <span className="text-sm font-semibold text-text-primary flex-1">Professional Aspirations</span>
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className={"transition-transform duration-150 " + (openComp === "I" ? "rotate-180" : "")}>
-                <path d="M3 5.5l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                <path d="M3 5.5l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
               </svg>
             </button>
             {openComp === "I" && (
@@ -769,26 +769,26 @@ export default function CEDPPage() {
                   {/* EXPERT — read-only */}
                   <div className="p-4 border-r border-border bg-surface-muted/40">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary">Expert</span>
                       <span className="ml-auto text-[10px] text-text-tertiary italic">Read only</span>
                     </div>
                   <textarea rows={3} disabled className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none cursor-not-allowed opacity-60" placeholder="Describe professional aspirations..."/>
                   </div>
                   {/* SUPERVISOR — active */}
-                  <div className="p-4 bg-[#F6FEF9]">
+                  <div className="p-4 bg-brand-light">
                     <div className="flex items-center gap-1.5 mb-3">
-                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="#FF0082" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="#FF0082" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><circle cx="6" cy="4" r="2.5" stroke="rgb(var(--brand))" strokeWidth="1.1"/><path d="M1 11c0-2.5 2.24-4 5-4s5 1.5 5 4" stroke="rgb(var(--brand))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                       <span className="text-[10px] font-semibold uppercase tracking-widest text-brand">Supervisor</span>
                     </div>
-                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-white placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on professional aspirations..."/>
+                  <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface placeholder:text-text-tertiary outline-none resize-none focus:border-brand" placeholder="Supervisor comments on professional aspirations..."/>
                   </div>
                 </div>
                 <div className="flex justify-end px-4 py-2.5 border-t border-border bg-surface">
                   <button
                     onClick={() => markDone("I")}
                     className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg text-white"
-                    style={{background:"#8051FF", color:"#FFFFFF"}}
+                    style={{background:"rgb(var(--brand))"}}
                   >
                     <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M2 5l2.5 2.5 4-4" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Mark as done

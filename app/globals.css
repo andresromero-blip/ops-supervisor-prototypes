@@ -1,36 +1,120 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-* { box-sizing: border-box; }
+/* ============================================================
+   Design tokens — TP Brand
+   Values are R G B triplets (no commas) so Tailwind's
+   rgb(var(--x) / <alpha-value>) opacity utilities work
+   (e.g. border-brand/30, bg-danger/5, hover:border-brand/40).
+   ============================================================ */
+:root {
+  --bg: 245 245 245;              /* #F5F5F5 */
+  --surface: 255 255 255;         /* #FFFFFF */
+  --surface-muted: 240 241 244;   /* #F0F1F4 */
+  --border: 226 227 232;          /* #E2E3E8 */
+
+  --text-primary: 26 26 46;       /* #1A1A2E */
+  --text-secondary: 107 108 128;  /* #6B6C80 */
+  --text-tertiary: 154 155 173;   /* #9A9BAD */
+
+  --brand: 128 81 255;            /* #8051FF — TP Lavender */
+  --brand-light: 237 232 255;     /* #EDE8FF */
+  --brand-dark: 99 64 204;        /* #6340CC */
+
+  --accent: 255 0 130;            /* #FF0082 — TP Pink */
+  --accent-light: 255 240 247;    /* #FFF0F7 */
+
+  --danger: 239 68 68;            /* #EF4444 */
+  --danger-light: 254 226 226;    /* #FEE2E2 */
+  --warning: 245 158 11;          /* #F59E0B */
+  --warning-light: 254 243 199;   /* #FEF3C7 */
+  --success: 16 185 129;          /* #10B981 — reserved for data semantics */
+  --success-light: 209 250 229;   /* #D1FAE5 */
+
+  --sidebar-bg: 75 76 106;        /* #4B4C6A — TP Dark Slate */
+  --sidebar-text: 236 233 231;    /* #ECE9E7 — TP Pastel Sand */
+  --sidebar-text-muted: 212 210 202; /* #D4D2CA — TP Sand */
+  --sidebar-active: 255 255 255;  /* #FFFFFF */
+  --sidebar-active-bg: 255 255 255; /* used with /10 opacity */
+  --sidebar-border: 90 91 122;    /* #5A5B7A */
+}
+
+/* ============================================================
+   Dark mode — toggled via `dark` class on <html>
+   ============================================================ */
+html.dark {
+  --bg: 15 15 22;                 /* #0F0F16 */
+  --surface: 26 26 38;            /* #1A1A26 */
+  --surface-muted: 34 34 48;      /* #222230 */
+  --border: 52 52 70;             /* #343446 */
+
+  --text-primary: 237 237 245;    /* #EDEDF5 */
+  --text-secondary: 168 168 189;  /* #A8A8BD */
+  --text-tertiary: 118 118 140;   /* #76768C */
+
+  --brand: 158 130 255;           /* #9E82FF — lighter lavender for dark bg */
+  --brand-light: 45 37 74;        /* #2D254A */
+  --brand-dark: 128 81 255;       /* #8051FF */
+
+  --accent: 255 77 161;           /* #FF4DA1 — lighter pink for dark bg */
+  --accent-light: 58 20 40;       /* #3A1428 */
+
+  --danger: 248 113 113;          /* #F87171 */
+  --danger-light: 63 27 27;       /* #3F1B1B */
+  --warning: 251 191 36;          /* #FBBF24 */
+  --warning-light: 63 47 12;      /* #3F2F0C */
+  --success: 52 211 153;          /* #34D399 */
+  --success-light: 20 46 38;      /* #142E26 */
+
+  --sidebar-bg: 20 20 30;         /* #14141E — slightly darker than surface */
+  --sidebar-text: 200 200 214;    /* #C8C8D6 */
+  --sidebar-text-muted: 140 140 160; /* #8C8CA0 */
+  --sidebar-active: 255 255 255;
+  --sidebar-active-bg: 255 255 255;
+  --sidebar-border: 46 46 62;     /* #2E2E3E */
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+html.dark {
+  color-scheme: dark;
+}
 
 body {
-  background: #F5F5F5;
-  color: #1A1A2E;
-  font-family: 'DM Sans', 'TP Sans', system-ui, sans-serif;
+  background: rgb(var(--bg));
+  color: rgb(var(--text-primary));
+  font-family: 'DM Sans', 'Inter', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+/* Smooth theme transitions on the most common surface/border/text elements,
+   without touching transforms, layout, or interactive hover transitions. */
+div, header, aside, nav, section, button, input, select, textarea, svg, span, p, a {
+  transition-property: background-color, border-color, color, box-shadow;
+  transition-duration: 0.15s;
+  transition-timing-function: ease;
+}
+
+/* Universal focus ring WCAG 2.4.7 */
+:focus-visible {
+  outline: 2px solid rgb(var(--brand));
+  outline-offset: 2px;
+}
+select:focus, input:focus, textarea:focus {
+  border-color: rgb(var(--brand)) !important;
+  box-shadow: 0 0 0 3px rgb(var(--brand) / 0.12);
 }
 
 @keyframes fadeInUp {
   from { opacity: 0; transform: translateX(-50%) translateY(8px); }
   to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-}
-
-/* ── Universal focus ring — WCAG 2.4.7 ─────────────────────────────────────
-   All interactive elements show a Lavender #8051FF outline on keyboard focus.
-   Uses focus-visible so it only shows for keyboard users, not mouse clicks. */
-:focus-visible {
-  outline: 2px solid #8051FF;
-  outline-offset: 2px;
-}
-
-/* Native selects and inputs: border highlight on focus */
-select:focus,
-input:focus,
-textarea:focus {
-  border-color: #8051FF !important;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(128, 81, 255, 0.12);
 }

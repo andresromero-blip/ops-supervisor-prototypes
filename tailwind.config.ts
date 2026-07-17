@@ -1,6 +1,9 @@
 import type { Config } from "tailwindcss";
 
+const withOpacity = (varName: string) => `rgb(var(${varName}) / <alpha-value>)`;
+
 const config: Config = {
+  darkMode: "class",
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -8,61 +11,50 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        // ── TP Brand Palette — Essential Guidelines 2026 ──────────────
-        bg:              "#F5F5F5",   // neutral page bg
-        surface:         "#FFFFFF",
-        "surface-muted": "#F0F1F4",   // TP Pastel Sand-ish
-        border:          "#E2E3E8",
-        "text-primary":  "#1A1A2E",   // near Dark Slate for body
-        "text-secondary":"#6B6C80",
-        "text-tertiary": "#9A9BAD",
-
-        // Primary structural: TP Dark Slate
+        bg: withOpacity("--bg"),
+        surface: withOpacity("--surface"),
+        "surface-muted": withOpacity("--surface-muted"),
+        border: withOpacity("--border"),
+        "text-primary": withOpacity("--text-primary"),
+        "text-secondary": withOpacity("--text-secondary"),
+        "text-tertiary": withOpacity("--text-tertiary"),
         brand: {
-          DEFAULT: "#8051FF",   // TP Lavender — primary action
-          light:   "#EDE8FF",   // Lavender 10% tint
-          dark:    "#6340CC",   // Lavender pressed
+          DEFAULT: withOpacity("--brand"),
+          light: withOpacity("--brand-light"),
+          dark: withOpacity("--brand-dark"),
         },
-
-        // Accent: TP Pink — CTAs, active states, highlights
         accent: {
-          DEFAULT: "#FF0082",   // TP Pink
-          light:   "#FFF0F7",   // Pink 5% tint
-          dark:    "#CC0068",   // Pink pressed
+          DEFAULT: withOpacity("--accent"),
+          light: withOpacity("--accent-light"),
         },
-
-        // Semantic
         danger: {
-          DEFAULT: "#E53935",
-          light:   "#FDECEA",
+          DEFAULT: withOpacity("--danger"),
+          light: withOpacity("--danger-light"),
         },
         warning: {
-          DEFAULT: "#F5A623",
-          light:   "#FFF3E0",
+          DEFAULT: withOpacity("--warning"),
+          light: withOpacity("--warning-light"),
         },
         success: {
-          DEFAULT: "#1E7E34",
-          light:   "#E8F5E9",
+          DEFAULT: withOpacity("--success"),
+          light: withOpacity("--success-light"),
         },
-
-        // Sidebar: TP Dark Slate as structural bg
         sidebar: {
-          bg:           "#4B4C6A",   // TP Dark Slate
-          text:         "#ECE9E7",   // TP Pastel Sand — 6.84:1 ✓ WCAG AA
-          "text-muted": "#D4D2CA",   // TP Sand — 5.46:1 ✓ WCAG AA
-          active:       "#FFFFFF",   // White — 8.26:1 ✓ WCAG AA (pink as border accent)
-          "active-bg":  "#FFFFFF14", // White 8% tint
-          border:       "#5A5B7A",
+          bg: withOpacity("--sidebar-bg"),
+          text: withOpacity("--sidebar-text"),
+          "text-muted": withOpacity("--sidebar-text-muted"),
+          active: withOpacity("--sidebar-active"),
+          "active-bg": withOpacity("--sidebar-active-bg"),
+          border: withOpacity("--sidebar-border"),
         },
       },
       fontFamily: {
-        sans: ["DM Sans", "TP Sans", "system-ui", "sans-serif"],
+        sans: ["DM Sans", "Inter", "system-ui", "sans-serif"],
         mono: ["IBM Plex Mono", "monospace"],
       },
       borderRadius: {
-        md: "4px",
-        lg: "6px",
-        xl: "8px",
+        md: "6px",
+        lg: "8px",
       },
     },
   },

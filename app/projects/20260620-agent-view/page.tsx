@@ -158,7 +158,7 @@ function KpiEvolutionChart({
         onMouseLeave={() => setHoverIdx(null)}
       >
         {/* White plot area */}
-        <rect x={PL} y={PT} width={W - PL - PR} height={H - PT - PB} fill="#fff" />
+        <rect x={PL} y={PT} width={W - PL - PR} height={H - PT - PB} fill="rgb(var(--surface))" />
 
         {/* Y grid lines — dashed */}
         {yTicks.map(tick => {
@@ -172,7 +172,7 @@ function KpiEvolutionChart({
               <text
                 x={PL - 10} y={ty + 4}
                 textAnchor="end" fontSize="12"
-                fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
+                fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif"
               >{tick}</text>
             </g>
           );
@@ -187,12 +187,12 @@ function KpiEvolutionChart({
         {/* Target line — red dashed */}
         <line
           x1={PL} y1={targetY} x2={W - PR} y2={targetY}
-          stroke="#EF4444" strokeWidth="1.5"
+          stroke="rgb(var(--danger))" strokeWidth="1.5"
           strokeDasharray="6 4" opacity="0.55"
         />
         <text
           x={W - PR + 10} y={targetY + 5}
-          fontSize="12" fill="#9CA3AF"
+          fontSize="12" fill="rgb(var(--text-tertiary))"
           fontFamily="Inter,system-ui,sans-serif"
         >Target: {target}</text>
 
@@ -228,7 +228,7 @@ function KpiEvolutionChart({
           if (isLast) {
             return (
               <circle key={i} cx={x} cy={y} r={4}
-                fill="#fff" stroke={lineColor} strokeWidth="1.5"
+                fill="rgb(var(--surface))" stroke={lineColor} strokeWidth="1.5"
               />
             );
           }
@@ -241,7 +241,7 @@ function KpiEvolutionChart({
           <text
             key={d} x={toX(i)} y={H - PB + 20}
             textAnchor="middle" fontSize="12"
-            fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif"
+            fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif"
           >{d}</text>
         ))}
 
@@ -274,7 +274,7 @@ function KpiEvolutionChart({
               : { left:  `calc(${pctX}% + 12px)` }),
             top:           `${pctY}%`,
             transform:     "translateY(-50%)",
-            background:    "#fff",
+            background:    "rgb(var(--surface))",
             border:        "1px solid #F0F0F0",
             borderRadius:  10,
             padding:       "9px 13px",
@@ -284,7 +284,7 @@ function KpiEvolutionChart({
             boxShadow:     "0 2px 12px rgba(0,0,0,0.08)",
             minWidth:      86,
           }}>
-            <p style={{ margin: 0, fontWeight: 600, color: "#111827", fontSize: 13, marginBottom: 5 }}>
+            <p style={{ margin: 0, fontWeight: 600, color: "rgb(var(--text-primary))", fontSize: 13, marginBottom: 5 }}>
               {dates[hoverIdx]}
             </p>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
@@ -308,7 +308,7 @@ function KpiEvolutionChart({
         }}>
           <svg width="20" height="10" viewBox="0 0 20 10" fill="none">
             <line x1="0" y1="5" x2="14" y2="5" stroke={lineColor} strokeWidth="1.5" />
-            <circle cx="7" cy="5" r="3" fill="#fff" stroke={lineColor} strokeWidth="1.5" />
+            <circle cx="7" cy="5" r="3" fill="rgb(var(--surface))" stroke={lineColor} strokeWidth="1.5" />
             <path d="M14 2l5 3-5 3" fill="none" stroke={lineColor} strokeWidth="1.5"
               strokeLinecap="round" strokeLinejoin="round" />
           </svg>
@@ -369,7 +369,7 @@ function AgentViewContent() {
           <p className="text-sm text-text-secondary m-0">
             Transparency, recognition, and development · Showing <strong>{PERIOD_LABEL[period]}</strong> data
             <span className="ml-3 inline-flex items-center gap-1">
-              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="10" rx="1.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M4 1v2M9 1v2" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/><path d="M1 5h11" stroke="#9CA3AF" strokeWidth="1.1"/></svg>
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="10" rx="1.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M4 1v2M9 1v2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/><path d="M1 5h11" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/></svg>
               23 Jun
             </span>
           </p>
@@ -383,7 +383,7 @@ function AgentViewContent() {
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2h10v10H2z" stroke="currentColor" strokeWidth="1.2" rx="1"/><path d="M5 5h4M5 8h2" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/></svg>
             CEDP
           </button>
-          <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium text-white" style={{background:"#8051FF", color:"#FFFFFF"}}>
+          <button className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg text-sm font-medium text-white" style={{background:"rgb(var(--brand))"}}>
             <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="white" strokeWidth="1.2"/><circle cx="5" cy="6" r="0.7" fill="white"/><circle cx="9" cy="6" r="0.7" fill="white"/><path d="M4.5 8.5c.5 1 4.5 1 5 0" stroke="white" strokeWidth="1.1" strokeLinecap="round"/></svg>
             How are you feeling?
           </button>
@@ -401,13 +401,13 @@ function AgentViewContent() {
             >
               <span className="font-medium flex-1 text-left">{agent.name}</span>
               {/* up-down chevron like original */}
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5.5l3-3 3 3" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 8.5l3 3 3-3" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M4 5.5l3-3 3 3" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/><path d="M4 8.5l3 3 3-3" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </button>
             {showDropdown && (
               <div className="absolute top-[calc(100%+4px)] left-0 bg-surface border border-border rounded-xl shadow-xl z-20 w-[280px] overflow-hidden">
                 {/* Search field */}
                 <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" strokeWidth="1.2"/><path d="M9.5 9.5L13 13" stroke="#9CA3AF" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.2"/><path d="M9.5 9.5L13 13" stroke="rgb(var(--text-tertiary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                   <input
                     autoFocus
                     type="text"
@@ -434,7 +434,7 @@ function AgentViewContent() {
                           className={`w-full text-left flex items-center gap-3 px-4 py-2.5 text-sm transition-colors ${isSelected ? "bg-surface-muted font-medium" : "hover:bg-surface-muted"}`}
                         >
                           {isSelected ? (
-                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M2 7l4 4 6-6" stroke="#10B981" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0"><path d="M2 7l4 4 6-6" stroke="rgb(var(--brand))" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/></svg>
                           ) : (
                             <span className="w-[14px] flex-shrink-0" />
                           )}
@@ -544,7 +544,7 @@ function AgentViewContent() {
             {/* Golden Nuggets */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="#F59E0B" strokeWidth="1.2"/><path d="M7 4l.9 2.6H10.5l-2.1 1.5.8 2.6L7 9.2l-2.2 1.5.8-2.6-2.1-1.5H6.1z" stroke="#F59E0B" strokeWidth="0.8" strokeLinejoin="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="4.5" stroke="rgb(var(--warning))" strokeWidth="1.2"/><path d="M7 4l.9 2.6H10.5l-2.1 1.5.8 2.6L7 9.2l-2.2 1.5.8-2.6-2.1-1.5H6.1z" stroke="rgb(var(--warning))" strokeWidth="0.8" strokeLinejoin="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">Golden Nuggets</span>
                 <span className="text-sm text-text-tertiary">{agent.insights.goldenNuggets}</span>
               </div>
@@ -554,7 +554,7 @@ function AgentViewContent() {
             {/* Critical */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 12H1L7 1Z" stroke="#EF4444" strokeWidth="1.3" strokeLinejoin="round"/><path d="M7 5v3" stroke="#EF4444" strokeWidth="1.3" strokeLinecap="round"/><circle cx="7" cy="10" r="0.6" fill="#EF4444"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 12H1L7 1Z" stroke="rgb(var(--danger))" strokeWidth="1.3" strokeLinejoin="round"/><path d="M7 5v3" stroke="rgb(var(--danger))" strokeWidth="1.3" strokeLinecap="round"/><circle cx="7" cy="10" r="0.6" fill="rgb(var(--danger))"/></svg>
                 <span className="text-sm font-medium text-danger">Critical</span>
                 <span className="w-4 h-4 rounded-full bg-danger text-white text-[10px] font-bold flex items-center justify-center">{agent.insights.critical ? 1 : 0}</span>
               </div>
@@ -575,7 +575,7 @@ function AgentViewContent() {
             {/* Warnings */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 12H1L7 1Z" stroke="#F59E0B" strokeWidth="1.3" strokeLinejoin="round"/><path d="M7 5v3" stroke="#F59E0B" strokeWidth="1.3" strokeLinecap="round"/><circle cx="7" cy="10" r="0.6" fill="#F59E0B"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1L13 12H1L7 1Z" stroke="rgb(var(--warning))" strokeWidth="1.3" strokeLinejoin="round"/><path d="M7 5v3" stroke="rgb(var(--warning))" strokeWidth="1.3" strokeLinecap="round"/><circle cx="7" cy="10" r="0.6" fill="rgb(var(--warning))"/></svg>
                 <span className="text-sm font-medium text-warning">Warnings</span>
                 <span className="text-sm text-text-tertiary">{agent.insights.warnings ? 1 : 0}</span>
               </div>
@@ -597,7 +597,7 @@ function AgentViewContent() {
         {/* ── Action Points ──────────────────────────────────────── */}
         <div className="bg-surface border border-border rounded-xl p-5 mb-8">
           <div className="flex items-center gap-2 mb-4">
-            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="#6B7280" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="3.5" stroke="#6B7280" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="1" fill="#6B7280"/></svg>
+            <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="rgb(var(--text-secondary))" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="3.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.3"/><circle cx="7.5" cy="7.5" r="1" fill="rgb(var(--text-secondary))"/></svg>
             <span className="text-sm font-semibold">Action Points</span>
             <span className="w-5 h-5 rounded-full bg-surface-muted border border-border text-[11px] font-bold flex items-center justify-center text-text-secondary">
               {agent.actionPoints.humanDevelopment.length}
@@ -607,7 +607,7 @@ function AgentViewContent() {
             {/* Training */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 5.5l6-3 6 3-6 3-6-3z" stroke="#6B7280" strokeWidth="1.2" strokeLinejoin="round"/><path d="M4 7v3.5c0 .8 1.3 1.5 3 1.5s3-.7 3-1.5V7" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/><path d="M13 5.5v3" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M1 5.5l6-3 6 3-6 3-6-3z" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinejoin="round"/><path d="M4 7v3.5c0 .8 1.3 1.5 3 1.5s3-.7 3-1.5V7" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/><path d="M13 5.5v3" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">Training</span>
                 <span className="text-sm text-text-tertiary">{agent.actionPoints.training}</span>
               </div>
@@ -617,7 +617,7 @@ function AgentViewContent() {
             {/* AI Coach */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="2" stroke="#6B7280" strokeWidth="1.2"/><path d="M5 4V3a2 2 0 014 0v1" stroke="#6B7280" strokeWidth="1.2"/><circle cx="5" cy="7.5" r="0.8" fill="#6B7280"/><circle cx="9" cy="7.5" r="0.8" fill="#6B7280"/><path d="M5.5 9.5h3" stroke="#6B7280" strokeWidth="1" strokeLinecap="round"/><path d="M7 1v1M3.5 2.5l.7.7M10.5 2.5l-.7.7" stroke="#6B7280" strokeWidth="1" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="2" y="4" width="10" height="7" rx="2" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><path d="M5 4V3a2 2 0 014 0v1" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><circle cx="5" cy="7.5" r="0.8" fill="rgb(var(--text-secondary))"/><circle cx="9" cy="7.5" r="0.8" fill="rgb(var(--text-secondary))"/><path d="M5.5 9.5h3" stroke="rgb(var(--text-secondary))" strokeWidth="1" strokeLinecap="round"/><path d="M7 1v1M3.5 2.5l.7.7M10.5 2.5l-.7.7" stroke="rgb(var(--text-secondary))" strokeWidth="1" strokeLinecap="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">AI Coach</span>
                 <span className="text-sm text-text-tertiary">{agent.actionPoints.aiCoach}</span>
               </div>
@@ -627,7 +627,7 @@ function AgentViewContent() {
             {/* Human Development */}
             <div>
               <div className="flex items-center gap-1.5 mb-3">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="#6B7280" strokeWidth="1.2"/><path d="M1.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4" r="2.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><path d="M1.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-medium text-text-secondary">Human Development</span>
                 <span className="text-sm text-text-tertiary">{agent.actionPoints.humanDevelopment.length}</span>
               </div>
@@ -640,7 +640,7 @@ function AgentViewContent() {
                       <p className="text-sm text-text-primary m-0 mb-2 leading-relaxed">{h.text}</p>
                       <div className="flex items-center gap-2 flex-wrap">
                         <span className="text-[11px] text-text-tertiary flex items-center gap-1">
-                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="1" width="9" height="8" rx="1" stroke="#9CA3AF" strokeWidth="0.9"/><path d="M2.5 0.5v1M7.5 0.5v1" stroke="#9CA3AF" strokeWidth="0.9"/><path d="M0.5 3.5h9" stroke="#9CA3AF" strokeWidth="0.9"/></svg>
+                          <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><rect x="0.5" y="1" width="9" height="8" rx="1" stroke="rgb(var(--text-tertiary))" strokeWidth="0.9"/><path d="M2.5 0.5v1M7.5 0.5v1" stroke="rgb(var(--text-tertiary))" strokeWidth="0.9"/><path d="M0.5 3.5h9" stroke="rgb(var(--text-tertiary))" strokeWidth="0.9"/></svg>
                           {h.date}
                         </span>
                         <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-brand-light text-brand">{h.tag}</span>
@@ -663,12 +663,12 @@ function AgentViewContent() {
           onClick={() => setShowCedpModal(false)}
         >
           <div
-            className="bg-white rounded-2xl shadow-2xl w-[480px] max-w-[95vw] max-h-[90vh] overflow-y-auto"
+            className="bg-surface rounded-2xl shadow-2xl w-[480px] max-w-[95vw] max-h-[90vh] overflow-y-auto"
             onClick={e => e.stopPropagation()}
           >
             <div className="flex items-center justify-between px-6 pt-6 pb-4">
               <div className="flex items-center gap-2">
-                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="16" rx="3" stroke="#10B981" strokeWidth="1.4"/><path d="M5 6h8M5 9h6M5 12h4" stroke="#10B981" strokeWidth="1.4" strokeLinecap="round"/></svg>
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><rect x="1" y="1" width="16" height="16" rx="3" stroke="rgb(var(--brand))" strokeWidth="1.4"/><path d="M5 6h8M5 9h6M5 12h4" stroke="rgb(var(--brand))" strokeWidth="1.4" strokeLinecap="round"/></svg>
                 <span className="text-base font-semibold text-text-primary">CEDP — {agent.name}</span>
               </div>
               <button

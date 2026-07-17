@@ -138,8 +138,8 @@ const STATUS_COLORS: Record<KpiStatus, { bg: string; text: string; border: strin
 
 const VALUE_COLORS: Record<KpiStatus, string> = {
   "outlier":    "#10B981",
-  "off-target": "#EF4444",
-  "at-risk":    "#F59E0B",
+  "off-target": "rgb(var(--danger))",
+  "at-risk":    "rgb(var(--warning))",
   "on-target":  "#10B981",
 };
 
@@ -165,7 +165,7 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
   const areaPath  = `${agentPath} L ${toX(n-1).toFixed(1)} ${(H-PB).toFixed(1)} L ${toX(0).toFixed(1)} ${(H-PB).toFixed(1)} Z`;
   const targetY   = toY(kpi.targetValue);
   const areaFill  = lineColor === "#10B981" ? "rgba(16,185,129,0.09)"
-                  : lineColor === "#EF4444" ? "rgba(239,68,68,0.07)"
+                  : lineColor === "rgb(var(--danger))" ? "rgba(239,68,68,0.07)"
                   : "rgba(245,158,11,0.07)";
 
   // Y grid: 4 rounded values
@@ -179,19 +179,19 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
         const y = toY(v);
         return (
           <g key={i}>
-            <line x1={0} y1={y} x2={W} y2={y} stroke="#F3F4F6" strokeWidth="1" />
-            <text x={8} y={y - 4} fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{v}</text>
+            <line x1={0} y1={y} x2={W} y2={y} stroke="rgb(var(--surface-muted))" strokeWidth="1" />
+            <text x={8} y={y - 4} fontSize="10" fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif">{v}</text>
           </g>
         );
       })}
 
       {/* Target line — dark dashed, full width */}
-      <line x1={0} y1={targetY} x2={W} y2={targetY} stroke="#374151" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.5" />
+      <line x1={0} y1={targetY} x2={W} y2={targetY} stroke="rgb(var(--text-secondary))" strokeWidth="1.5" strokeDasharray="6 4" opacity="0.5" />
       {/* TARGET label — inside, top-right */}
-      <text x={W - 6} y={targetY - 5} textAnchor="end" fontSize="9" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif" fontWeight="600">TARGET</text>
+      <text x={W - 6} y={targetY - 5} textAnchor="end" fontSize="9" fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif" fontWeight="600">TARGET</text>
 
       {/* Team dashed line */}
-      <path d={teamPath} fill="none" stroke="#9CA3AF" strokeWidth="1.5" strokeDasharray="4 3" />
+      <path d={teamPath} fill="none" stroke="rgb(var(--text-tertiary))" strokeWidth="1.5" strokeDasharray="4 3" />
 
       {/* Area fill under agent */}
       <path d={areaPath} fill={areaFill} />
@@ -200,11 +200,11 @@ function DeepDiveChart({ kpi, lineColor = "#10B981" }: { kpi: KpiCard; lineColor
       <path d={agentPath} fill="none" stroke={lineColor} strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" />
 
       {/* X axis baseline */}
-      <line x1={0} y1={H - PB} x2={W} y2={H - PB} stroke="#E5E7EB" strokeWidth="1" />
+      <line x1={0} y1={H - PB} x2={W} y2={H - PB} stroke="rgb(var(--border))" strokeWidth="1" />
 
       {/* X labels */}
       {days.map((d, i) => d && (
-        <text key={i} x={toX(i)} y={H - 6} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
+        <text key={i} x={toX(i)} y={H - 6} textAnchor="middle" fontSize="10" fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif">{d}</text>
       ))}
     </svg>
   );
@@ -225,18 +225,18 @@ function ContentField({ label }: { label: string; key?: number | string }) {
     <div className="border border-border rounded-lg overflow-hidden">
       <button
         onClick={() => setOpen(v => !v)}
-        className="w-full flex items-center justify-between px-3 py-2.5 bg-white hover:bg-surface-muted transition-colors text-left"
+        className="w-full flex items-center justify-between px-3 py-2.5 bg-surface hover:bg-surface-muted transition-colors text-left"
       >
         <span className="text-xs font-medium text-text-secondary">{label}</span>
         <svg
           width="12" height="12" viewBox="0 0 12 12" fill="none"
           className={"transition-transform duration-150 " + (open ? "rotate-180" : "")}
         >
-          <path d="M2 4l4 4 4-4" stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+          <path d="M2 4l4 4 4-4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
         </svg>
       </button>
       {open && (
-        <div className="px-3 pb-3 bg-white border-t border-border">
+        <div className="px-3 pb-3 bg-surface border-t border-border">
           <textarea
             rows={4}
             className="w-full mt-2 text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand"
@@ -260,7 +260,6 @@ export default function OneToOnePage() {
   const [showSession, setShowSession] = useState(false);
   const [sessionActions, setSessionActions] = useState<{type:string;text:string;dueDate:string}[]>([]);
   const hasActions = sessionActions.length !== 0;
-  const [kpiFilter, setKpiFilter] = useState<string>("all");
   const [savedToast, setSavedToast] = useState(false);
 
   const activeKpi = agent.kpis.find(k => k.key === focusKpi) ?? agent.kpis[0];
@@ -299,26 +298,26 @@ export default function OneToOnePage() {
               /* Full view: label + selector + buttons */
               <div className="px-4 pt-3 pb-3">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary mb-2 flex items-center gap-1.5">
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                   AGENT
                 </p>
                 <div className="flex items-center gap-3">
                   <div className="relative flex-1 min-w-0">
                     <div onClick={() => { setShowAgentDropdown(v => !v); setAgentSearch(""); }}
-                      className="flex items-center gap-3 border rounded-lg px-3 py-2 bg-white cursor-pointer transition-colors" style={showAgentDropdown ? {borderColor:"#8051FF"} : {borderColor:"#E2E3E8"}}>
+                      className="flex items-center gap-3 border border-border rounded-lg px-3 py-2 bg-surface cursor-pointer hover:border-brand/40 transition-colors">
                       <div className="w-8 h-8 rounded-full bg-brand-light flex items-center justify-center text-brand text-xs font-bold flex-shrink-0">{agent.initials}</div>
                       <div className="flex-1 min-w-0">
                         <div className="text-sm font-semibold text-text-primary">{agent.name}</div>
                         <div className="text-xs text-text-tertiary">— · {agent.tenure}</div>
                       </div>
                       <svg width="14" height="14" viewBox="0 0 14 14" fill="none" className="flex-shrink-0">
-                        <path d={showAgentDropdown ? "M3 8.5l4-4 4 4" : "M3 5.5l4 4 4-4"} stroke="#9CA3AF" strokeWidth="1.3" strokeLinecap="round"/>
+                        <path d={showAgentDropdown ? "M3 8.5l4-4 4 4" : "M3 5.5l4 4 4-4"} stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinecap="round"/>
                       </svg>
                     </div>
                     {showAgentDropdown && (
-                      <div className="absolute top-[calc(100%+4px)] left-0 bg-white border border-border rounded-xl shadow-xl overflow-hidden" style={{zIndex:50, minWidth:"320px", width:"100%"}}>
+                      <div className="absolute top-[calc(100%+4px)] left-0 bg-surface border border-border rounded-xl shadow-xl overflow-hidden" style={{zIndex:50, minWidth:"320px", width:"100%"}}>
                         <div className="flex items-center gap-2 px-4 py-3 border-b border-border">
-                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="#9CA3AF" strokeWidth="1.2"/><path d="M10 10l3 3" stroke="#9CA3AF" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                          <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="6" cy="6" r="4.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.2"/><path d="M10 10l3 3" stroke="rgb(var(--text-tertiary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                           <input autoFocus type="text" placeholder="Search employee..."
                             value={agentSearch} onChange={e => setAgentSearch(e.target.value)}
                             className="flex-1 text-sm outline-none bg-transparent text-text-primary placeholder:text-text-tertiary"/>
@@ -341,13 +340,13 @@ export default function OneToOnePage() {
                     )}
                   </div>
                   <button className="flex items-center gap-1.5 px-3 py-2 border border-border rounded-lg text-sm text-text-secondary bg-surface hover:border-brand/40 transition-colors flex-shrink-0 whitespace-nowrap">
-                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                    <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="1.5" width="11" height="10" rx="1.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.1"/><path d="M4 5h5M4 8h3" stroke="rgb(var(--text-secondary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                     CEDP
                   </button>
                   <button
                     onClick={() => setShowSession(true)}
                     className="flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-semibold text-white flex-shrink-0 whitespace-nowrap"
-                    style={{ background:"#8051FF" }}
+                    style={{ background: "rgb(var(--brand))" }}
                   >
                     + New Session
                   </button>
@@ -357,10 +356,10 @@ export default function OneToOnePage() {
               /* Collapsed view when session panel is open: compact single row */
               <div className="px-4 py-2.5 flex items-center gap-3">
                 <p className="text-[10px] font-semibold uppercase tracking-widest text-text-tertiary flex items-center gap-1.5 flex-shrink-0">
-                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                  <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="3.5" r="2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M1 10c0-2.5 2.02-4 4.5-4s4.5 1.5 4.5 4" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                   AGENT
                 </p>
-                <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-1.5 bg-white flex-1 min-w-0">
+                <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-1.5 bg-surface flex-1 min-w-0">
                   <div className="w-6 h-6 rounded-full bg-brand-light flex items-center justify-center text-brand text-[10px] font-bold flex-shrink-0">
                     {agent.initials}
                   </div>
@@ -371,48 +370,45 @@ export default function OneToOnePage() {
             )}
           </div>
 
-          {/* KPI filter bar — interactive */}
+          {/* KPI filter bar */}
           <div className="mb-4">
             <div className="flex items-center gap-2 flex-wrap">
-              {([
-                { key: "all",        label: "All",        count: agent.kpis.length },
-                { key: "outlier",    label: "Outlier",    count: outlierCount },
-                { key: "off-target", label: "Off target", count: offTargetCount },
-                { key: "at-risk",    label: "At risk",    count: atRiskCount },
-                { key: "on-target",  label: "On target",  count: onTargetCount },
-              ] as {key:string;label:string;count:number}[]).map(f => (
-                <button
-                  key={f.key}
-                  onClick={() => setKpiFilter(f.key)}
-                  className="px-3 py-1 rounded-full text-xs font-semibold transition-colors"
-                  style={kpiFilter === f.key
-                    ? {background:"#8051FF", color:"#FFFFFF"}
-                    : {background:"transparent", color:"#6B7280", border:"1px solid #E5E7EB"}
-                  }
-                >
-                  {f.count} {f.label}
-                </button>
-              ))}
+              <button className="px-3 py-1 rounded-full text-xs font-semibold bg-text-primary text-white">
+                {agent.kpis.length} All
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {outlierCount} Outlier
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {offTargetCount} Off target
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {atRiskCount} At risk
+              </button>
+              <button className="px-3 py-1 rounded-full text-xs font-medium text-text-secondary border border-border hover:border-brand/40">
+                {onTargetCount} On target
+              </button>
             </div>
+            {/* B: helper text below the filter bar, not floated to the right */}
             <p className="text-xs text-text-tertiary mt-2 m-0">Click a KPI to focus its story below</p>
           </div>
 
           {/* KPI cards grid */}
           <div className="grid grid-cols-4 gap-3 mb-5">
-            {agent.kpis.filter(k => kpiFilter === "all" || k.status === kpiFilter).map(k => {
+            {agent.kpis.map(k => {
               const sc = STATUS_COLORS[k.status];
               const vc = VALUE_COLORS[k.status];
               const isActive = k.key === focusKpi;
-              const deltaColor = k.deltaPos ? "#10B981" : "#EF4444";
+              const deltaColor = k.deltaPos ? "#10B981" : "rgb(var(--danger))";
               return (
                 <div
                   key={k.key}
                   onClick={() => setFocusKpi(k.key)}
                   className="cursor-pointer rounded-xl p-4 transition-all"
                   style={{
-                    background: "#fff",
-                    border: `1.5px solid ${isActive ? "#10B981" : "#E5E7EB"}`,
-                    boxShadow: isActive ? "0 0 0 3px rgba(16,185,129,0.10)" : "none",
+                    background: "rgb(var(--surface))",
+                    border: `1.5px solid ${isActive ? "rgb(var(--brand))" : "rgb(var(--border))"}`,
+                    boxShadow: isActive ? "0 0 0 3px rgba(128,81,255,0.10)" : "none",
                   }}
                 >
                   {/* Label + status badge */}
@@ -447,8 +443,8 @@ export default function OneToOnePage() {
                       </span>
                     )}
                     {k.recentSessions > 0 && (
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>
-                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ display: "inline", marginRight: 3 }}><path d="M4.5 1v2.5L6 5" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/><circle cx="4.5" cy="4.5" r="3.5" stroke="#9CA3AF" strokeWidth="1"/></svg>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full" style={{ background: "rgb(var(--surface-muted))", color: "rgb(var(--text-secondary))" }}>
+                        <svg width="9" height="9" viewBox="0 0 9 9" fill="none" style={{ display: "inline", marginRight: 3 }}><path d="M4.5 1v2.5L6 5" stroke="rgb(var(--text-tertiary))" strokeWidth="1" strokeLinecap="round"/><circle cx="4.5" cy="4.5" r="3.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1"/></svg>
                         {k.recentSessions} recent 1:1{k.recentSessions !== 1 ? "s" : ""}
                       </span>
                     )}
@@ -458,7 +454,7 @@ export default function OneToOnePage() {
                       </span>
                     )}
                     {k.key === "fcr" && (
-                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full" style={{ background: "#F3F4F6", color: "#6B7280" }}>
+                      <span className="text-[10px] font-medium px-2 py-0.5 rounded-full" style={{ background: "rgb(var(--surface-muted))", color: "rgb(var(--text-secondary))" }}>
                         Recent 1:1
                       </span>
                     )}
@@ -540,11 +536,11 @@ export default function OneToOnePage() {
                   Agent
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #9CA3AF" }} />
+                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed rgb(var(--text-tertiary))" }} />
                   Team
                 </span>
                 <span className="flex items-center gap-1.5 text-xs text-text-secondary">
-                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed #374151" }} />
+                  <span style={{ width: 20, height: 0, display: "inline-block", borderTop: "2px dashed rgb(var(--text-secondary))" }} />
                   Target
                 </span>
               </div>
@@ -554,7 +550,7 @@ export default function OneToOnePage() {
             <div className="border border-border rounded-xl bg-surface overflow-hidden">
               <div className="px-5 py-3 border-b border-border">
                 <p className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary flex items-center gap-1.5 m-0">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1,9 4,5 7,7 11,2" stroke="#9CA3AF" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><polyline points="1,9 4,5 7,7 11,2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.3" strokeLinejoin="round" strokeLinecap="round"/></svg>
                   Storyline
                 </p>
               </div>
@@ -570,7 +566,7 @@ export default function OneToOnePage() {
           <div className="border border-border rounded-xl bg-surface overflow-hidden mb-8">
             <div className="px-5 py-4 border-b border-border">
               <div className="flex items-center gap-2 mb-0.5">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="#6B7280" strokeWidth="1.2"/><path d="M1.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="4.5" r="2.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><path d="M1.5 13c0-3 2.5-5 5.5-5s5.5 2 5.5 5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold">Other topics</span>
               </div>
               {/* B: helper text below title */}
@@ -583,17 +579,17 @@ export default function OneToOnePage() {
                   <span className="text-[11px] font-bold px-2 py-0.5 rounded" style={{ background: "#FEF3C7", color: "#92400E" }}>CEDP</span>
                   <span className="text-xs text-text-tertiary">Monthly review</span>
                 </div>
-                <p className="text-sm font-bold mb-1" style={{ color: "#D97706" }}>CEDP review pending</p>
+                <p className="text-sm font-bold mb-1" style={{ color: "rgb(var(--warning))" }}>CEDP review pending</p>
                 <p className="text-sm text-text-secondary mb-3">
                   Run this month&apos;s Continuous Employee Development Plan review with{" "}
-                  <strong style={{ color: "#10B981" }}>João Silva</strong>.
+                  <strong style={{ color: "rgb(var(--brand))" }}>João Silva</strong>.
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-text-tertiary flex items-center gap-1">
-                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="#9CA3AF" strokeWidth="1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/></svg>
+                    <svg width="11" height="11" viewBox="0 0 11 11" fill="none"><circle cx="5.5" cy="5.5" r="4.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1"/><path d="M5.5 3v2.5l1.5 1.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1" strokeLinecap="round"/></svg>
                     Monthly cadence
                   </span>
-                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white" style={{ background:"#8051FF" }}>
+                  <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-sm font-semibold text-white" style={{ background: "rgb(var(--brand))" }}>
                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6h8M8 4l2 2-2 2" stroke="white" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     Open CEDP
                   </button>
@@ -605,13 +601,13 @@ export default function OneToOnePage() {
           {/* ── New Coaching Session panel — fixed right, no overlay ── */}
           {showSession && (
             <div
-              className="fixed top-[44px] right-0 bottom-0 z-40 bg-white flex flex-col border-l border-border shadow-2xl"
+              className="fixed top-[44px] right-0 bottom-0 z-40 bg-surface flex flex-col border-l border-border shadow-2xl"
               style={{ width: 520, overflowY: "hidden" }}
             >
                 {/* Header */}
                 <div className="flex items-center justify-between px-5 py-3.5 border-b border-border flex-shrink-0">
                   <div className="flex items-center gap-2">
-                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="#FF0082" strokeWidth="1.3"/><path d="M4.5 7.5l2.5 2.5 3.5-4" stroke="#FF0082" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><circle cx="7.5" cy="7.5" r="6" stroke="rgb(var(--brand))" strokeWidth="1.3"/><path d="M4.5 7.5l2.5 2.5 3.5-4" stroke="rgb(var(--brand))" strokeWidth="1.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
                     <span className="text-sm font-semibold">New Coaching Session</span>
                   </div>
                   <button onClick={() => setShowSession(false)} className="text-text-tertiary hover:text-text-primary p-1 rounded transition-colors">
@@ -621,7 +617,7 @@ export default function OneToOnePage() {
 
                 {/* Draft notice */}
                 <div className="mx-4 mt-3 flex items-start gap-2 px-3 py-2 rounded-lg border border-border bg-surface-muted flex-shrink-0">
-                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="mt-0.5 flex-shrink-0"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="#9CA3AF" strokeWidth="1"/><path d="M3 4h6M3 6h4" stroke="#9CA3AF" strokeWidth="1" strokeLinecap="round"/></svg>
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none" className="mt-0.5 flex-shrink-0"><rect x="1" y="1" width="10" height="10" rx="1.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1"/><path d="M3 4h6M3 6h4" stroke="rgb(var(--text-tertiary))" strokeWidth="1" strokeLinecap="round"/></svg>
                   <p className="text-[11px] text-text-tertiary m-0 leading-relaxed">
                     Draft in progress. × or Cancel to keep editing later — use <span className="font-semibold">Discard</span> to clear all fields.
                   </p>
@@ -642,7 +638,7 @@ export default function OneToOnePage() {
                   </div>
                   <div>
                     <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Session Type</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF]">
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
                       <option value="">Select...</option>
                       <option>Coaching</option>
                       <option>Performance Review</option>
@@ -652,7 +648,7 @@ export default function OneToOnePage() {
                   </div>
                   <div>
                     <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">KPI Focus</label>
-                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:[border-color:#8051FF]">
+                    <select className="w-full text-sm border border-border rounded-lg px-2.5 py-2 bg-surface-muted text-text-primary focus:outline-none focus:border-brand">
                       <option>None</option>
                       {agent.kpis.map(k => <option key={k.key}>{k.label}</option>)}
                     </select>
@@ -662,11 +658,11 @@ export default function OneToOnePage() {
                 {/* Topic / Subject */}
                 <div>
                   <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Topic / Subject</label>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF] mb-2">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand mb-2">
                     <option>— Select a fact —</option>
                     {activeKpi.facts.map((f, i) => <option key={i}>{f.date} · {f.severity} — {f.text.slice(0,45)}</option>)}
                   </select>
-                  <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors">
+                  <button className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:border-brand hover:text-brand transition-colors">
 + New Fact
                   </button>
                 </div>
@@ -674,7 +670,7 @@ export default function OneToOnePage() {
                 {/* Linked Improvement Point */}
                 <div>
                   <label className="text-[11px] font-semibold uppercase tracking-widest text-text-tertiary block mb-1.5">Linked Improvement Point</label>
-                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:[border-color:#8051FF]">
+                  <select className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted text-text-secondary focus:outline-none focus:border-brand">
                     <option>— Select —</option>
                     <option>Improve closing technique — only 35% pitch rate</option>
                     <option>Greeting protocol compliance — failed 3 consecutive evals</option>
@@ -700,31 +696,31 @@ export default function OneToOnePage() {
                   </label>
                   <button
                     onClick={() => setSessionActions(prev => [...prev, {type:"Human Coaching", text:"", dueDate:""}])}
-                    className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-white text-text-secondary hover:border-brand hover:text-brand transition-colors mb-3"
+                    className="flex items-center gap-1 text-[11px] font-medium px-2.5 py-1.5 rounded-lg border border-border bg-surface text-text-secondary hover:border-brand hover:text-brand transition-colors mb-3"
                   >
 + Add Action
                   </button>
 
                   {/* Default empty action */}
                   {sessionActions.length === 0 && (
-                    <div className="border border-border rounded-xl p-3 bg-white">
+                    <div className="border border-border rounded-xl p-3 bg-surface">
                       <span className="text-xs text-text-tertiary block mb-2">Action 1</span>
                       <textarea rows={3} className="w-full text-sm border border-border rounded-lg px-3 py-2 bg-surface-muted placeholder:text-text-tertiary outline-none resize-none focus:border-brand mb-3" placeholder="Describe the action..."/>
                       <div className="grid grid-cols-2 gap-2 mb-2">
                         <div>
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
-                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]">
+                          <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
                             <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
                           </select>
                         </div>
                         <div>
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
-                          <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"/>
+                          <input type="date" className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
                         </div>
                       </div>
                       <div>
                         <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
-                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF] text-text-tertiary">
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
                           <option value="">Select tool...</option>
                           <option>GROW Model</option><option>Customer Experience Coaching</option>
                           <option>Feedback Conversation</option><option>Side-by-Side Observation</option>
@@ -734,11 +730,11 @@ export default function OneToOnePage() {
                   )}
 
                   {sessionActions.map((a, i) => (
-                    <div key={i} className="border border-border rounded-xl p-3 bg-white mb-3 last:mb-0">
+                    <div key={i} className="border border-border rounded-xl p-3 bg-surface mb-3 last:mb-0">
                       <div className="flex items-center justify-between mb-2">
                         <span className="text-xs text-text-tertiary">Action {i + 1}</span>
                         <button onClick={() => setSessionActions(prev => prev.filter((_, j) => j !== i))} className="text-danger hover:opacity-70 transition-opacity">
-                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                          <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><path d="M2 3.5h9M5 3.5V2.5a.5.5 0 01.5-.5h2a.5.5 0 01.5.5v1M10 3.5l-.5 7H3.5L3 3.5" stroke="rgb(var(--danger))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                         </button>
                       </div>
                       <textarea rows={3} value={hasActions ? a.text : ""}
@@ -750,7 +746,7 @@ export default function OneToOnePage() {
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Category</label>
                           <select value={hasActions ? a.type : "Human Coaching"}
                             onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,type:e.target.value}:x)) : undefined}
-                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]">
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand">
                             <option>Human Coaching</option><option>Training</option><option>AI Coaching</option>
                           </select>
                         </div>
@@ -758,12 +754,12 @@ export default function OneToOnePage() {
                           <label className="text-[11px] text-text-tertiary font-medium block mb-1">Due Date</label>
                           <input type="date" value={hasActions ? a.dueDate : ""}
                             onChange={hasActions ? e => setSessionActions(prev => prev.map((x,j) => j===i?{...x,dueDate:e.target.value}:x)) : undefined}
-                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF]"/>
+                            className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand"/>
                         </div>
                       </div>
                       <div>
                         <label className="text-[11px] text-text-tertiary font-medium block mb-1">Coaching Tool</label>
-                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:[border-color:#8051FF] text-text-tertiary">
+                        <select className="w-full text-xs border border-border rounded-lg px-2.5 py-2 bg-surface-muted focus:outline-none focus:border-brand text-text-tertiary">
                           <option value="">Select tool...</option>
                           <option>GROW Model</option><option>Customer Experience Coaching</option>
                           <option>Feedback Conversation</option><option>Side-by-Side Observation</option>
@@ -776,10 +772,10 @@ export default function OneToOnePage() {
                 </div>
 
                 {/* Footer */}
-                <div className="flex items-center justify-between px-5 py-3 border-t border-border flex-shrink-0 bg-white">
+                <div className="flex items-center justify-between px-5 py-3 border-t border-border flex-shrink-0 bg-surface">
                   <button onClick={() => {setShowSession(false); setSessionActions([]);}}
                     className="flex items-center gap-1.5 text-sm text-danger border border-danger/30 px-3 py-1.5 rounded-lg hover:bg-danger/5 transition-colors font-medium">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M4.5 3V2h3v1M9.5 3l-.4 6.5H2.9L2.5 3" stroke="#EF4444" strokeWidth="1.1" strokeLinecap="round"/></svg>
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 3h8M4.5 3V2h3v1M9.5 3l-.4 6.5H2.9L2.5 3" stroke="rgb(var(--danger))" strokeWidth="1.1" strokeLinecap="round"/></svg>
                     Discard
                   </button>
                   <div className="flex gap-2">
@@ -788,7 +784,7 @@ export default function OneToOnePage() {
                     </button>
                     <button onClick={handleSave}
                       className="flex items-center gap-1.5 text-sm font-semibold text-white px-4 py-1.5 rounded-lg"
-                      style={{background:"#8051FF", color:"#FFFFFF"}}>
+                      style={{background:"rgb(var(--brand))"}}>
                       <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M2 6l3 3 5-5" stroke="white" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Save Session
                     </button>
@@ -802,7 +798,7 @@ export default function OneToOnePage() {
               className="fixed bottom-6 left-1/2 z-50 flex items-center gap-3 px-5 py-3 rounded-xl shadow-xl text-white text-sm font-semibold"
               style={{
                 transform: "translateX(-50%)",
-                background:"#8051FF",
+                background: "rgb(var(--brand))",
                 animation: "fadeInUp 0.2s ease",
               }}
             >

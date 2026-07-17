@@ -58,7 +58,7 @@ const KPIS: KpiDef[] = [
     delta:      { "D-1": "0%",  WTD: "+0.9pp", MTD: "+1.5pp", QTD: "+2.0pp" },
     deltaPos:   { "D-1": null,  WTD: true,     MTD: true,     QTD: true  },
     atRisk:     { "D-1": true,  WTD: true,     MTD: true,     QTD: false },
-    lineColor: "#F59E0B", areaColor: "rgba(245,158,11,0.08)",
+    lineColor: "rgb(var(--warning))", areaColor: "rgba(245,158,11,0.08)",
   },
   {
     key: "fcr", label: "FCR", fullLabel: "First Contact Resolution",
@@ -74,7 +74,7 @@ const KPIS: KpiDef[] = [
     delta:      { "D-1": "-1%", WTD: "-1.2pp", MTD: "+0.2pp", QTD: "+1.0pp" },
     deltaPos:   { "D-1": false, WTD: false,     MTD: true,     QTD: true  },
     atRisk:     { "D-1": true,  WTD: true,      MTD: false,    QTD: false },
-    lineColor: "#F59E0B", areaColor: "rgba(245,158,11,0.08)",
+    lineColor: "rgb(var(--warning))", areaColor: "rgba(245,158,11,0.08)",
   },
   {
     key: "aht", label: "AHT", fullLabel: "Average Handling Time",
@@ -122,7 +122,7 @@ const KPIS: KpiDef[] = [
     delta:      { "D-1": "+4%", WTD: "+0.5pp", MTD: "+0.8pp", QTD: "+1.0pp" },
     deltaPos:   { "D-1": true,  WTD: true,     MTD: true,     QTD: true  },
     atRisk:     { "D-1": true,  WTD: true,     MTD: true,     QTD: true  },
-    lineColor: "#F59E0B", areaColor: "rgba(245,158,11,0.08)",
+    lineColor: "rgb(var(--warning))", areaColor: "rgba(245,158,11,0.08)",
   },
   {
     key: "adh", label: "ADH", fullLabel: "Adherence",
@@ -138,7 +138,7 @@ const KPIS: KpiDef[] = [
     delta:      { "D-1": "-3%", WTD: "+1.5pp", MTD: "+2.7pp", QTD: "+3.9pp" },
     deltaPos:   { "D-1": false, WTD: true,     MTD: true,     QTD: true  },
     atRisk:     { "D-1": true,  WTD: true,     MTD: true,     QTD: true  },
-    lineColor: "#F59E0B", areaColor: "rgba(245,158,11,0.08)",
+    lineColor: "rgb(var(--warning))", areaColor: "rgba(245,158,11,0.08)",
   },
 ];
 
@@ -390,8 +390,8 @@ function KpiTrendChart({
         {/* Y grid + labels */}
         {yLabels.map((v, i) => (
           <g key={i}>
-            <line x1={PL} y1={toY(v)} x2={W - PR} y2={toY(v)} stroke="#F3F4F6" strokeWidth="1" />
-            <text x={PL - 4} y={toY(v) + 4} textAnchor="end" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">
+            <line x1={PL} y1={toY(v)} x2={W - PR} y2={toY(v)} stroke="rgb(var(--surface-muted))" strokeWidth="1" />
+            <text x={PL - 4} y={toY(v) + 4} textAnchor="end" fontSize="10" fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif">
               {fmt(v)}
             </text>
           </g>
@@ -399,7 +399,7 @@ function KpiTrendChart({
 
         {/* Target dashed line */}
         <line x1={PL} y1={targetY} x2={W - PR} y2={targetY} stroke="#D1D5DB" strokeWidth="1.5" strokeDasharray="5 4" />
-        <text x={W - PR + 4} y={targetY + 4} fontSize="10" fill="#374151" fontFamily="Inter,system-ui,sans-serif" fontWeight="600">TARGET</text>
+        <text x={W - PR + 4} y={targetY + 4} fontSize="10" fill="rgb(var(--text-secondary))" fontFamily="Inter,system-ui,sans-serif" fontWeight="600">TARGET</text>
 
         {/* Team line — dashed grey when agent is selected */}
         {agentRow ? (
@@ -421,7 +421,7 @@ function KpiTrendChart({
 
         {/* X labels */}
         {DATES.map((d, i) => (
-          <text key={d} x={toX(i)} y={H - 4} textAnchor="middle" fontSize="10" fill="#9CA3AF" fontFamily="Inter,system-ui,sans-serif">{d}</text>
+          <text key={d} x={toX(i)} y={H - 4} textAnchor="middle" fontSize="10" fill="rgb(var(--text-tertiary))" fontFamily="Inter,system-ui,sans-serif">{d}</text>
         ))}
 
         {/* Hover overlay — invisible rects per column */}
@@ -443,11 +443,11 @@ function KpiTrendChart({
         {/* Tooltip crosshair + dots */}
         {tooltip && (
           <g>
-            <line x1={toX(tooltip.idx)} y1={PT} x2={toX(tooltip.idx)} y2={H - PB} stroke="#9CA3AF" strokeWidth="1" strokeDasharray="3 2" />
+            <line x1={toX(tooltip.idx)} y1={PT} x2={toX(tooltip.idx)} y2={H - PB} stroke="rgb(var(--text-tertiary))" strokeWidth="1" strokeDasharray="3 2" />
             {agentVals && (
               <circle cx={toX(tooltip.idx)} cy={toY(agentVals[tooltip.idx])} r="4" fill={mainColor} />
             )}
-            <circle cx={toX(tooltip.idx)} cy={toY(teamVals[tooltip.idx])} r="4" fill={agentRow ? "#9CA3AF" : mainColor} />
+            <circle cx={toX(tooltip.idx)} cy={toY(teamVals[tooltip.idx])} r="4" fill={agentRow ? "rgb(var(--text-tertiary))" : mainColor} />
           </g>
         )}
       </svg>
@@ -460,7 +460,7 @@ function KpiTrendChart({
             left: Math.min(toX(tooltip.idx) / 620 * 100, 65) + "%",
             top: "20%",
             background: "#1F2937",
-            color: "#fff",
+            color: "rgb(var(--surface))",
             borderRadius: 8,
             padding: "10px 14px",
             fontSize: 12,
@@ -470,7 +470,7 @@ function KpiTrendChart({
             boxShadow: "0 4px 16px rgba(0,0,0,0.25)",
           }}
         >
-          <p style={{ margin: 0, fontWeight: 700, fontSize: 11, color: "#9CA3AF", letterSpacing: "0.05em", marginBottom: 6 }}>
+          <p style={{ margin: 0, fontWeight: 700, fontSize: 11, color: "rgb(var(--text-tertiary))", letterSpacing: "0.05em", marginBottom: 6 }}>
             {DATES[tooltip.idx].toUpperCase()}
           </p>
           {agentRow && agentVals && (
@@ -483,7 +483,7 @@ function KpiTrendChart({
             </div>
           )}
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ width: 8, height: 8, borderRadius: "50%", background: agentRow ? "#9CA3AF" : mainColor, display: "inline-block" }} />
+            <span style={{ width: 8, height: 8, borderRadius: "50%", background: agentRow ? "rgb(var(--text-tertiary))" : mainColor, display: "inline-block" }} />
             <span>Team</span>
             <span style={{ marginLeft: "auto", fontWeight: 700, paddingLeft: 16 }}>
               {fmt(teamVals[tooltip.idx])}{kpiDef.unit}
@@ -519,7 +519,7 @@ export default function TeamOverviewPage() {
   // Legend items for chart
   const legendItems = [
     ...(agentRow ? [{ label: agentRow.name, color: activeKpi.lineColor, dashed: false }] : []),
-    { label: "Team", color: agentRow ? "#9CA3AF" : activeKpi.lineColor, dashed: agentRow ? true : false },
+    { label: "Team", color: agentRow ? "rgb(var(--text-tertiary))" : activeKpi.lineColor, dashed: agentRow ? true : false },
     { label: "Target", color: "#D1D5DB", dashed: true },
   ];
 
@@ -538,7 +538,7 @@ export default function TeamOverviewPage() {
               <span>Team performance overview — Wednesday 24 June</span>
               <span>·</span>
               <span className="flex items-center gap-1">
-                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="10" rx="1.5" stroke="#9CA3AF" strokeWidth="1.1"/><path d="M4 1v2M9 1v2" stroke="#9CA3AF" strokeWidth="1.1" strokeLinecap="round"/><path d="M1 5h11" stroke="#9CA3AF" strokeWidth="1.1"/></svg>
+                <svg width="13" height="13" viewBox="0 0 13 13" fill="none"><rect x="1" y="2" width="11" height="10" rx="1.5" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/><path d="M4 1v2M9 1v2" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1" strokeLinecap="round"/><path d="M1 5h11" stroke="rgb(var(--text-tertiary))" strokeWidth="1.1"/></svg>
                 Daily (D1): 23 Jun
               </span>
             </div>
@@ -565,7 +565,7 @@ export default function TeamOverviewPage() {
                   onClick={() => handleKpiClick(k.key)}
                   className="bg-surface border rounded-lg p-3 cursor-pointer transition-all"
                   style={{
-                    borderColor: isActive ? k.lineColor : "#E5E7EB",
+                    borderColor: isActive ? k.lineColor : "rgb(var(--border))",
                     borderWidth: isActive ? 2 : 1,
                     boxShadow: isActive ? `0 0 0 3px ${k.areaColor}` : "none",
                   }}
@@ -597,7 +597,7 @@ export default function TeamOverviewPage() {
             <div className="bg-surface border border-border rounded-xl p-5">
               {/* Header with chip */}
               <div className="flex items-center gap-2 mb-0.5 flex-wrap">
-                <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#FF0082" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
+                <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold text-text-primary">
                   KPI Trends — {activeKpi.fullLabel}
                 </span>
@@ -638,7 +638,7 @@ export default function TeamOverviewPage() {
             {/* Team Status — updates title + values to match selected KPI */}
             <div className="bg-surface border border-border rounded-xl overflow-hidden">
               <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="4" r="2" stroke="#6B7280" strokeWidth="1.2"/><path d="M1 11c0-2 1.79-3.5 4-3.5s4 1.5 4 3.5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/><circle cx="10.5" cy="4.5" r="1.5" stroke="#6B7280" strokeWidth="1.2"/><path d="M10.5 8c1.38 0 2.5 1.12 2.5 2.5" stroke="#6B7280" strokeWidth="1.2" strokeLinecap="round"/></svg>
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="4" r="2" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><path d="M1 11c0-2 1.79-3.5 4-3.5s4 1.5 4 3.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/><circle cx="10.5" cy="4.5" r="1.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2"/><path d="M10.5 8c1.38 0 2.5 1.12 2.5 2.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.2" strokeLinecap="round"/></svg>
                 <span className="text-sm font-semibold text-text-primary">
                   Team Status — {activeKpi.label}
                 </span>
@@ -722,7 +722,7 @@ export default function TeamOverviewPage() {
                     <td className="px-4 py-3"><span className={`text-sm ${m.trendIcon==="↗"?"text-success":"text-text-secondary"}`}>{m.trend}</span></td>
                     <td className="px-4 py-3">
                       {m.pendingAlert
-                        ? <span className="flex items-center gap-1.5 text-sm text-warning font-medium"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="#F59E0B" strokeWidth="1.2"/><path d="M6.5 4v3" stroke="#F59E0B" strokeWidth="1.2" strokeLinecap="round"/><circle cx="6.5" cy="9" r="0.6" fill="#F59E0B"/></svg>{m.pending}</span>
+                        ? <span className="flex items-center gap-1.5 text-sm text-warning font-medium"><svg width="13" height="13" viewBox="0 0 13 13" fill="none"><circle cx="6.5" cy="6.5" r="5.5" stroke="rgb(var(--warning))" strokeWidth="1.2"/><path d="M6.5 4v3" stroke="rgb(var(--warning))" strokeWidth="1.2" strokeLinecap="round"/><circle cx="6.5" cy="9" r="0.6" fill="rgb(var(--warning))"/></svg>{m.pending}</span>
                         : <span className="text-sm text-text-tertiary">{m.pending}</span>}
                     </td>
                   </tr>
@@ -735,7 +735,7 @@ export default function TeamOverviewPage() {
           {/* ── Your Key Topics ──────────────────────────────────── */}
           <div className="bg-surface border border-border rounded-xl mb-5 overflow-hidden">
             <div className="flex items-center gap-2 px-5 py-4 border-b border-border">
-              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#FF0082" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
+              <svg width="15" height="15" viewBox="0 0 15 15" fill="none"><polyline points="1,12 5,7 9,9 14,3" stroke="#10B981" strokeWidth="1.8" strokeLinejoin="round" strokeLinecap="round"/></svg>
               <span className="text-sm font-semibold text-text-primary">Your Key Topics</span>
             </div>
             <div className="flex border-b border-border">

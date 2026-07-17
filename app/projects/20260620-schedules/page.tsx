@@ -11,9 +11,9 @@ type Status = "Online" | "Break" | "Coaching" | "Offline";
 
 const STATUS_STYLES: Record<Status, { bg: string; text: string }> = {
   Online:   { bg: "#10B981", text: "white" },
-  Break:    { bg: "#F3F4F6", text: "#6B7280" },
-  Coaching: { bg: "#F3F4F6", text: "#6B7280" },
-  Offline:  { bg: "#F3F4F6", text: "#6B7280" },
+  Break:    { bg: "rgb(var(--surface-muted))", text: "rgb(var(--text-secondary))" },
+  Coaching: { bg: "rgb(var(--surface-muted))", text: "rgb(var(--text-secondary))" },
+  Offline:  { bg: "rgb(var(--surface-muted))", text: "rgb(var(--text-secondary))" },
 };
 
 const AGENTS: { name: string; status: Status }[] = [
@@ -48,10 +48,10 @@ export default function SchedulesPage() {
             </div>
             {/* Date picker + view toggle */}
             <div className="flex items-center gap-3">
-              <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 bg-white">
+              <div className="flex items-center gap-2 border border-border rounded-lg px-3 py-2 bg-surface">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                  <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="#6B7280" strokeWidth="1.1"/>
-                  <path d="M4 1v2M10 1v2M1 6h12" stroke="#6B7280" strokeWidth="1.1" strokeLinecap="round"/>
+                  <rect x="1" y="2" width="12" height="11" rx="1.5" stroke="rgb(var(--text-secondary))" strokeWidth="1.1"/>
+                  <path d="M4 1v2M10 1v2M1 6h12" stroke="rgb(var(--text-secondary))" strokeWidth="1.1" strokeLinecap="round"/>
                 </svg>
                 <input
                   type="date"
@@ -61,7 +61,7 @@ export default function SchedulesPage() {
               </div>
               {/* Agent / Supervisor toggle */}
               <div className="flex items-center gap-1">
-                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-white text-text-secondary hover:bg-surface-muted transition-colors">
+                <button className="px-3 py-1.5 text-xs font-medium rounded-lg border border-border bg-surface text-text-secondary hover:bg-surface-muted transition-colors">
                   Agent
                 </button>
                 <button className="px-3 py-1.5 text-xs font-semibold rounded-lg bg-brand text-white flex items-center gap-1.5">
@@ -76,7 +76,7 @@ export default function SchedulesPage() {
           </div>
 
           {/* ── Schedule grid ─────────────────────────────────────────── */}
-          <div className="border border-border rounded-xl bg-white overflow-hidden">
+          <div className="border border-border rounded-xl bg-surface overflow-hidden">
             {/* Grid header */}
             <div className="px-6 py-4 border-b border-border">
               <h2 className="text-sm font-semibold text-text-primary m-0">

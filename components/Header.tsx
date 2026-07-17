@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
 
 export type Period = "D-1" | "WTD" | "MTD" | "QTD";
 
@@ -41,12 +41,11 @@ export function GlobalHeader() {
 
   return (
     <header
-      className="flex items-center justify-between bg-white border-b"
+      className="flex items-center justify-between bg-surface border-b border-border"
       style={{
         height: 44,
         paddingLeft: 20,
         paddingRight: 20,
-        borderColor: "#E0E0E0",
         flexShrink: 0,
         position: "sticky",
         top: 0,
@@ -55,16 +54,8 @@ export function GlobalHeader() {
     >
       {/* Left: page identity */}
       <div className="flex items-center gap-2.5">
-        <span
-          className="text-sm"
-          style={{ color: "#6B7280" }}
-        >
-          ☰
-        </span>
-        <span
-          className="text-sm font-semibold"
-          style={{ color: "#111827" }}
-        >
+        <span className="text-sm text-text-secondary">☰</span>
+        <span className="text-sm font-semibold text-text-primary">
           Operations Dashboard
         </span>
       </div>
@@ -81,20 +72,16 @@ export function GlobalHeader() {
         */}
         <div className="flex items-center gap-2">
           {/* Pill group */}
-          <div
-            className="flex items-center gap-0.5 rounded-lg p-0.5"
-            style={{ background: "#F9FAFB", border: "1px solid #E5E7EB" }}
-          >
+          <div className="flex items-center gap-0.5 rounded-lg p-0.5 bg-surface-muted border border-border">
             {periods.map((p) => (
               <button
                 key={p}
                 onClick={() => setPeriod(p)}
                 className={`px-3 py-1 rounded-md text-xs font-medium transition-colors ${
                   period === p
-                    ? "text-white font-semibold"
+                    ? "bg-brand text-white"
                     : "text-text-secondary hover:text-text-primary"
                 }`}
-              style={period === p ? ({background:"#8051FF", color:"#FFFFFF"} as React.CSSProperties) : undefined}
               >
                 {p}
               </button>
@@ -102,7 +89,7 @@ export function GlobalHeader() {
           </div>
 
           {/* Date context label — same pattern as One to One PERIOD label */}
-          <div className="flex items-center gap-1.5" style={{ color: "#6B7280" }}>
+          <div className="flex items-center gap-1.5 text-text-secondary">
             <svg
               width="12"
               height="12"
@@ -113,23 +100,17 @@ export function GlobalHeader() {
               <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1.2" />
               <path d="M6 3.5V6L7.5 7.5" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
-            <span
-              className="text-xs whitespace-nowrap"
-              style={{ color: "#374151" }}
-            >
+            <span className="text-xs whitespace-nowrap text-text-secondary">
               {PERIOD_DATE_LABELS[period]}
             </span>
           </div>
         </div>
 
         {/* Divider */}
-        <div style={{ width: 1, height: 20, background: "#E5E7EB" }} />
+        <div className="w-px h-5 bg-border" />
 
         {/* Switch Team */}
-        <button
-          className="flex items-center gap-1.5 text-xs font-medium rounded-md border px-3 py-1.5 transition-colors hover:border-brand/40"
-          style={{ borderColor: "#E0E0E0", color: "#374151", background: "#fff" }}
-        >
+        <button className="flex items-center gap-1.5 text-xs font-medium rounded-md border border-border px-3 py-1.5 transition-colors hover:border-brand/40 text-text-secondary bg-surface">
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <circle cx="5" cy="4.5" r="2" stroke="currentColor" strokeWidth="1.2" />
             <path d="M1.5 11c0-2 1.57-3.5 3.5-3.5S8.5 9 8.5 11" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
@@ -140,10 +121,7 @@ export function GlobalHeader() {
         </button>
 
         {/* Avatar */}
-        <div
-          className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold"
-          style={{ background: "#F3F4F6", color: "#6B7280", border: "1px solid #E5E7EB" }}
-        >
+        <div className="w-7 h-7 rounded-full flex items-center justify-center text-xs font-semibold bg-surface-muted text-text-secondary border border-border">
           S
         </div>
       </div>
