@@ -59,12 +59,21 @@ export default function Sidebar() {
   return (
     <aside className="w-52 flex-shrink-0 min-h-screen flex flex-col bg-sidebar-bg border-r border-sidebar-border">
       {/* Logo */}
-      <div className="px-4 py-4 border-b border-sidebar-border flex items-center gap-2">
-        <span
-          className="w-6 h-6 rounded-md flex items-center justify-center text-white text-xs font-bold flex-shrink-0 bg-brand"
+      <div className="px-4 py-4 border-b border-sidebar-border flex items-center gap-2.5">
+        <svg
+          width="18"
+          height="20"
+          viewBox="0 0 289 318"
+          xmlns="http://www.w3.org/2000/svg"
+          className="flex-shrink-0"
+          aria-label="TP logo"
         >
-          G
-        </span>
+          <path d="M0,60 L0,63 L56,118 L56,61 Z" fill="white" />
+          <path
+            d="M230,8 L208,2 L179,0 L179,57 L176,60 L123,60 L120,62 L120,264 L117,267 L59,268 L110,317 L174,317 L175,197 L211,193 L239,183 L265,163 L277,147 L282,136 L288,114 L289,91 L281,56 L269,36 L255,22 Z"
+            fill="white"
+          />
+        </svg>
         <div>
           <p className="text-sidebar-active font-semibold text-sm m-0 leading-tight tracking-tight">
             OPS Supervisor<span className="text-accent">.</span>

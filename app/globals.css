@@ -34,12 +34,12 @@
   --success: 16 185 129;          /* #10B981 — reserved for data semantics */
   --success-light: 209 250 229;   /* #D1FAE5 */
 
-  --sidebar-bg: 75 76 106;        /* #4B4C6A — TP Dark Slate */
+  --sidebar-bg: 76 54 97;         /* #4C3661 — TP Dark Muted Purple */
   --sidebar-text: 236 233 231;    /* #ECE9E7 — TP Pastel Sand */
   --sidebar-text-muted: 212 210 202; /* #D4D2CA — TP Sand */
   --sidebar-active: 255 255 255;  /* #FFFFFF */
   --sidebar-active-bg: 255 255 255; /* used with /10 opacity */
-  --sidebar-border: 90 91 122;    /* #5A5B7A */
+  --sidebar-border: 91 69 113;    /* #5B4571 — lightened tint of sidebar-bg */
 }
 
 /* ============================================================
@@ -69,12 +69,12 @@ html.dark {
   --success: 52 211 153;          /* #34D399 */
   --success-light: 20 46 38;      /* #142E26 */
 
-  --sidebar-bg: 20 20 30;         /* #14141E — slightly darker than surface */
+  --sidebar-bg: 30 21 38;         /* #1E1526 — dark tint of TP Dark Muted Purple */
   --sidebar-text: 200 200 214;    /* #C8C8D6 */
   --sidebar-text-muted: 140 140 160; /* #8C8CA0 */
   --sidebar-active: 255 255 255;
   --sidebar-active-bg: 255 255 255;
-  --sidebar-border: 46 46 62;     /* #2E2E3E */
+  --sidebar-border: 54 40 68;     /* #362844 */
 }
 
 * {
