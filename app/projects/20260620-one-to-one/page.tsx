@@ -582,7 +582,7 @@ export default function OneToOnePage() {
                 <p className="text-sm font-bold mb-1" style={{ color: "rgb(var(--warning))" }}>CEDP review pending</p>
                 <p className="text-sm text-text-secondary mb-3">
                   Run this month&apos;s Continuous Employee Development Plan review with{" "}
-                  <strong style={{ color: "rgb(var(--brand))" }}>João Silva</strong>.
+                  <strong className="text-text-primary font-semibold">João Silva</strong>.
                 </p>
                 <div className="flex items-center justify-between">
                   <span className="text-xs text-text-tertiary flex items-center gap-1">

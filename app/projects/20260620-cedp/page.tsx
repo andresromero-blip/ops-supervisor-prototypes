@@ -252,7 +252,7 @@ export default function CEDPPage() {
             </div>
             <span className="text-xs font-semibold text-text-secondary flex-shrink-0 whitespace-nowrap">
               {completedCount > 0 ? (
-                <span className="text-brand">{completedCount} / 9 done</span>
+                <span className="text-success">{completedCount} / 9 done</span>
               ) : (
                 <span className="text-text-tertiary">0 / 9 done</span>
               )}
